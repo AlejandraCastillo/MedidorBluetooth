@@ -11,23 +11,25 @@
         android:id="@+id/tv_deviceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_marginTop="40dp"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Nombre del dispositivo" />
 
-    <ListView
-        android:id="@+id/lv_messages"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="120dp"
-        android:transcriptMode="alwaysScroll"
-        app:layout_constraintTop_toBottomOf="@+id/tv_deviceName"
-        tools:layout_editor_absoluteX="30dp" />
+    <TextView
+        android:id="@+id/tv_messages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="000"
+        android:layout_marginTop="30dp"
+        android:textSize="50sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_deviceName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
 
 <!--        <View-->
 <!--            android:id="@+id/v_manecilla"-->

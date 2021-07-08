@@ -26,13 +26,12 @@ public class MessageReceiver extends AppCompatActivity {
     private static final float MAX_NUM = 24;
     private static final float MAX_ANGLE = 180;
     private static final float STEP = MAX_ANGLE/MAX_NUM;
-    private View manecilla;
 
+//    View manecilla;
     BluetoothSocket socket;
     TextView tvDeviceName;
-    ListView lvMessages;
+    TextView tvMessages;
 
-    public ArrayAdapter<String> adapterMessages;
     ConnectedThread msgReceiver;
 
     //Constantes para los mensajes
@@ -55,15 +54,9 @@ public class MessageReceiver extends AppCompatActivity {
                     int num2 = Integer.parseInt(numeros.substring(1,2));
                     int num3 = Integer.parseInt(numeros.substring(2,3));
                     int num = num1+num2+num3;
-                    manecilla.setRotation(num*STEP);
-                    adapterMessages.add(String.valueOf(num));
+//                    manecilla.setRotation(num*STEP);
+                    tvMessages.setText(String.valueOf(num));
 
-                    adapterMessages.notifyDataSetChanged();
-
-                    break;
-
-                case CONNECTION_LOST:
-                    finish();
                     break;
             }
         }
@@ -77,12 +70,8 @@ public class MessageReceiver extends AppCompatActivity {
         tvDeviceName = findViewById(R.id.tv_deviceName);
         tvDeviceName.setText(getIntent().getStringExtra("name"));
 
-        lvMessages = findViewById(R.id.lv_messages);
-        adapterMessages = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-
-        lvMessages.setAdapter(adapterMessages);
-
-        manecilla = findViewById(R.id.v_manecilla);
+        tvMessages = findViewById(R.id.tv_messages);
+//        manecilla = findViewById(R.id.v_manecilla);
 
         socket = ShareSocket.getSocket();
 
