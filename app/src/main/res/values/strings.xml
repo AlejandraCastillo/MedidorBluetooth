@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">JavaBlue</string>
+    <string name="esperando">...</string>
+    <string name="blueAdapter">Bluetooth Adapter Existe</string>
+    <string name="blueOn">Bluetooth encendido</string>
+    <string name="blueOff">Bluetooth apagado</string>
+    <string name="blueExist">Adaptador Bluetooth encontrado</string>
+    <string name="blueDontExist">No se ha encontrado un Adaptador Bluetooth</string>
+    <string name="pairedDevices">Dispositivos sincronizados</string>
+    <string name="discoveryDevices">Dispositivos encontrados</string>
+    <string name="startSearch">Inciar Busqueda</string>
+    <string name="finishSearch">Busqueda Finalizada</string>
+    <string name="cancelSearch">Cancelar Busqueda</string>
+    <string name="deviceName">Nombre del dispositivo</string>
+    <string name="deviceMAC">XX:XX:XX:XX:XX:XX</string>
+    <string name="connected">Conectar</string>
+    <string name="isConnect">Conectado</string>
+    <string name="deviceMessage">Mensaje entrante</string>
+    <string name="noBluetooth">Su dispositivo no soporta Bluetooth</string>
+    <!--    <string name=""></string>-->
+    <!--    <string name=""></string>-->
+    <!--    <string name=""></string>-->
+    <!--    <string name=""></string>-->
+    <!--    <string name=""></string>-->
+    <!--    <string name=""></string>-->
+    <!--    <string name=""></string>-->
+</resources>
