@@ -27,7 +27,7 @@ public class MessageReceiver extends AppCompatActivity {
     private static final float MAX_ANGLE = 180;
     private static final float STEP = MAX_ANGLE/MAX_NUM;
 
-//    View manecilla;
+    View manecilla;
     BluetoothSocket socket;
     TextView tvDeviceName;
     TextView tvMessages;
@@ -54,7 +54,7 @@ public class MessageReceiver extends AppCompatActivity {
                     int num2 = Integer.parseInt(numeros.substring(1,2));
                     int num3 = Integer.parseInt(numeros.substring(2,3));
                     int num = num1+num2+num3;
-//                    manecilla.setRotation(num*STEP);
+                    manecilla.setRotation(num*STEP);
                     tvMessages.setText(String.valueOf(num));
 
                     break;
@@ -71,7 +71,7 @@ public class MessageReceiver extends AppCompatActivity {
         tvDeviceName.setText(getIntent().getStringExtra("name"));
 
         tvMessages = findViewById(R.id.tv_messages);
-//        manecilla = findViewById(R.id.v_manecilla);
+        manecilla = findViewById(R.id.v_manecilla);
 
         socket = ShareSocket.getSocket();
 
