@@ -9,28 +9,35 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.Buffer;
+
 public class MessageReceiver extends AppCompatActivity {
     // Debugging
     private static final String TAG = "MessageReceiver";
 
 
-    private static final float MAX_NUM = 24;
     private static final float MAX_ANGLE = 180;
-    private static final float STEP = MAX_ANGLE/MAX_NUM;
+    private float valorMaxEntrada;
+    private float valorMaxSalida;
+    private float unit;
+    private float step;
 
     View manecilla;
     BluetoothSocket socket;
     TextView tvDeviceName;
     TextView tvMessages;
+    TextView tvValorMaximo;
+    EditText edValMaxEnt;
+    EditText edValMaxSal;
+
+
 
     ConnectedThread msgReceiver;
 
@@ -50,12 +57,14 @@ public class MessageReceiver extends AppCompatActivity {
 //                    String letras = readMessage.substring(readMessage.indexOf('-') + 1,readMessage.length());
 //                    adapterMessages.add(letras);
 
-                    int num1 = Integer.parseInt(numeros.substring(0,1));
-                    int num2 = Integer.parseInt(numeros.substring(1,2));
-                    int num3 = Integer.parseInt(numeros.substring(2,3));
-                    int num = num1+num2+num3;
-                    manecilla.setRotation(num*STEP);
-                    tvMessages.setText(String.valueOf(num));
+                    float num1 = Integer.parseInt(numeros.substring(0,1));
+                    float num2 = Integer.parseInt(numeros.substring(1,2));
+                    float num3 = Integer.parseInt(numeros.substring(2,3));
+                    float num = unit*(num1+num2+num3);
+                    if(!(num>valorMaxSalida)){
+                        manecilla.setRotation(num* step);
+                        tvMessages.setText(String.valueOf(num));
+                    }
 
                     break;
             }
@@ -73,12 +82,21 @@ public class MessageReceiver extends AppCompatActivity {
         tvMessages = findViewById(R.id.tv_messages);
         manecilla = findViewById(R.id.v_manecilla);
 
+        edValMaxEnt = findViewById(R.id.et_valMaxEnt);
+        edValMaxSal = findViewById(R.id.et_valMaxSal);
+        tvValorMaximo = findViewById(R.id.tv_valorMaximo);
+
+        valorMaxEntrada = 127;
+        valorMaxSalida = 5;
+        unit = valorMaxSalida/valorMaxEntrada;
+        step = MAX_ANGLE/valorMaxSalida;
+
+        tvValorMaximo.setText(String.valueOf(valorMaxSalida));
+
         socket = ShareSocket.getSocket();
 
         msgReceiver = new ConnectedThread(socket, handler);
         msgReceiver.start();
-
-
 
     }
 
@@ -91,6 +109,28 @@ public class MessageReceiver extends AppCompatActivity {
     public void onClickDisconnect(View view) {
         finish();
 //        msgReceiver.cancel();
+    }
+
+    public void onClickSend(View view) {
+        //Declarar las views
+        edValMaxEnt = findViewById(R.id.et_valMaxEnt);
+        edValMaxSal = findViewById(R.id.et_valMaxSal);
+        tvValorMaximo = findViewById(R.id.tv_valorMaximo);
+
+        //Obtener la informacion de los Edit Text
+        valorMaxEntrada = Float.valueOf(edValMaxEnt.getText().toString());
+        valorMaxSalida = Float.valueOf(edValMaxSal.getText().toString());
+
+        //Calcular valores necesarios
+        unit = valorMaxSalida/valorMaxEntrada;
+        step = MAX_ANGLE/valorMaxSalida;
+
+        //Reajustar la numeracion
+        tvValorMaximo.setText(String.valueOf(valorMaxSalida));
+
+        //Limpiar los campos
+        edValMaxEnt.setText("");
+        edValMaxSal.setText("");
     }
 
 

@@ -17,6 +17,9 @@
     <string name="isConnect">Conectado</string>
     <string name="deviceMessage">Mensaje entrante</string>
     <string name="noBluetooth">Su dispositivo no soporta Bluetooth</string>
+    <string name="desconectar">Desconectar</string>
+    <string name="defaultNumbers">000</string>
+    <string name="enviar">Enviar</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->

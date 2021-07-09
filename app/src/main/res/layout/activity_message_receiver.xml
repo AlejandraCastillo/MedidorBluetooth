@@ -18,31 +18,95 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Nombre del dispositivo" />
 
+    <View
+        android:id="@+id/v_manecilla"
+        android:layout_width="100dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="110dp"
+        android:background="@color/design_default_color_primary"
+        android:transformPivotX="100dp"
+        android:transformPivotY="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_deviceName"
+        tools:rotation="180" />
+
+    <TextView
+        android:id="@+id/tv_valorMaximo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="115dp"
+        android:layout_marginTop="150dp"
+        android:text="@string/defaultNumbers"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/v_manecilla"
+        app:layout_constraintTop_toBottomOf="@id/tv_deviceName" />
+
     <TextView
         android:id="@+id/tv_messages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="000"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/defaultNumbers"
         android:textSize="50sp"
-        app:layout_constraintTop_toBottomOf="@id/v_manecilla"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/v_manecilla" />
 
-        <View
-            android:id="@+id/v_manecilla"
-            android:layout_width="150dp"
-            android:layout_height="4dp"
-            android:layout_marginEnd="150dp"
-            android:layout_marginBottom="100dp"
-            tools:rotation="90"
-            android:background="@color/design_default_color_primary"
-            android:transformPivotX="150dp"
-            android:transformPivotY="2dp"
-            android:layout_marginTop="200dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_deviceName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/tv_valMaxEnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:text="Valor maximo entrante: "
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_messages" />
+
+    <EditText
+        android:id="@+id/et_valMaxEnt"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:inputType="number"
+        app:layout_constraintStart_toEndOf="@id/tv_valMaxEnt"
+        app:layout_constraintTop_toBottomOf="@id/tv_messages" />
+
+    <TextView
+        android:id="@+id/tv_valMaxSal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:text="Valor maximo de salida: "
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_valMaxEnt" />
+
+    <EditText
+        android:id="@+id/et_valMaxSal"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:inputType="number"
+        app:layout_constraintStart_toEndOf="@id/tv_valMaxSal"
+        app:layout_constraintTop_toBottomOf="@id/tv_valMaxEnt" />
+
+    <Button
+        android:id="@+id/b_getDatos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        android:onClick="onClickSend"
+        android:text="@string/enviar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_valMaxSal" />
+
 
     <Button
         android:id="@+id/disconnectButton"
@@ -52,7 +116,8 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="10dp"
         android:onClick="onClickDisconnect"
-        android:text="Desconectar"
+        android:text="@string/desconectar"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
