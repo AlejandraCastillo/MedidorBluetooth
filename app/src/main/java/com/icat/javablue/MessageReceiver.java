@@ -52,19 +52,17 @@ public class MessageReceiver extends AppCompatActivity {
             switch (msg.what){
                 case MESSAGE_READ:
                     String readMessage = (String) msg.obj;
-                    String numeros = readMessage.substring(0, readMessage.indexOf('-'));
-//                    adapterMessages.add(numeros);
-//                    String letras = readMessage.substring(readMessage.indexOf('-') + 1,readMessage.length());
-//                    adapterMessages.add(letras);
+                    String numeros = readMessage.substring(0, readMessage.indexOf(' '));
 
-                    float num1 = Integer.parseInt(numeros.substring(0,1));
-                    float num2 = Integer.parseInt(numeros.substring(1,2));
-                    float num3 = Integer.parseInt(numeros.substring(2,3));
-                    float num = unit*(num1+num2+num3);
-                    if(!(num>valorMaxSalida)){
-                        manecilla.setRotation(num* step);
-                        tvMessages.setText(String.valueOf(num));
-                    }
+//                    String letras = readMessage.substring(readMessage.indexOf('-') + 1,readMessage.length());
+
+                    Log.v(TAG, readMessage);
+
+                    float num = unit*(Float.valueOf(numeros));
+                    if(num>valorMaxSalida) num=valorMaxSalida;
+                    manecilla.setRotation(num* step);
+                    tvMessages.setText(String.valueOf(num));
+
 
                     break;
             }
@@ -118,8 +116,15 @@ public class MessageReceiver extends AppCompatActivity {
         tvValorMaximo = findViewById(R.id.tv_valorMaximo);
 
         //Obtener la informacion de los Edit Text
-        valorMaxEntrada = Float.valueOf(edValMaxEnt.getText().toString());
-        valorMaxSalida = Float.valueOf(edValMaxSal.getText().toString());
+        String vme_aux = edValMaxEnt.getText().toString();
+        String vms_aux = edValMaxSal.getText().toString();
+
+        //Si no estan vacios
+        if(!vme_aux.isEmpty())
+            valorMaxEntrada = Float.parseFloat(vme_aux);
+        if(!vms_aux.isEmpty())
+            valorMaxSalida = Float.parseFloat(vms_aux);
+
 
         //Calcular valores necesarios
         unit = valorMaxSalida/valorMaxEntrada;
@@ -157,14 +162,17 @@ public class MessageReceiver extends AppCompatActivity {
 
         public void run() {
             String line;
-            String regex = "[0-9]{3}-[a-zA-Z]{3}";
+//            String regex = "[0-9]{3}-[a-zA-Z]{3}";
 
             while (mmSocket.isConnected()) {
                 try {
-                    if((line = mmBuffer.readLine()) != null && line.matches(regex)){
-                        mHandler.obtainMessage(MESSAGE_READ, line)
-                                .sendToTarget();
-                    }
+//                    if((line = mmBuffer.readLine()) != null && line.matches(regex)){
+//                        mHandler.obtainMessage(MESSAGE_READ, line)
+//                                .sendToTarget();
+//                    }
+                    line = mmBuffer.readLine();
+                    mHandler.obtainMessage(MESSAGE_READ, line).sendToTarget();
+
                 } catch (IOException e) {
                     Log.d(TAG, "Conexion perdida", e);
                     mHandler.obtainMessage(CONNECTION_LOST)

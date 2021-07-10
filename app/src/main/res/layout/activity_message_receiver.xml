@@ -71,7 +71,7 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         app:layout_constraintStart_toEndOf="@id/tv_valMaxEnt"
         app:layout_constraintTop_toBottomOf="@id/tv_messages" />
 
@@ -92,7 +92,7 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         app:layout_constraintStart_toEndOf="@id/tv_valMaxSal"
         app:layout_constraintTop_toBottomOf="@id/tv_valMaxEnt" />
 
