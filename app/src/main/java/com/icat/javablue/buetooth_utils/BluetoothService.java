@@ -1,4 +1,4 @@
-package com.icat.javablue;
+package com.icat.javablue.buetooth_utils;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -7,11 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
+import com.icat.javablue.R;
 import java.util.ArrayList;
 import java.util.Set;
 

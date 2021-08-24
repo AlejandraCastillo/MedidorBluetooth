@@ -1,4 +1,4 @@
-package com.icat.javablue;
+package com.icat.javablue.buetooth_utils;
 
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;

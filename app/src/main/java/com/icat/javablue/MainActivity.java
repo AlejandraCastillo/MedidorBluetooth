@@ -13,7 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+
+import com.icat.javablue.buetooth_utils.BluetoothService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
     //Constantes
     private static final int REQUEST_ENABLE_BT = 1, REQUEST_COARSE_LOC = 2;
 
-    //Views
-    private ListView lvPairedDevices;
     private ListView lvDiscoveryDevices;
 
     @Override
@@ -35,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Inicializar las Views
-        lvPairedDevices = findViewById(R.id.lv_pairedDevices);
+        //Views
+        ListView lvPairedDevices = findViewById(R.id.lv_pairedDevices);
         lvDiscoveryDevices = findViewById(R.id.lv_discoveryDevices);
 
         //¿El adaptador existe?

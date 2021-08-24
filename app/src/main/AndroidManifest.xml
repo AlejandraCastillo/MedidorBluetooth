@@ -14,8 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JavaBlue">
-        <activity android:name=".MessageReceiver"/>
-        <activity android:name=".NoBluetooth"/>
+<!--        <activity android:name=".MessageReceiverAux" />-->
+        <activity android:name=".MessageReceiver" />
+        <activity android:name=".NoBluetooth" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

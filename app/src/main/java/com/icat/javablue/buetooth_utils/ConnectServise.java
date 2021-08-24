@@ -1,4 +1,4 @@
-package com.icat.javablue;
+package com.icat.javablue.buetooth_utils;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.icat.javablue.MessageReceiver;
+
 import java.io.IOException;
 import java.util.UUID;
 

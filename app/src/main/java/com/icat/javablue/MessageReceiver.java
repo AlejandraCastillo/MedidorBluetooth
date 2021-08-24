@@ -12,11 +12,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.icat.javablue.buetooth_utils.ShareSocket;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
 
 public class MessageReceiver extends AppCompatActivity {
     // Debugging
