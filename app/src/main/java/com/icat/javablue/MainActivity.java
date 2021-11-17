@@ -17,15 +17,16 @@ import android.widget.ListView;
 import com.icat.javablue.buetooth_utils.BluetoothService;
 
 public class MainActivity extends AppCompatActivity {
-
     // Debugging
     private static final String TAG = "MainActivity";
 
+    //Servicios
     private BluetoothService bluetoothService;
 
     //Constantes
     private static final int REQUEST_ENABLE_BT = 1, REQUEST_COARSE_LOC = 2;
 
+    //Vistas
     private ListView lvDiscoveryDevices;
 
     @Override
@@ -34,21 +35,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Inicializar las Views
-        //Views
         ListView lvPairedDevices = findViewById(R.id.lv_pairedDevices);
         lvDiscoveryDevices = findViewById(R.id.lv_discoveryDevices);
 
-        //¿El adaptador existe?
+        //El estado del Adaptador
         bluetoothService = new BluetoothService(this);
-        if(!bluetoothService.bluetoothAdapterExist()){
-            Intent intent = new Intent(this, NoBluetooth.class);
-            startActivity(intent);
-        }
 
-        //Habilitar el adaptador
-        if(!bluetoothService.bluetoothAdapter.isEnabled()){
-            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(intent, REQUEST_ENABLE_BT);
+        switch (bluetoothService.bluetoothAdapterState()){
+            case 0:
+                Intent intent0 = new Intent(this, NoBluetooth.class);
+                startActivity(intent0);
+                break;
+            case 1:
+                Intent intent1 = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(intent1, REQUEST_ENABLE_BT);
+                break;
         }
 
         //Obtener otros permisos necesarios
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_COARSE_LOC);
-
         }
 
         //Obtener la lista de dispositivos sincronizados
@@ -75,11 +75,8 @@ public class MainActivity extends AppCompatActivity {
                         BluetoothService.DISCOVERY_DEVICES, position)));
 
         //Registrar el broadcast del bluetoothService
-        IntentFilter filter = bluetoothService.getBroadcastIntent(
-                true, true, true);
+        IntentFilter filter = bluetoothService.getBroadcastIntent();
         registerReceiver(bluetoothService.receiver, filter);
-
-
     }
 
     /* Metodo onClick para iniciar la búsqueda de dispositivos

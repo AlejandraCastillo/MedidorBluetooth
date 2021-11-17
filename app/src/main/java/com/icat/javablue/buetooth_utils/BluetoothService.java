@@ -13,27 +13,43 @@ import com.icat.javablue.R;
 import java.util.ArrayList;
 import java.util.Set;
 
+/**
+  * Esta clase administra el servicio e Bluetooth
+  * @author: María Alejandra Castillo Martínez
+  * */
 public class BluetoothService {
-    // Debugging
     private static final String TAG = "BluetoothService";
 
-    public BluetoothAdapter bluetoothAdapter;
-    public ConnectService clientConnection;
-    private Context context;
+    //Servicios
+    private BluetoothAdapter bluetoothAdapter;
+    private ConnectService clientConnection;
 
     //Listas de dispositivos
-    public final ArrayList<BluetoothDevice> pairedDevices = new ArrayList<>();
-    public final ArrayList<BluetoothDevice> discoveryDevices = new ArrayList<>();
+    private final ArrayList<BluetoothDevice> pairedDevices = new ArrayList<>();
+    private final ArrayList<BluetoothDevice> discoveryDevices = new ArrayList<>();
 
-    //Adaptadores
+    //Parametros
+    private Context context;
+
+    /**
+     * ArrayAdapter pata la lista de dispositivos Sincronizados
+     */
     public ArrayAdapter<String> adapterPairedDevices;
+
+    /**
+     * ArrayAdapter para la lista de dispositivos encontrados
+     */
     public ArrayAdapter<String> adapterDiscoveryDevices;
 
     //Constantes para las listas de dispositivos
     public static final int PAIRED_DEVICES = 1;
     public static final int DISCOVERY_DEVICES=2;
 
-    //Constructor de la clase
+
+    /**
+     * Constructor de la clase
+     * @param context Es el contexto de la actividad desde la que se le manda a llamar.
+     */
     public BluetoothService(Context context){
         adapterPairedDevices = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1);
         adapterDiscoveryDevices = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1);
@@ -41,8 +57,10 @@ public class BluetoothService {
         this.context = context;
     }
 
-    /* Broadcast para la busqueda de dispositivos
-    *  Es necesario registrarlo en el Activity en el que se implemente */
+    /**
+     * Broadcast para la busqueda de dispositivos
+     * Es necesario registrarlo en el Activity en el que se implemente
+     * */
     public final BroadcastReceiver receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -66,33 +84,48 @@ public class BluetoothService {
         }
     };
 
-    /* Metodo que crea y devielve un IntentFilter para registar el broadcast
-    *  Es necesario indicar cuales de las acciones disponibles van a emplearse*/
+    /**
+     * Metodo que crea un IntentFilter para registar el broadcast
+     * */
     public IntentFilter getBroadcastIntent(
-            boolean ACTION_FOUND,
-            boolean ACTION_DISCOVERY_STARTED,
-            boolean ACTION_DISCOVERY_FINISHED
+//            boolean ACTION_FOUND,
+//            boolean ACTION_DISCOVERY_STARTED,
+//            boolean ACTION_DISCOVERY_FINISHED
     ) {
         IntentFilter filter = new IntentFilter();
-        if (ACTION_FOUND)
-            filter.addAction(BluetoothDevice.ACTION_FOUND);
-        if(ACTION_DISCOVERY_STARTED) {
-            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        }
-        if(ACTION_DISCOVERY_FINISHED) {
-            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        }
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+
+//        if (ACTION_FOUND)
+//            filter.addAction(BluetoothDevice.ACTION_FOUND);
+//        if(ACTION_DISCOVERY_STARTED) {
+//            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+//        }
+//        if(ACTION_DISCOVERY_FINISHED) {
+//            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+//        }
         return filter;
     }
 
-    /* Metodo que indica si se encontró un adaptador de bluetooth */
-    public boolean bluetoothAdapterExist(){
-        return bluetoothAdapter != null;
+    /**
+     * Metodo que indica el estado del Adaptador de Bluetooth
+     * @return 0 - El adaptador no existe, 1 - El adaptador no esta habilitado, 2 - El adaptador esta habilitado
+     */
+    public int bluetoothAdapterState(){
+        if(bluetoothAdapter == null)
+            return 0;
+        if (!bluetoothAdapter.isEnabled())
+            return 1;
+        return 2;
     }
 
-    /* Metodo que obtiene la lista de dispositivos sincronizados
-    *  Almacena los dispositivos en pairedDevices
-    *  y pasa los nombres de los dispositivos a adapterPairedDevices */
+    /**
+     * Metodo que obtiene la lista de dispositivos sincronizados
+     * Almacena los dispositivos en pairedDevices y pasa los nombres
+     * de los dispositivos a adapterPairedDevices
+     * @return Retorna true si se encontraron dispositivos sincronizados
+     * */
     public boolean getPairedDevices(){
         Set<BluetoothDevice> sPairedDevices = bluetoothAdapter.getBondedDevices();
         adapterPairedDevices.clear();
@@ -106,7 +139,8 @@ public class BluetoothService {
         return pairedDevices.size() > 0;
     }
 
-    /* Metodo que inicia la busqueda de dispositivos
+    /**
+     * Metodo que inicia la busqueda de dispositivos
      * Almacena los dispositivos encontrados en discoveryDevices
      * y pasa los nombres de los dispositivos a adapterDiscoveryDevices */
     public void startDiscovery(){
@@ -116,11 +150,12 @@ public class BluetoothService {
         bluetoothAdapter.startDiscovery();
     }
 
-    /* Metodo que devielve el dispositivo indicado
-    *  Es necesario especificar la lista de la que se quiere obetener
-    *  el ispositivo y su posicion en la misma
-    *  La lista 1 es para los dispositivos sicronizados
-    *  La lista 2 es para los dispositivos encontrados */
+    /**
+     * Metodo que devielve el dispositivo indicado
+     * @param list Lista de la que se desea obtener el dispositivo
+     * @param position posicion del dispositivo en la lista
+     * @return
+     */
     public BluetoothDevice getDevice(int list, int position){
         BluetoothDevice device;
         switch (list){
@@ -136,14 +171,19 @@ public class BluetoothService {
         return device;
     }
 
-    /* Metodo para cancelar la busqueda de dispositivos */
+    /**
+     * Metodo para cancelar la busqueda de dispositivos
+     */
     public void cancelDiscovery(){
         bluetoothAdapter.cancelDiscovery();
     }
 
-    /* Metodo para conectarsea un disposotivo
-     *  Esta clase creara un objeto de tipo ConnectClientDevice desde el cual se
-     *  administrara la coneccion del dispositivo indicado */
+    /**
+     * Metodo para conectarsea un disposotivo
+     * Este metodo creara un objeto de tipo ConnectClientDevice desde el
+     * cual se administrara la coneccion del dispositivo indicado
+     * @param device Dispositivo al cual se pretende conectarse
+     */
     public void createConection(BluetoothDevice device){
         bluetoothAdapter.cancelDiscovery();
         clientConnection = new ConnectService(device, context);
