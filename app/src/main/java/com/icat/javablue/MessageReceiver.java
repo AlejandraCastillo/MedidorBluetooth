@@ -3,25 +3,24 @@ package com.icat.javablue;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.icat.javablue.buetooth_utils.ShareSocket;
+import com.icat.javablue.custom_gauge.CustomGauge;
+import com.icat.javablue.database.SQLiteActions;
+import com.icat.javablue.database.TablaDatos;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 public class MessageReceiver extends AppCompatActivity {
     // Debugging
@@ -35,16 +34,20 @@ public class MessageReceiver extends AppCompatActivity {
     private float step;
 
 
-    public ArrayAdapter<String> adapterMessages;
-
     BluetoothSocket socket;
 
-    TextView tvDeviceName;
-    ListView lvMessages;
-
-
-
     ConnectedThread msgReceiver;
+
+    CustomGauge gauge1;
+    CustomGauge gauge2;
+    CustomGauge gauge3;
+
+    TextView text1;
+    TextView text2;
+    TextView text3;
+
+    SQLiteActions actions;
+    int grupo;
 
     //Constantes para los mensajes
     public static final int MESSAGE_READ = 0;
@@ -63,33 +66,45 @@ public class MessageReceiver extends AppCompatActivity {
                     index = aux.indexOf("::");
                     aux = aux.substring(0, index);
 
+                    TablaDatos row = new TablaDatos();
+
                     //Tiempo
                     index = aux.indexOf('-');
-                    String tiempo = aux.substring(0, index);
+                    row.setTiempo(Integer.valueOf(aux.substring(0, index)));
                     aux = aux.substring(index + 1);
 
                     //Voltaje
                     index = aux.indexOf('-');
-                    String voltaje = aux.substring(0, index);
+                    row.setVolaje(Double.valueOf(aux.substring(0, index)));
                     aux = aux.substring(index + 1);
 
                     //Corriente
                     index = aux.indexOf('-');
-                    String corriente = aux.substring(0, index);
+                    row.setCorriente(Double.valueOf(aux.substring(0, index)));
                     aux = aux.substring(index + 1);
 
                     //Potencia
                     index = aux.indexOf('-');
-                    String potencia = aux.substring(0, index);
+                    row.setPotencia(Double.valueOf(aux.substring(0, index)));
 
                     //Energia
-                    String energia = aux.substring(index + 1);
+                    row.setEnergia(Double.valueOf(aux.substring(0, index)));
 
-                    String mensaje = "t=" + tiempo +  " v=" + voltaje + " I=" +  corriente + " P=" +  potencia + " E=" + energia;
-                    Log.i(TAG, mensaje);
+                    row.setGrupoID(grupo);
 
-                    adapterMessages.add(mensaje);
-                    adapterMessages.notifyDataSetChanged();
+                    actions.addNewRow(row);
+
+                    DecimalFormat formato = new DecimalFormat("00.00");
+
+                    gauge1.setValue(row.getVolaje());
+                    text1.setText(formato.format(row.getVolaje()));
+                    gauge2.setValue(row.getCorriente());
+                    text2.setText(formato.format(row.getCorriente()));
+
+                    formato = new DecimalFormat("000.00");
+                    gauge3.setValue(row.getPotencia());
+                    text3.setText(formato.format(row.getPotencia()));
+
 
                     break;
             }
@@ -101,16 +116,28 @@ public class MessageReceiver extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_receiver);
 
-        tvDeviceName = findViewById(R.id.tv_deviceName);
-        tvDeviceName.setText(getIntent().getStringExtra("name"));
-
-        lvMessages = findViewById(R.id.lv_messages);
-
-        adapterMessages = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-
-        lvMessages.setAdapter(adapterMessages);
+        getSupportActionBar().setTitle(getIntent().getStringExtra("name"));
 
         socket = ShareSocket.getSocket();
+
+        gauge1 = findViewById(R.id.gauge1);
+        text1  = findViewById(R.id.textView1);
+        gauge2 = findViewById(R.id.gauge2);
+        text2  = findViewById(R.id.textView2);
+        gauge3 = findViewById(R.id.gauge3);
+        text3  = findViewById(R.id.textView3);
+
+        String ceros = "000.00";
+        gauge1.setValue(0);
+        text1.setText(ceros);
+        gauge2.setValue(0);
+        text2.setText(ceros);
+        gauge3.setValue(0);
+        text3.setText(ceros);
+
+        actions = new SQLiteActions(this);
+
+        grupo = actions.addNewGroup();
 
         msgReceiver = new ConnectedThread(socket, handler);
         msgReceiver.start();

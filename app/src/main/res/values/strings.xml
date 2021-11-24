@@ -20,6 +20,11 @@
     <string name="desconectar">Desconectar</string>
     <string name="defaultNumbers">000</string>
     <string name="enviar">Enviar</string>
+
+    <string name="test">Test</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="descargar">Descargar!!</string>
+
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->

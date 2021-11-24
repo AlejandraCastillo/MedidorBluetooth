@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.icat.javablue.buetooth_utils.BluetoothService;
+import com.icat.javablue.database.SQLiteActions;
 
 public class MainActivity extends AppCompatActivity {
     // Debugging
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setTitle("Busqueda");
 
         //Inicializar las Views
         ListView lvPairedDevices = findViewById(R.id.lv_pairedDevices);
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         //Registrar el broadcast del bluetoothService
         IntentFilter filter = bluetoothService.getBroadcastIntent();
         registerReceiver(bluetoothService.receiver, filter);
+        
     }
 
     /* Metodo onClick para iniciar la búsqueda de dispositivos
@@ -91,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Metodo onClick para cancelar la búsqueda de dispositivos */
-    public void onClickCancel(View view){
-        bluetoothService.cancelDiscovery();
-    }
+//    public void onClickCancel(View view){
+//        bluetoothService.cancelDiscovery();
+//    }
 
 
     @Override
@@ -108,5 +112,9 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "onDestroy()");
         //Se elimina el resgistro del broadcast al destruir el Activity
         unregisterReceiver(bluetoothService.receiver);
+    }
+
+    public void onClickDescaragr(View view) {
+        SQLiteActions actions = new SQLiteActions(this);
     }
 }

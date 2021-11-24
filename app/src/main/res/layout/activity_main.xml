@@ -81,13 +81,22 @@
                 android:text="@string/startSearch" />
 
             <Button
-                android:id="@+id/b_cancelSearch"
+                android:id="@+id/b_descaragar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:onClick="onClickCancel"
-                android:text="@string/cancelSearch" />
+                android:onClick="onClickDescaragr"
+                android:text="Descargar" />
+
+<!--            <Button-->
+<!--                android:id="@+id/b_cancelSearch"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:onClick="onClickCancel"-->
+<!--                android:text="@string/cancelSearch" />-->
 
         </LinearLayout>
 

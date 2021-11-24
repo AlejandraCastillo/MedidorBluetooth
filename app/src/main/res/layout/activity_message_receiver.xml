@@ -4,47 +4,122 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".MessageReceiver">
 
-    <TextView
-        android:id="@+id/tv_deviceName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:textSize="24sp"
+    <FrameLayout
+        android:id="@+id/frame1"
+        android:layout_width="@dimen/gauge_size"
+        android:layout_height="@dimen/gauge_size"
+        app:layout_constraintBottom_toBottomOf="@id/frame2"
+        app:layout_constraintEnd_toStartOf="@id/frame2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Nombre del dispositivo" />
+        app:layout_constraintTop_toTopOf="@id/frame2">
 
-    <ListView
-        android:id="@+id/lv_messages"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@id/disconnectButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_deviceName" />
+        <com.icat.javablue.custom_gauge.CustomGauge
+            android:id="@+id/gauge1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:gaugeDividerColor="@color/md_yellow_500"
+            app:gaugeDividerDrawFirst="false"
+            app:gaugeDividerDrawLast="true"
+            app:gaugeEndValue="50"
+            app:gaugePointEndColor="@color/md_red_500"
+            app:gaugePointStartColor="@color/md_green_500"
+            app:gaugeStartAngle="135"
+            app:gaugeStartValue="0"
+            app:gaugeStrokeCap="BUTT"
+            app:gaugeStrokeColor="@color/md_grey_400"
+            app:gaugeStrokeWidth="@dimen/gauge_stroke_size"
+            app:gaugeSweepAngle="270" />
 
-    <Button
-        android:id="@+id/disconnectButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="20dp"
-        android:onClick="onClickDisconnect"
-        android:text="@string/desconectar"
-        android:textSize="18sp"
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:text="50"
+            android:textAlignment="center"
+            android:textSize="@dimen/gauge_text_size"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame2"
+        android:layout_width="@dimen/gauge_size"
+        android:layout_height="@dimen/gauge_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/frame3"
+        app:layout_constraintStart_toEndOf="@id/frame1"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <com.icat.javablue.custom_gauge.CustomGauge
+            android:id="@+id/gauge2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:gaugeDividerColor="@color/md_yellow_500"
+            app:gaugeDividerDrawFirst="false"
+            app:gaugeDividerDrawLast="true"
+            app:gaugeEndValue="10"
+            app:gaugePointEndColor="@color/md_red_500"
+            app:gaugePointStartColor="@color/md_green_500"
+            app:gaugeStartAngle="135"
+            app:gaugeStartValue="0"
+            app:gaugeStrokeCap="BUTT"
+            app:gaugeStrokeColor="@color/md_grey_400"
+            app:gaugeStrokeWidth="@dimen/gauge_stroke_size"
+            app:gaugeSweepAngle="270" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/gauge_text_size"
+            android:textStyle="bold"
+            tools:text="10" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame3"
+        android:layout_width="@dimen/gauge_size"
+        android:layout_height="@dimen/gauge_size"
+        app:layout_constraintBottom_toBottomOf="@id/frame2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/frame2"
+        app:layout_constraintTop_toTopOf="@id/frame2">
+
+        <com.icat.javablue.custom_gauge.CustomGauge
+            android:id="@+id/gauge3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:gaugeDividerColor="@color/md_yellow_500"
+            app:gaugeDividerDrawFirst="false"
+            app:gaugeDividerDrawLast="true"
+            app:gaugeEndValue="500"
+            app:gaugePointEndColor="@color/md_red_500"
+            app:gaugePointStartColor="@color/md_green_500"
+            app:gaugeStartAngle="135"
+            app:gaugeStartValue="0"
+            app:gaugeStrokeCap="BUTT"
+            app:gaugeStrokeColor="@color/md_grey_400"
+            app:gaugeStrokeWidth="@dimen/gauge_stroke_size"
+            app:gaugeSweepAngle="270" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:text="500"
+            android:textAlignment="center"
+            android:textSize="@dimen/gauge_text_size"
+            android:textStyle="bold" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
