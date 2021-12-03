@@ -78,7 +78,7 @@ public class SQLiteActions {
         ContentValues values = new ContentValues();
 
         values.put(Querys._TIEMPO, row.getTiempo());
-        values.put(Querys._VOLTAJE, row.getVolaje());
+        values.put(Querys._VOLTAJE, row.getVoltaje());
         values.put(Querys._CORRIENTE, row.getCorriente());
         values.put(Querys._POTENCIA, row.getPotencia());
         values.put(Querys._ENERGIA, row.getEnergia());
@@ -89,7 +89,7 @@ public class SQLiteActions {
         db.close();
     }
 
-    public ArrayList<TablaDatos>  readDataTable(){
+    public ArrayList<TablaDatos> readGroupFromTablaDatos(){
 
         ArrayList<TablaDatos> listaTablaDatos;
 
@@ -98,12 +98,12 @@ public class SQLiteActions {
         TablaDatos row = null;
         listaTablaDatos = new ArrayList<TablaDatos>();
 
-        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_DATOS,null);
+        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_DATOS_BY_GRUPO_ID,null);
 
         while (cursor.moveToNext()){
             row = new TablaDatos();
             row.setTiempo(cursor.getInt(1));
-            row.setVolaje(cursor.getDouble(2));
+            row.setVoltaje(cursor.getDouble(2));
             row.setCorriente(cursor.getDouble(3));
             row.setPotencia(cursor.getDouble(4));
             row.setEnergia(cursor.getDouble(5));
@@ -119,23 +119,42 @@ public class SQLiteActions {
         return listaTablaDatos;
     }
 
+    public ArrayList<TablaGrupo> readTablaGrupo(){
+
+        ArrayList<TablaGrupo> listaTablaGrupo;
+
+        db = conn.getReadableDatabase();
+
+        TablaGrupo grupo = null;
+        listaTablaGrupo = new ArrayList<TablaGrupo>();
+
+        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_GRUPO,null);
+
+        while (cursor.moveToNext()){
+            grupo = new TablaDatos();
+            grupo.setGrupoID(cursor.getInt(0));
+            grupo.setFecha(cursor.getString(1));
+
+            listaTablaGrupo.add(grupo);
+        }
+
+        db.close();
+        return listaTablaGrupo;
+    }
+
     public boolean createDocument(Uri uri, Integer grupo_id){
         db = conn.getWritableDatabase();
         StringBuilder contenido = new StringBuilder("Tiempo,Voltaje,Corriente,Potencia,Energia\n");
 
-        /* Obtencion de datos */
-        String[] parametros = {grupo_id.toString()};
-        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_DATOS_BY_GRUPO_ID,parametros);
+        ArrayList<TablaDatos> listaTablaDatos = readGroupFromTablaDatos();
 
-        while (cursor.moveToNext()){
-            contenido.append(cursor.getDouble(1)).append(","); //TIEMPO
-            contenido.append(cursor.getDouble(2)).append(","); //VOLTAJE
-            contenido.append(cursor.getDouble(3)).append(","); //CORRIENTE
-            contenido.append(cursor.getDouble(4)).append(","); //POTENCIA
-            contenido.append(cursor.getDouble(5)).append("\n"); //ENERGIA
+        for (int i = 0; i < listaTablaDatos.size(); i++) {
+            contenido.append(listaTablaDatos.get(i).getTiempo().toString()).append(","); //TIEMPO
+            contenido.append(listaTablaDatos.get(i).getVoltaje().toString()).append(","); //VOLTAJE
+            contenido.append(listaTablaDatos.get(i).getCorriente().toString()).append(","); //CORRIENTE
+            contenido.append(listaTablaDatos.get(i).getPotencia().toString()).append(","); //POTENCIA
+            contenido.append(listaTablaDatos.get(i).getEnergia().toString()).append("\n"); //ENERGIA
         }
-
-        Log.i(TAG, contenido.toString());
 
         try{
             OutputStream ops = ((Activity) context).getContentResolver().openOutputStream(uri);
@@ -153,7 +172,7 @@ public class SQLiteActions {
         return true;
     }
 
-    public int getLastGroup(){
+    public int getLastGroupID(){
         db = conn.getReadableDatabase();
         Cursor cursor = db.rawQuery(Querys.SELECT_FROM_GRUPO,null);
         int grupo_id = 0;

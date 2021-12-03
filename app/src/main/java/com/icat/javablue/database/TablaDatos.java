@@ -1,18 +1,16 @@
 package com.icat.javablue.database;
 
-import java.sql.Time;
+import android.util.Log;
 
-public class TablaDatos {
+public class TablaDatos extends TablaGrupo {
 
     private static final String TAG = "TablaDatos";
 
     private Integer tiempo;
-    private Double volaje;
+    private Double voltaje;
     private Double corriente;
     private Double potencia;
     private Double energia;
-    private Integer grupo_id;
-    private String fecha;
 
     public TablaDatos() {
     }
@@ -25,12 +23,12 @@ public class TablaDatos {
         this.tiempo = tiempo;
     }
 
-    public Double getVolaje() {
-        return volaje;
+    public Double getVoltaje() {
+        return voltaje;
     }
 
-    public void setVolaje(Double volaje) {
-        this.volaje = volaje;
+    public void setVoltaje(Double voltaje) {
+        this.voltaje = voltaje;
     }
 
     public Double getCorriente() {
@@ -57,19 +55,10 @@ public class TablaDatos {
         this.energia = energia;
     }
 
-    public Integer getGrupoID() {
-        return grupo_id;
+
+    public void printRow(String tag){
+        String row = "T=" + tiempo + " V=" + voltaje + " I=" + corriente + " P=" + potencia + " E=" + energia;
+        Log.i(tag, row);
     }
 
-    public void setGrupoID(Integer grupo_id) {
-        this.grupo_id = grupo_id;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
 }

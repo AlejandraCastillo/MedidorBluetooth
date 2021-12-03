@@ -23,33 +23,29 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
 public class MessageReceiver extends AppCompatActivity {
+
     // Debugging
     private static final String TAG = "MessageReceiver";
 
-
-    private static final float MAX_ANGLE = 180;
-    private float valorMaxEntrada;
-    private float valorMaxSalida;
-    private float unit;
-    private float step;
-
-
-    BluetoothSocket socket;
-
-    ConnectedThread msgReceiver;
-
+    //Views
     CustomGauge gauge1;
     CustomGauge gauge2;
     CustomGauge gauge3;
-
     TextView text1;
     TextView text2;
     TextView text3;
 
+    //Bluetooth
+    BluetoothSocket socket;
+
+    //DataBase
     SQLiteActions actions;
     int grupo;
 
-    //Constantes para los mensajes
+    //Hilo
+    ConnectedThread msgReceiver;
+
+    //Constantes
     public static final int MESSAGE_READ = 0;
     public static final int CONNECTION_LOST = 1;
 
@@ -75,7 +71,7 @@ public class MessageReceiver extends AppCompatActivity {
 
                     //Voltaje
                     index = aux.indexOf('-');
-                    row.setVolaje(Double.valueOf(aux.substring(0, index)));
+                    row.setVoltaje(Double.valueOf(aux.substring(0, index)));
                     aux = aux.substring(index + 1);
 
                     //Corriente
@@ -93,11 +89,12 @@ public class MessageReceiver extends AppCompatActivity {
                     row.setGrupoID(grupo);
 
                     actions.addNewRow(row);
+                    row.printRow(TAG);
 
                     DecimalFormat formato = new DecimalFormat("00.00");
 
-                    gauge1.setValue(row.getVolaje());
-                    text1.setText(formato.format(row.getVolaje()));
+                    gauge1.setValue(row.getVoltaje());
+                    text1.setText(formato.format(row.getVoltaje()));
                     gauge2.setValue(row.getCorriente());
                     text2.setText(formato.format(row.getCorriente()));
 
@@ -150,12 +147,6 @@ public class MessageReceiver extends AppCompatActivity {
         msgReceiver.cancel();
     }
 
-    public void onClickDisconnect(View view) {
-        finish();
-//        msgReceiver.cancel();
-    }
-
-
     public static class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final Handler mHandler;
@@ -196,7 +187,6 @@ public class MessageReceiver extends AppCompatActivity {
             }
         }
 
-        // Call this method from the main activity to shut down the connection.
         public void cancel() {
             try {
                 mmSocket.close();

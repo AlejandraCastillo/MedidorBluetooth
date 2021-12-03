@@ -1,5 +1,6 @@
 package com.icat.javablue;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -11,59 +12,63 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import com.icat.javablue.buetooth_utils.BluetoothService;
-import com.icat.javablue.database.SQLiteActions;
 
 public class MainActivity extends AppCompatActivity {
+
     // Debugging
     private static final String TAG = "MainActivity";
 
-    //Servicios
+    //Views
+    private ListView lvDiscoveryDevices;
+    private ListView lvPairedDevices;
+
+    //Bluetooth
     private BluetoothService bluetoothService;
 
-    //Constantes
-    private static final int REQUEST_ENABLE_BT = 1, REQUEST_COARSE_LOC = 2;
+    //Request
+    private static final int REQUEST_ENABLE_BT = 1;
+    private static final int REQUEST_COARSE_LOC = 2;
 
-    //Vistas
-    private ListView lvDiscoveryDevices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getSupportActionBar().setTitle("Busqueda");
+        getSupportActionBar().setTitle("Conectar");
 
         //Inicializar las Views
-        ListView lvPairedDevices = findViewById(R.id.lv_pairedDevices);
+        lvPairedDevices = findViewById(R.id.lv_pairedDevices);
         lvDiscoveryDevices = findViewById(R.id.lv_discoveryDevices);
 
-        //El estado del Adaptador
+        //Adaptador de Bluetooth
         bluetoothService = new BluetoothService(this);
-
-        switch (bluetoothService.bluetoothAdapterState()){
-            case 0:
+        switch (bluetoothService.bluetoothAdapterState()) {
+            case BluetoothService.BLUETOOTH_ADAPTER_DONT_EXIST:
                 Intent intent0 = new Intent(this, NoBluetooth.class);
                 startActivity(intent0);
                 break;
-            case 1:
+            case BluetoothService.BLUETOOTH_ADAPTER_IS_DISABLE:
                 Intent intent1 = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(intent1, REQUEST_ENABLE_BT);
                 break;
         }
 
         //Obtener otros permisos necesarios
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_COARSE_LOC);
         }
 
         //Obtener la lista de dispositivos sincronizados
-        if(bluetoothService.getPairedDevices()){
+        if (bluetoothService.getPairedDevices()) {
             lvPairedDevices.setAdapter(bluetoothService.adapterPairedDevices);
         }
 
@@ -80,24 +85,38 @@ public class MainActivity extends AppCompatActivity {
         //Registrar el broadcast del bluetoothService
         IntentFilter filter = bluetoothService.getBroadcastIntent();
         registerReceiver(bluetoothService.receiver, filter);
-        
+
     }
 
-    /* Metodo onClick para iniciar la búsqueda de dispositivos
-    *  Este metodo refresca la lista de dispositivos sincronizados
-    *  y actualiza la lista de dispositivos encontrados */
-    public void onClickSearch(View view){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_descargar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.m_descargar:
+                intent = new Intent(this, Download.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void onClickSearch(View view) {
         bluetoothService.startDiscovery();
-//        if(bluetoothService.getPairedDevices()){
-//            lvPairedDevices.setAdapter(bluetoothService.adapterPairedDevices);
-//        }
         lvDiscoveryDevices.setAdapter(bluetoothService.adapterDiscoveryDevices);
     }
 
-    /* Metodo onClick para cancelar la búsqueda de dispositivos */
-//    public void onClickCancel(View view){
-//        bluetoothService.cancelDiscovery();
-//    }
+
+    public void onClickCancel(View view) {
+        bluetoothService.cancelDiscovery();
+    }
 
 
     @Override
@@ -112,9 +131,5 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "onDestroy()");
         //Se elimina el resgistro del broadcast al destruir el Activity
         unregisterReceiver(bluetoothService.receiver);
-    }
-
-    public void onClickDescaragr(View view) {
-        SQLiteActions actions = new SQLiteActions(this);
     }
 }

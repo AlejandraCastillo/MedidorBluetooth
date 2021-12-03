@@ -56,16 +56,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!--        <ProgressBar-->
-        <!--            android:id="@+id/progressBar"-->
-        <!--            style="?android:attr/progressBarStyle"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            tools:layout_editor_absoluteX="181dp"-->
-        <!--            android:layout_margin="20dp"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            tools:layout_editor_absoluteY="596dp" />-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,22 +71,13 @@
                 android:text="@string/startSearch" />
 
             <Button
-                android:id="@+id/b_descaragar"
+                android:id="@+id/b_cancelSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:onClick="onClickDescaragr"
-                android:text="Descargar" />
-
-<!--            <Button-->
-<!--                android:id="@+id/b_cancelSearch"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="10dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:onClick="onClickCancel"-->
-<!--                android:text="@string/cancelSearch" />-->
+                android:onClick="onClickCancel"
+                android:text="@string/cancelSearch" />
 
         </LinearLayout>
 
