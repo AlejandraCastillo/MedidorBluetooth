@@ -30,7 +30,7 @@ public class ShareSocket {
     }
 
     /**
-     * Cierra el Socket guardadpo
+     * Cierra el Socket guardado
      */
     public static synchronized void closeSocket(){
         try{

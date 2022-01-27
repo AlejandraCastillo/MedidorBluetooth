@@ -5,6 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.security.PublicKey;
 
+/**
+ * Esta clase almacena los Strings necesarios para
+ * realizar consultas a la base de datos
+ * @author: María Alejandra Castillo Martínez
+ */
 public class Querys {
 
     private static final String TAG = "Querys";
@@ -21,6 +26,9 @@ public class Querys {
     public static final String _GRUPO_ID = "grupo_id";
     public static final String _FECHA= "fecha";
 
+    /**
+     * Sentencia empleada para crear la tabla Datos
+     */
     public static final String CREAR_TABLA_DATOS =
             "CREATE TABLE " + TABLA_DATOS + " (" +
                     _DATOS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -34,32 +42,47 @@ public class Querys {
                     "REFERENCES " + TABLA_GRUPO + "(" + _GRUPO_ID + ")" +
                     ")";
 
-    public static final String CREAR_TABLA_GRUPO =
+    /**
+     * Sentencia empleada para crear la tabla Grupo
+     */
+    public static final String CREATE_TABLA_GRUPO =
             "CREATE TABLE " + TABLA_GRUPO + " (" +
                     _GRUPO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     _FECHA + " TEXT NOT NULL" +
                     ")";
 
+    /**
+     * Query empleado para eliminar la tabla Datos en caso de existir
+     */
     public static final String DROP_TABLA_DATOS_IF_EXISTS=
             "DROP TABLE IF EXISTS " + TABLA_DATOS;
 
+    /**
+     * Query empleado para eliminar la tabla Grupo en caso de existir
+     */
     public static final String DROP_TABLA_GRUPO_IF_EXISTS=
             "DROP TABLE IF EXISTS " + TABLA_GRUPO;
 
-    public static final String SELECT_FROM_DATOS =
-            "SELECT * FROM " + TABLA_DATOS;
-
+    /**
+     * Query empleado para obtener los datos de la tabla grupo
+     */
     public static final String SELECT_FROM_GRUPO =
             "SELECT * FROM " + TABLA_GRUPO;
 
+    /**
+     * Query empelado para obtener la fecha de un Grupo en la
+     * tabla Grupo empleando el id de dicho Grupo
+     */
     public static final String SELECT_FROM_GRUPO_BY_ID =
             "SELECT " + _FECHA + " FROM " + TABLA_GRUPO + " WHERE " + _GRUPO_ID + "=?";
 
+    /**
+     * Query empelado para obtener un Grupo de datos de la tabla Datos
+     * empleando el id de dicho Grupo
+     */
     public static final String SELECT_FROM_DATOS_BY_GRUPO_ID =
             "SELECT * FROM " + TABLA_DATOS + " WHERE " + _GRUPO_ID + "=?";
 
-    public static final String DELETE_TABLA_DATOS = "DELETE FROM " + TABLA_DATOS;
 
-    public static final String DELETE_TABLA_GRUPO = "DELETE FROM " + TABLA_GRUPO;
 
 }

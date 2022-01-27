@@ -17,20 +17,25 @@ import com.icat.javablue.database.TablaGrupo;
 
 import java.util.ArrayList;
 
-public class Download extends AppCompatActivity {
+/**
+ * Este activity mostrá un menu de seleccion para poder elegir el grupo
+ * de datos que se desea descargar como un documento *.cvs
+ * @author: María Alejandra Castillo Martínez
+ */
+public class DownloadActivity extends AppCompatActivity {
 
     // Debugging
-    private static final String TAG = "Download";
+    private static final String TAG = "DownloadActivity";
 
     //Views
-    private ListView lvDescargas;
+    private ListView lvDownload;
 
     //DataBase
     private SQLiteActions actions;
 
     //Para el ListView
-    ArrayList<TablaGrupo> listaTablaGrupo;
-    public ArrayAdapter<String> adapterDownload;
+    private ArrayList<TablaGrupo> listTablaGrupo;
+    private ArrayAdapter<String> adapterDownload;
 
     //Request
     private static final int REQUEST_DOWNLOAD = 1;
@@ -41,27 +46,27 @@ public class Download extends AppCompatActivity {
         setContentView(R.layout.activity_download);
         getSupportActionBar().setTitle("Descargar");
 
-        lvDescargas = findViewById(R.id.lv_descargas);
+        lvDownload = findViewById(R.id.lv_descargas);
 
         actions = new SQLiteActions(this);
-        listaTablaGrupo = new ArrayList<TablaGrupo>();
+        listTablaGrupo = new ArrayList<TablaGrupo>();
 
         adapterDownload = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
 
-        listaTablaGrupo = actions.readTablaGrupo();
+        listTablaGrupo = actions.readTablaGrupo();
 
-        if(!listaTablaGrupo.isEmpty()){
-            for(TablaGrupo grupo : listaTablaGrupo){
+        if(!listTablaGrupo.isEmpty()){
+            for(TablaGrupo grupo : listTablaGrupo){
                 adapterDownload.add(grupo.getFecha() + " - " + grupo.getGrupoID().toString());
             }
         }
 
-        lvDescargas.setAdapter(adapterDownload);
+        lvDownload.setAdapter(adapterDownload);
 
-        lvDescargas.setOnItemClickListener((parent, view, position, id) -> {
+        lvDownload.setOnItemClickListener((parent, view, position, id) -> {
 
-            TablaGrupo grupo = listaTablaGrupo.get(position);
+            TablaGrupo grupo = listTablaGrupo.get(position);
 
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -105,7 +110,7 @@ public class Download extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.m_conectar:
-                intent = new Intent(this, MainActivity.class);// se pasa el socket para comunicarse con el dispositivo como argumento
+                intent = new Intent(this, ConnectActivity.class);// se pasa el socket para comunicarse con el dispositivo como argumento
                 startActivity(intent);
                 return true;
         }

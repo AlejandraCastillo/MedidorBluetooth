@@ -19,6 +19,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Clase que daministra todas las acciones que es posible realizar
+ * sobre la base de datos
+ * @author: María Alejandra Castillo Martínez
+ */
 public class SQLiteActions {
 
     private static final String TAG = "SQLiteActions";
@@ -28,11 +33,20 @@ public class SQLiteActions {
     SQLiteDatabase db;
     Context context;
 
+    /**
+     * Es el constructor de la clase
+     * @param context
+     */
     public SQLiteActions(Context context) {
         this.context = context;
         conn = new ConexionSQLiteHelper(context, Querys.DB_DATOS, null, 1);
     }
 
+    /**
+     * Metodo empleado para obetner la fecha de creación de un Grupo de datos
+     * @param grupo_id El id del grupo que se desea consultar
+     * @return La fecha en que se creó el grupo consultado
+     */
     public String getFechaGrupo(Integer grupo_id){
         db = conn.getReadableDatabase();
         String fecha = "";
@@ -60,6 +74,10 @@ public class SQLiteActions {
         return df.format(fecha);
     }
 
+    /**
+     * Crea un nuevo Grupo en la tabla Grupo
+     * @return El grupo creado
+     */
     public int addNewGroup(){
         db = conn.getWritableDatabase();
 
@@ -72,6 +90,10 @@ public class SQLiteActions {
         return grupo;
     }
 
+    /**
+     * Crea una nueva fila en la Tabla datos
+     * @param row Un objeto de tipo TablaDatos con los datos a almacenar
+     */
     public void addNewRow(TablaDatos row){
         db = conn.getWritableDatabase();
 
@@ -89,7 +111,11 @@ public class SQLiteActions {
         db.close();
     }
 
-    public ArrayList<TablaDatos> readGroupFromTablaDatos(){
+    /**
+     * Obtene los datos de un grupo especifico de la Tabla Datos
+     * @return Una lista de objetso tipo TablaDatos con los datos obtenidos
+     */
+    public ArrayList<TablaDatos> readGroupFromTablaDatos(Integer grupo_id){
 
         ArrayList<TablaDatos> listaTablaDatos;
 
@@ -97,8 +123,9 @@ public class SQLiteActions {
 
         TablaDatos row = null;
         listaTablaDatos = new ArrayList<TablaDatos>();
+        String args[]={grupo_id.toString()};
 
-        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_DATOS_BY_GRUPO_ID,null);
+        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_DATOS_BY_GRUPO_ID,args);
 
         while (cursor.moveToNext()){
             row = new TablaDatos();
@@ -119,6 +146,10 @@ public class SQLiteActions {
         return listaTablaDatos;
     }
 
+    /**
+     * Obtiene todos los datos de la tabla Grupo
+     * @return Una lista de objetso tipo TablaGrupo con los datos obtenidos
+     */
     public ArrayList<TablaGrupo> readTablaGrupo(){
 
         ArrayList<TablaGrupo> listaTablaGrupo;
@@ -142,11 +173,17 @@ public class SQLiteActions {
         return listaTablaGrupo;
     }
 
+    /**
+     * Crea un documento *.cvs con los datos de un Grupo de la tabla Datos
+     * @param uri
+     * @param grupo_id El id del grupo solicitado
+     * @return true si la operacion fue exitosa
+     */
     public boolean createDocument(Uri uri, Integer grupo_id){
         db = conn.getWritableDatabase();
         StringBuilder contenido = new StringBuilder("Tiempo,Voltaje,Corriente,Potencia,Energia\n");
 
-        ArrayList<TablaDatos> listaTablaDatos = readGroupFromTablaDatos();
+        ArrayList<TablaDatos> listaTablaDatos = readGroupFromTablaDatos(grupo_id);
 
         for (int i = 0; i < listaTablaDatos.size(); i++) {
             contenido.append(listaTablaDatos.get(i).getTiempo().toString()).append(","); //TIEMPO
@@ -164,40 +201,15 @@ public class SQLiteActions {
             bw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
 
         db.close();
         return true;
     }
-
-    public int getLastGroupID(){
-        db = conn.getReadableDatabase();
-        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_GRUPO,null);
-        int grupo_id = 0;
-
-        try{
-            cursor.moveToLast();
-            grupo_id = cursor.getInt(0);
-        }
-        catch (Exception e){
-            Log.i(TAG, "getLastGroup: operacion fallida");
-        }
-
-        db.close();
-        return grupo_id;
-    }
-
-
-    public void deleteTable() {
-        db = conn.getWritableDatabase();
-        db.execSQL(Querys.DELETE_TABLA_DATOS);
-        db.execSQL(Querys.DELETE_TABLA_GRUPO);
-        Toast.makeText(context, "La BD ha sido vaciada! D:", Toast.LENGTH_SHORT).show();
-        db.close();
-    }
-
 
 
 }

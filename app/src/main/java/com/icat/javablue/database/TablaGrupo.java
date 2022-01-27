@@ -1,5 +1,9 @@
 package com.icat.javablue.database;
 
+/**
+ * Esta clase crea un objeto que representa una fila de la tabla Grupo
+ * @author: María Alejandra Castillo Martínez
+ */
 public class TablaGrupo {
 
     private static final String TAG = "TablaGrupo";
@@ -7,6 +11,9 @@ public class TablaGrupo {
     private Integer grupo_id;
     private String fecha;
 
+    /**
+     * Constructor de la clase
+     */
     public TablaGrupo() {
     }
 

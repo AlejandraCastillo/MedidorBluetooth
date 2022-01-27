@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/m_descargar"
+        android:id="@+id/m_download"
         android:title="Descargas"
         android:icon="@drawable/ic_descargar"/>
 

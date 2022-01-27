@@ -15,6 +15,10 @@ import androidx.core.content.ContextCompat;
 
 import com.icat.javablue.R;
 
+/**
+ * @author: Pawel Kleczkowski
+ * @link: https://github.com/pkleczko/CustomGauge
+ */
 public class CustomGauge extends View {
 
     private static final String TAG = "CustomGauge";

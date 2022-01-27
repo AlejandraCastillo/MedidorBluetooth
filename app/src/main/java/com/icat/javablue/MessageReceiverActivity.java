@@ -22,28 +22,34 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
-public class MessageReceiver extends AppCompatActivity {
+/**
+ * En esta Activity se reciben los datos mandados desde un dispositivo
+ * Bluetooth externo, los datos se reflejan en la pantalla y, a su vez,
+ * se almacenan en la base de datos.
+ * @author: María Alejandra Castillo Martínez
+ */
+public class MessageReceiverActivity extends AppCompatActivity {
 
     // Debugging
     private static final String TAG = "MessageReceiver";
 
     //Views
-    CustomGauge gauge1;
-    CustomGauge gauge2;
-    CustomGauge gauge3;
-    TextView text1;
-    TextView text2;
-    TextView text3;
+    private CustomGauge gauge1;
+    private CustomGauge gauge2;
+    private CustomGauge gauge3;
+    private TextView text1;
+    private TextView text2;
+    private TextView text3;
 
     //Bluetooth
-    BluetoothSocket socket;
+    private BluetoothSocket socket;
 
     //DataBase
-    SQLiteActions actions;
-    int grupo;
+    private SQLiteActions actions;
+    private int grupo;
 
     //Hilo
-    ConnectedThread msgReceiver;
+    private ConnectedThread msgReceiver;
 
     //Constantes
     public static final int MESSAGE_READ = 0;
@@ -89,7 +95,7 @@ public class MessageReceiver extends AppCompatActivity {
                     row.setGrupoID(grupo);
 
                     actions.addNewRow(row);
-                    row.printRow(TAG);
+//                    row.printRow(TAG);
 
                     DecimalFormat formato = new DecimalFormat("00.00");
 
@@ -141,12 +147,6 @@ public class MessageReceiver extends AppCompatActivity {
 
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        msgReceiver.cancel();
-    }
-
     public static class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final Handler mHandler;
@@ -195,6 +195,12 @@ public class MessageReceiver extends AppCompatActivity {
                 Log.e(TAG, "Could not close the connect socket", e);
             }
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        msgReceiver.cancel();
     }
 
     @Override

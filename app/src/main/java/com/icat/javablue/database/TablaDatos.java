@@ -2,6 +2,10 @@ package com.icat.javablue.database;
 
 import android.util.Log;
 
+/**
+ * Esta clase crea un objeto que representa una fila de la tabla Datos
+ * @author: María Alejandra Castillo Martínez
+ */
 public class TablaDatos extends TablaGrupo {
 
     private static final String TAG = "TablaDatos";
@@ -12,6 +16,9 @@ public class TablaDatos extends TablaGrupo {
     private Double potencia;
     private Double energia;
 
+    /**
+     * Constructor de la clase
+     */
     public TablaDatos() {
     }
 
@@ -55,10 +62,9 @@ public class TablaDatos extends TablaGrupo {
         this.energia = energia;
     }
 
-
-    public void printRow(String tag){
-        String row = "T=" + tiempo + " V=" + voltaje + " I=" + corriente + " P=" + potencia + " E=" + energia;
-        Log.i(tag, row);
-    }
+//    public void printRow(String tag){
+//        String row = "T=" + tiempo + " V=" + voltaje + " I=" + corriente + " P=" + potencia + " E=" + energia;
+//        Log.i(tag, row);
+//    }
 
 }
