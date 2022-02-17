@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,28 +9,46 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/tv_bienvenido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="60dp"
+        android:text="¡Bienvenido!"
         android:textSize="40sp"
-        android:text="¡Bienvenido!" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/b_conectar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        android:id="@+id/b_conectar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:onClick="onClickConectar"
-        android:text="Conectar un dispositivo" />
+        android:text="Conectar un dispositivo"
+        android:textSize="@dimen/main_activity_text_size_buttons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/b_descargas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp"
         android:onClick="onClickDescargar"
-        android:text="Descargas" />
+        android:text="Descargas"
+        android:textSize="@dimen/main_activity_text_size_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/b_conectar" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

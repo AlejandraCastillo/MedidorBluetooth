@@ -3,6 +3,7 @@ package com.ake.medidorbluetooth;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -17,5 +18,11 @@ public class ConnectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
         Objects.requireNonNull(getSupportActionBar()).setTitle(TAG);
+    }
+
+    public void onClickCancelar(View view) {
+    }
+
+    public void onClickBuscar(View view) {
     }
 }
