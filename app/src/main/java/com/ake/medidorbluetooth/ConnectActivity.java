@@ -16,13 +16,11 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothService;
-import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Objects;
 
@@ -32,6 +30,8 @@ public class ConnectActivity extends AppCompatActivity {
     private BluetoothService bluetoothService;
 
     private SwitchCompat swBluettoth;
+    private ListView lvBondedDevices;
+    private ListView lvDiscoveryDevices;
     private ProgressBar progressBar;
 
     private static final int REQUEST_COARSE_LOC = 1;
@@ -44,6 +44,8 @@ public class ConnectActivity extends AppCompatActivity {
 
         swBluettoth = findViewById(R.id.sw_enable_bt);
         progressBar = findViewById(R.id.progress_bar);
+        lvBondedDevices = findViewById(R.id.lv_bondedDevices);
+        lvDiscoveryDevices = findViewById(R.id.lv_discoveryDevices);
 
         bluetoothService = new BluetoothService(this);
 
@@ -54,24 +56,22 @@ public class ConnectActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_COARSE_LOC);
         }
 
-        //Verificar el estado del bluetppth
+        //Verificar el estado del bluetooth
         if(bluetoothService.bluetoothAdapterIsEnable()){
             swBluettoth.setChecked(true);
-        }
-        else{
-            swBluettoth.setChecked(false);
+            if(bluetoothService.getBondedDevices())
+                lvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
+
         }
 
         //Switch
         swBluettoth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
+                if(isChecked)
                     bluetoothService.enableBluetoothAdapter();
-                }
-                else{
+                else
                     bluetoothService.disableBluetoothAdapter();
-                }
             }
         });
 
@@ -106,19 +106,23 @@ public class ConnectActivity extends AppCompatActivity {
                 BluetoothAdapter.ERROR);
 
         switch (state) {
-            case BluetoothAdapter.STATE_OFF:
+            case BluetoothAdapter.STATE_TURNING_ON:
+                progressBar.setVisibility(View.VISIBLE);
+                break;
+            case BluetoothAdapter.STATE_ON:
+                swBluettoth.setChecked(true);
+                if(bluetoothService.getBondedDevices())
+                    lvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
                 progressBar.setVisibility(View.INVISIBLE);
-                swBluettoth.setChecked(false);
                 break;
             case BluetoothAdapter.STATE_TURNING_OFF:
                 progressBar.setVisibility(View.VISIBLE);
                 break;
-            case BluetoothAdapter.STATE_ON:
+            case BluetoothAdapter.STATE_OFF:
+                swBluettoth.setChecked(false);
+                bluetoothService.adapterBondedDevices.clear();
+                bluetoothService.adapterDiscoveryDevices.clear();
                 progressBar.setVisibility(View.INVISIBLE);
-                swBluettoth.setChecked(true);
-                break;
-            case BluetoothAdapter.STATE_TURNING_ON:
-                progressBar.setVisibility(View.VISIBLE);
                 break;
         }
 
