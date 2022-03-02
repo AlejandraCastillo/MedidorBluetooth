@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/sw_bluetooth"
+        android:id="@+id/sw_enable_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/tv_bluetooth"
@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_bluetooth">
 
         <TextView
-            android:id="@+id/tv_dispSincronizados"
+            android:id="@+id/tv_pairedDevices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -47,20 +47,20 @@
             android:text="Dispositivos sincronizados" />
 
         <ListView
-            android:id="@+id/lv_dispSincronizados"
+            android:id="@+id/lv_pairedDevices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp" />
 
         <TextView
-            android:id="@+id/tv_dispEncontrados"
+            android:id="@+id/tv_discoveryDevices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="Dispositivos encontrados" />
 
         <ListView
-            android:id="@+id/lv_dispEncontrados"
+            android:id="@+id/lv_discoveryDevices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp" />
@@ -81,6 +81,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:layout_width="wrap_content"
+            android:visibility="invisible"
             android:layout_height="wrap_content"/>
 
         <LinearLayout
