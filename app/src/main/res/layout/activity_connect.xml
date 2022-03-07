@@ -15,10 +15,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Bluetooth"
+        android:text="@string/bluetooth"
         app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pb_buetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_bluetooth"
+        app:layout_constraintBottom_toBottomOf="@id/tv_bluetooth"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"/>
+
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_enable_bt"
@@ -45,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Dispositivos sincronizados" />
+            android:text="@string/dispositivos_sincronizados" />
 
         <ListView
             android:id="@+id/lv_bondedDevices"
@@ -58,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="Dispositivos encontrados" />
+            android:text="@string/dispositivos_encontrados" />
 
         <ListView
             android:id="@+id/lv_discoveryDevices"
@@ -85,30 +95,14 @@
             android:visibility="invisible"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
+        <Button
+            android:id="@+id/b_Busqueda"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/b_iniciarBusqueda"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:onClick="onClickBuscar"
-                android:text="Inciar Busqueda" />
-
-            <Button
-                android:id="@+id/b_cancelarBusqueda"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:onClick="onClickCancelar"
-                android:text="Cancelar Busqueda" />
-
-        </LinearLayout>
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:onClick="onClickBuscar"
+            android:text="@string/inciar_busqueda" />
 
     </LinearLayout>
 

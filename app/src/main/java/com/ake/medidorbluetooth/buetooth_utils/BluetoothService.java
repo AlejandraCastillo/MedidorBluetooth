@@ -3,6 +3,7 @@ package com.ake.medidorbluetooth.buetooth_utils;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
@@ -46,10 +47,8 @@ public class BluetoothService {
 
     public boolean getBondedDevices(){
         Set<BluetoothDevice> sBondedDevices = bluetoothAdapter.getBondedDevices();
-        if(adapterBondedDevices!=null)
-            adapterBondedDevices.clear();
-        if(bondedDevices!=null)
-            bondedDevices.clear();
+        adapterBondedDevices.clear();
+        bondedDevices.clear();
         for(BluetoothDevice device : sBondedDevices){
             bondedDevices.add(device);
             adapterBondedDevices.add(device.getName());
@@ -57,6 +56,23 @@ public class BluetoothService {
         }
         //True si existen dispositivos
         return bondedDevices.size() > 0;
+    }
+
+    public void discovery(boolean discoveryFlag){
+        if(!discoveryFlag){
+            discoveryDevices.clear();
+            adapterDiscoveryDevices.clear();
+            bluetoothAdapter.startDiscovery();
+        }
+        else{
+            bluetoothAdapter.cancelDiscovery();
+        }
+    }
+
+    public void addNewDevice(BluetoothDevice device){
+        discoveryDevices.add(device);
+        adapterDiscoveryDevices.add(device.getName());
+        adapterDiscoveryDevices.notifyDataSetChanged();
     }
 
 

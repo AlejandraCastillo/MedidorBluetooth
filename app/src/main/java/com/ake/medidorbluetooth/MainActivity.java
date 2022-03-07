@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             Button downloadButton = findViewById(R.id.b_descargas);
             downloadButton.setVisibility(View.INVISIBLE);
             TextView textView = findViewById(R.id.tv_bienvenido);
-            textView.setText("¡Ups! Parece que no tienes bluetooth :c");
+            textView.setText(R.string.no_bluetooth);
         }
 
     }

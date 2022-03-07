@@ -1,5 +1,7 @@
 package com.ake.medidorbluetooth;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
@@ -16,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -33,8 +36,12 @@ public class ConnectActivity extends AppCompatActivity {
     private ListView lvBondedDevices;
     private ListView lvDiscoveryDevices;
     private ProgressBar progressBar;
+    private ProgressBar pbBluetooth;
+    private Button buttonBucar;
 
-    private static final int REQUEST_COARSE_LOC = 1;
+    private static final int REQUEST_BLUETOOTH_SCAN = 1;
+
+    private boolean discoveryFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,24 +51,20 @@ public class ConnectActivity extends AppCompatActivity {
 
         swBluettoth = findViewById(R.id.sw_enable_bt);
         progressBar = findViewById(R.id.progress_bar);
+        pbBluetooth = findViewById(R.id.pb_buetooth);
         lvBondedDevices = findViewById(R.id.lv_bondedDevices);
         lvDiscoveryDevices = findViewById(R.id.lv_discoveryDevices);
+        buttonBucar = findViewById(R.id.b_Busqueda);
 
         bluetoothService = new BluetoothService(this);
 
-        //Pedir permisos
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_COARSE_LOC);
-        }
+        lvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
+        lvDiscoveryDevices.setAdapter(bluetoothService.adapterDiscoveryDevices);
 
         //Verificar el estado del bluetooth
         if(bluetoothService.bluetoothAdapterIsEnable()){
             swBluettoth.setChecked(true);
-            if(bluetoothService.getBondedDevices())
-                lvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
-
+            bluetoothService.getBondedDevices();
         }
 
         //Switch
@@ -82,8 +85,6 @@ public class ConnectActivity extends AppCompatActivity {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(receiver, filter);
-
-
     }
 
     public final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -94,6 +95,23 @@ public class ConnectActivity extends AppCompatActivity {
             switch (action){
                 case BluetoothAdapter.ACTION_STATE_CHANGED:
                     bluetoothStateManager(intent);
+                    break;
+                case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+                    Log.i(TAG, "onReceive: Iniciar busqueda");
+                    discoveryFlag = true;
+                    buttonBucar.setText(R.string.cancelar_busqueda);
+                    progressBar.setVisibility(View.VISIBLE);
+                    break;
+                case BluetoothDevice.ACTION_FOUND:
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    bluetoothService.addNewDevice(device);
+                    Log.i(TAG, "onReceive: Dispositivo " + device.getName() + " encontrado");
+                    break;
+                case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
+                    Log.i(TAG, "onReceive: Cancelar busqueda");
+                    discoveryFlag = false;
+                    progressBar.setVisibility(View.INVISIBLE);
+                    buttonBucar.setText(R.string.inciar_busqueda);
                     break;
             }
 
@@ -107,32 +125,43 @@ public class ConnectActivity extends AppCompatActivity {
 
         switch (state) {
             case BluetoothAdapter.STATE_TURNING_ON:
-                progressBar.setVisibility(View.VISIBLE);
+                pbBluetooth.setVisibility(View.VISIBLE);
+                swBluettoth.setVisibility(View.INVISIBLE);
                 break;
             case BluetoothAdapter.STATE_ON:
                 swBluettoth.setChecked(true);
                 if(bluetoothService.getBondedDevices())
                     lvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
-                progressBar.setVisibility(View.INVISIBLE);
+                pbBluetooth.setVisibility(View.INVISIBLE);
+                swBluettoth.setVisibility(View.VISIBLE);
                 break;
             case BluetoothAdapter.STATE_TURNING_OFF:
-                progressBar.setVisibility(View.VISIBLE);
+                pbBluetooth.setVisibility(View.VISIBLE);
+                swBluettoth.setVisibility(View.INVISIBLE);
                 break;
             case BluetoothAdapter.STATE_OFF:
                 swBluettoth.setChecked(false);
                 bluetoothService.adapterBondedDevices.clear();
                 bluetoothService.adapterDiscoveryDevices.clear();
-                progressBar.setVisibility(View.INVISIBLE);
+                pbBluetooth.setVisibility(View.INVISIBLE);
+                swBluettoth.setVisibility(View.VISIBLE);
                 break;
         }
 
     }
 
-    public void onClickCancelar(View view) {
-//        usar banderas dentro del broadcast
+    private void askForPermission(){
+        //Permisos
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_BLUETOOTH_SCAN);
+        }
     }
 
     public void onClickBuscar(View view) {
+        askForPermission();
+        bluetoothService.discovery(discoveryFlag);
     }
 
     @Override
