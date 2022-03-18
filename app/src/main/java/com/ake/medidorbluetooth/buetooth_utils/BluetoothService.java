@@ -3,7 +3,6 @@ package com.ake.medidorbluetooth.buetooth_utils;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ public class BluetoothService {
     private static final String TAG = "BluetoothService";
 
     private BluetoothAdapter bluetoothAdapter;
+    private ConnectServise clientConnection;
     private Context context;
 
     public ArrayAdapter<String> adapterBondedDevices;
@@ -21,6 +21,9 @@ public class BluetoothService {
     //Listas de dispositivos
     private final ArrayList<BluetoothDevice> bondedDevices = new ArrayList<>();
     private final ArrayList<BluetoothDevice> discoveryDevices = new ArrayList<>();
+
+    public static final int BONDED_DEVICES = 1;
+    public static final int DISCOVERY_DEVICES=2;
 
     public BluetoothService(Context context) {
         this.context = context;
@@ -69,12 +72,44 @@ public class BluetoothService {
         }
     }
 
+    public boolean deviceAlreadyExists(BluetoothDevice device){
+        for (BluetoothDevice d:bondedDevices) {
+            if(device.getAddress() == d.getAddress())
+                return true;
+        }
+        for (BluetoothDevice d:discoveryDevices) {
+            if(device.getAddress() == d.getAddress())
+                return true;
+        }
+        return false;
+    }
+
     public void addNewDevice(BluetoothDevice device){
         discoveryDevices.add(device);
         adapterDiscoveryDevices.add(device.getName());
         adapterDiscoveryDevices.notifyDataSetChanged();
     }
 
+    public void createConection(BluetoothDevice device){
+        bluetoothAdapter.cancelDiscovery();
+        clientConnection = new ConnectServise(device, context);
+        clientConnection.execute();
+    }
+
+    public BluetoothDevice getDevice(int list, int position){
+        BluetoothDevice device;
+        switch (list){
+            case BONDED_DEVICES:
+                device = bondedDevices.get(position);
+                break;
+            case DISCOVERY_DEVICES:
+                device = discoveryDevices.get(position);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + list);
+        }
+        return device;
+    }
 
 }
 

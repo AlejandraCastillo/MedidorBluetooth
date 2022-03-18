@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_activity_text_size_buttons">18sp</dimen>
+    <dimen name="padding_message_receiver">10dp</dimen>
+    <dimen name="text_size_message_receiver">30sp</dimen>
+    <dimen name="text_size_label_message_receiver">20sp</dimen>
+    <dimen name="gauge_stroke_width">20dp</dimen>
+    <dimen name="gauge_size">150dp</dimen>
 </resources>

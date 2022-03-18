@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MessageReceiverActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0.15"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/voltaje_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/corriente_layout"
+        app:layout_constraintStart_toStartOf="@id/guideline_1"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.ake.medidorbluetooth.custom_gauge.CustomGauge
+            android:id="@+id/gauge_voltaje"
+            android:layout_width="@dimen/gauge_size"
+            android:layout_height="@dimen/gauge_size"
+            app:gaugeDividerColor="@color/md_yellow_500"
+            app:gaugeDividerDrawFirst="false"
+            app:gaugeDividerDrawLast="true"
+            app:gaugeEndValue="50"
+            app:gaugePointEndColor="@color/md_red_500"
+            app:gaugePointStartColor="@color/md_green_500"
+            app:gaugeStartAngle="135"
+            app:gaugeStartValue="0"
+            app:gaugeStrokeCap="BUTT"
+            app:gaugeStrokeColor="@color/md_grey_400"
+            app:gaugeStrokeWidth="@dimen/gauge_stroke_width"
+            app:gaugeSweepAngle="270" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_voltaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="00.00 V"
+                android:textSize="@dimen/text_size_message_receiver" />
+
+            <TextView
+                android:id="@+id/label_voltaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="Voltage"
+                android:textSize="@dimen/text_size_label_message_receiver" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/corriente_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/potencia_layout"
+        app:layout_constraintStart_toStartOf="@id/guideline_1"
+        app:layout_constraintTop_toBottomOf="@id/voltaje_layout">
+
+        <com.ake.medidorbluetooth.custom_gauge.CustomGauge
+            android:id="@+id/gauge_corriente"
+            android:layout_width="@dimen/gauge_size"
+            android:layout_height="@dimen/gauge_size"
+            app:gaugeDividerColor="@color/md_yellow_500"
+            app:gaugeDividerDrawFirst="false"
+            app:gaugeDividerDrawLast="true"
+            app:gaugeEndValue="10"
+            app:gaugePointEndColor="@color/md_red_500"
+            app:gaugePointStartColor="@color/md_green_500"
+            app:gaugeStartAngle="135"
+            app:gaugeStartValue="0"
+            app:gaugeStrokeCap="BUTT"
+            app:gaugeStrokeColor="@color/md_grey_400"
+            app:gaugeStrokeWidth="@dimen/gauge_stroke_width"
+            app:gaugeSweepAngle="270" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_corriente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="0.00 A"
+                android:textSize="@dimen/text_size_message_receiver" />
+
+            <TextView
+                android:id="@+id/label_corriente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="Corriente"
+                android:textSize="@dimen/text_size_label_message_receiver" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/potencia_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/energia_layout"
+        app:layout_constraintStart_toStartOf="@id/guideline_1"
+        app:layout_constraintTop_toBottomOf="@id/corriente_layout">
+
+        <com.ake.medidorbluetooth.custom_gauge.CustomGauge
+            android:id="@+id/gauge_potencia"
+            android:layout_width="@dimen/gauge_size"
+            android:layout_height="@dimen/gauge_size"
+            app:gaugeDividerColor="@color/md_yellow_500"
+            app:gaugeDividerDrawFirst="false"
+            app:gaugeDividerDrawLast="true"
+            app:gaugeEndValue="500"
+            app:gaugePointEndColor="@color/md_red_500"
+            app:gaugePointStartColor="@color/md_green_500"
+            app:gaugeStartAngle="135"
+            app:gaugeStartValue="0"
+            app:gaugeStrokeCap="BUTT"
+            app:gaugeStrokeColor="@color/md_grey_400"
+            app:gaugeStrokeWidth="@dimen/gauge_stroke_width"
+            app:gaugeSweepAngle="270" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_potencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="000.00 W"
+                android:textSize="@dimen/text_size_message_receiver" />
+
+            <TextView
+                android:id="@+id/label_potencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="Potencia"
+                android:textSize="@dimen/text_size_label_message_receiver" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/energia_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline_1"
+        app:layout_constraintTop_toBottomOf="@id/potencia_layout">
+
+        <com.ake.medidorbluetooth.custom_gauge.CustomGauge
+            android:id="@+id/gauge_energia"
+            android:layout_width="@dimen/gauge_size"
+            android:layout_height="@dimen/gauge_size"
+            app:gaugeDividerColor="@color/md_yellow_500"
+            app:gaugeDividerDrawFirst="false"
+            app:gaugeDividerDrawLast="true"
+            app:gaugeEndValue="10"
+            app:gaugePointEndColor="@color/md_red_500"
+            app:gaugePointStartColor="@color/md_green_500"
+            app:gaugeStartAngle="135"
+            app:gaugeStartValue="0"
+            app:gaugeStrokeCap="BUTT"
+            app:gaugeStrokeColor="@color/md_grey_400"
+            app:gaugeStrokeWidth="@dimen/gauge_stroke_width"
+            app:gaugeSweepAngle="270" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_energia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="0.00 J"
+                android:textSize="@dimen/text_size_message_receiver" />
+
+            <TextView
+                android:id="@+id/label_energia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="Energia"
+                android:textSize="@dimen/text_size_label_message_receiver" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

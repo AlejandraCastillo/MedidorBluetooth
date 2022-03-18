@@ -1,7 +1,5 @@
 package com.ake.medidorbluetooth;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
@@ -22,6 +20,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothService;
 
@@ -34,7 +33,6 @@ public class ConnectActivity extends AppCompatActivity {
 
     private SwitchCompat swBluettoth;
     private ListView lvBondedDevices;
-    private ListView lvDiscoveryDevices;
     private ProgressBar progressBar;
     private ProgressBar pbBluetooth;
     private Button buttonBucar;
@@ -53,7 +51,7 @@ public class ConnectActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         pbBluetooth = findViewById(R.id.pb_buetooth);
         lvBondedDevices = findViewById(R.id.lv_bondedDevices);
-        lvDiscoveryDevices = findViewById(R.id.lv_discoveryDevices);
+        ListView lvDiscoveryDevices = findViewById(R.id.lv_discoveryDevices);
         buttonBucar = findViewById(R.id.b_Busqueda);
 
         bluetoothService = new BluetoothService(this);
@@ -85,6 +83,18 @@ public class ConnectActivity extends AppCompatActivity {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(receiver, filter);
+
+        //Seleccionar un dispositivo de la lista de dispositivos sincronizados
+        lvBondedDevices.setOnItemClickListener((parent, view, positon, id) ->
+                bluetoothService.createConection(bluetoothService.getDevice(
+                        BluetoothService.BONDED_DEVICES, positon))
+        );
+
+        //Seleccionar un dispositivo de la lista de dispositivos encontrados
+        lvDiscoveryDevices.setOnItemClickListener((parent, view, positon, id) ->
+                bluetoothService.createConection(bluetoothService.getDevice(
+                        BluetoothService.DISCOVERY_DEVICES, positon))
+        );
     }
 
     public final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -104,8 +114,9 @@ public class ConnectActivity extends AppCompatActivity {
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    bluetoothService.addNewDevice(device);
-                    Log.i(TAG, "onReceive: Dispositivo " + device.getName() + " encontrado");
+                    Log.i(TAG, "onReceive: Dispositivo " + device.getName() + device.getAddress() + " encontrado");
+                    if(!bluetoothService.deviceAlreadyExists(device))
+                        bluetoothService.addNewDevice(device);
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
                     Log.i(TAG, "onReceive: Cancelar busqueda");
