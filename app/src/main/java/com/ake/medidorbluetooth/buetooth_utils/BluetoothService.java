@@ -90,7 +90,7 @@ public class BluetoothService {
         adapterDiscoveryDevices.notifyDataSetChanged();
     }
 
-    public void createConection(BluetoothDevice device){
+    public void createConnection(BluetoothDevice device){
         bluetoothAdapter.cancelDiscovery();
         clientConnection = new ConnectServise(device, context);
         clientConnection.execute();

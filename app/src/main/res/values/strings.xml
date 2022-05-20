@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MedidorBluetooth</string>
     <string name="Bienvenida">¡Bienvenido!</string>
-    <string name="boton_conectar">Conectar un dispositivo</string>
+    <string name="boton_conectar">Conectarse</string>
     <string name="boton_descargas">Descargas</string>
     <string name="no_bluetooth">¡Ups! Parece que no tienes bluetooth :c</string>
     <string name="bluetooth">Bluetooth</string>

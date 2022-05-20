@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothService;
 
@@ -37,7 +36,8 @@ public class ConnectActivity extends AppCompatActivity {
     private ProgressBar pbBluetooth;
     private Button buttonBucar;
 
-    private static final int REQUEST_BLUETOOTH_SCAN = 1;
+    private static final int REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final int REQUEST_BLUETOOTH_CONNECT = 2;
 
     private boolean discoveryFlag = false;
 
@@ -69,10 +69,16 @@ public class ConnectActivity extends AppCompatActivity {
         swBluettoth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked)
+                if(isChecked) {
+                    pbBluetooth.setVisibility(View.VISIBLE);
+                    swBluettoth.setVisibility(View.INVISIBLE);
                     bluetoothService.enableBluetoothAdapter();
-                else
+                }
+                else {
+                    pbBluetooth.setVisibility(View.VISIBLE);
+                    swBluettoth.setVisibility(View.INVISIBLE);
                     bluetoothService.disableBluetoothAdapter();
+                }
             }
         });
 
@@ -86,13 +92,13 @@ public class ConnectActivity extends AppCompatActivity {
 
         //Seleccionar un dispositivo de la lista de dispositivos sincronizados
         lvBondedDevices.setOnItemClickListener((parent, view, positon, id) ->
-                bluetoothService.createConection(bluetoothService.getDevice(
+                bluetoothService.createConnection(bluetoothService.getDevice(
                         BluetoothService.BONDED_DEVICES, positon))
         );
 
         //Seleccionar un dispositivo de la lista de dispositivos encontrados
         lvDiscoveryDevices.setOnItemClickListener((parent, view, positon, id) ->
-                bluetoothService.createConection(bluetoothService.getDevice(
+                bluetoothService.createConnection(bluetoothService.getDevice(
                         BluetoothService.DISCOVERY_DEVICES, positon))
         );
     }
@@ -135,20 +141,12 @@ public class ConnectActivity extends AppCompatActivity {
                 BluetoothAdapter.ERROR);
 
         switch (state) {
-            case BluetoothAdapter.STATE_TURNING_ON:
-                pbBluetooth.setVisibility(View.VISIBLE);
-                swBluettoth.setVisibility(View.INVISIBLE);
-                break;
             case BluetoothAdapter.STATE_ON:
                 swBluettoth.setChecked(true);
                 if(bluetoothService.getBondedDevices())
                     lvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
                 pbBluetooth.setVisibility(View.INVISIBLE);
                 swBluettoth.setVisibility(View.VISIBLE);
-                break;
-            case BluetoothAdapter.STATE_TURNING_OFF:
-                pbBluetooth.setVisibility(View.VISIBLE);
-                swBluettoth.setVisibility(View.INVISIBLE);
                 break;
             case BluetoothAdapter.STATE_OFF:
                 swBluettoth.setChecked(false);
@@ -166,7 +164,7 @@ public class ConnectActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_BLUETOOTH_SCAN);
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
         }
     }
 

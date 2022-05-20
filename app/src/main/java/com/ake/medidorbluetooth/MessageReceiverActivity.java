@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.ake.medidorbluetooth.buetooth_utils.ShareSocket;
 import com.ake.medidorbluetooth.custom_gauge.CustomGauge;
+import com.ake.medidorbluetooth.database.SQLiteActions;
+import com.ake.medidorbluetooth.database.TablaDatos;
+import com.ake.medidorbluetooth.database.TablaGrupo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,105 +28,53 @@ import java.util.Objects;
 public class MessageReceiverActivity extends AppCompatActivity {
     private static final String TAG = "MessageReceiver";
 
-    private CustomGauge gaugeVoltaje;
-    private CustomGauge gaugeCorriente;
-    private CustomGauge gaugePotencia;
-    private CustomGauge gaugeEnergia;
-
+    private TextView tvGrupo;
     private TextView tvVoltage;
     private TextView tvCorriente;
     private TextView tvPotencia;
     private TextView tvEnergia;
 
+    private CustomGauge gaugeVoltaje;
+    private CustomGauge gaugeCorriente;
+    private CustomGauge gaugePotencia;
+    private CustomGauge gaugeEnergia;
+
     private ConnectedThread msgReceiver;
+    private SQLiteActions actions;
+    private int grupo;
 
     public static final int MESSAGE_READ = 0;
     public static final int CONNECTION_LOST = 1;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_receiver);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(TAG);
 
         BluetoothSocket socket = ShareSocket.getSocket();
+
+        tvGrupo = findViewById(R.id.tv_grupo);
+        tvVoltage = findViewById(R.id.tv_voltaje);
+        tvCorriente = findViewById(R.id.tv_corriente);
+        tvPotencia = findViewById(R.id.tv_potencia);
+        tvEnergia = findViewById(R.id.tv_energia);
 
         gaugeVoltaje = findViewById(R.id.gauge_voltaje);
         gaugeCorriente = findViewById(R.id.gauge_corriente);
         gaugePotencia = findViewById(R.id.gauge_potencia);
         gaugeEnergia = findViewById(R.id.gauge_energia);
 
-        tvVoltage = findViewById(R.id.tv_voltaje);
-        tvCorriente = findViewById(R.id.tv_corriente);
-        tvPotencia = findViewById(R.id.tv_potencia);
-        tvEnergia = findViewById(R.id.tv_energia);
+        actions = new SQLiteActions(this);
+        grupo = actions.addNewGroup();
+        tvGrupo.setText("Grupo: " + grupo);
+
 
         msgReceiver = new ConnectedThread(socket, handler);
         msgReceiver.start();
 
     }
-
-    private final Handler handler = new Handler(Looper.getMainLooper()) {
-        @Override
-        @SuppressLint("SetTextI18n")
-        public void handleMessage(Message msg){
-            switch (msg.what){
-                case MESSAGE_READ:
-                    String readMessage = (String) msg.obj;
-
-                    int index = readMessage.indexOf("::");
-                    String aux = readMessage.substring(index + 2);
-                    index = aux.indexOf("::");
-                    aux = aux.substring(0, index);
-
-                    //Tiempo
-                    index = aux.indexOf('-');
-                    int t = Integer.parseInt(aux.substring(0, index));
-                    aux = aux.substring(index + 1);
-
-                    //Voltage
-                    index = aux.indexOf('-');
-                    double v = Double.parseDouble(aux.substring(0, index));
-                    aux = aux.substring(index + 1);
-
-                    //Corriente
-                    index = aux.indexOf('-');
-                    double c = Double.parseDouble(aux.substring(0, index));
-                    aux = aux.substring(index + 1);
-
-                    //Potencia
-                    index = aux.indexOf('-');
-                    double p = Double.parseDouble(aux.substring(0, index));
-
-                    //Energia
-                    double e = Double.parseDouble(aux.substring(index + 1));
-
-                    Log.i(TAG, "t = " + t + " v = " + v + " c = " + c + " p = " + p + " e = " + e);
-
-                    gaugeVoltaje.setValue(v);
-                    gaugeCorriente.setValue(c);
-                    gaugePotencia.setValue(p);
-                    gaugeEnergia.setValue(e);
-
-                    DecimalFormat formato = new DecimalFormat("00.00");
-                    tvVoltage.setText(formato.format(v) + " V");
-
-                    formato = new DecimalFormat("0.00");
-                    tvCorriente.setText(formato.format(c) + " A");
-                    tvEnergia.setText(formato.format(e) + " J");
-
-                    formato = new DecimalFormat("000.00");
-                    tvPotencia.setText(formato.format(p) + " W");
-
-                    break;
-
-                case CONNECTION_LOST:
-                    Log.i(TAG, "Conexion perdida");
-                    finish();
-            }
-
-        }
-    };
 
     public static class ConnectedThread extends Thread{
         private final BluetoothSocket mmSocket;
@@ -154,12 +105,11 @@ public class MessageReceiverActivity extends AppCompatActivity {
                     line = mmBuffer.readLine().replaceAll("\\s", "");
                     if(line.matches(regex)){
                         mmHandler.obtainMessage(MESSAGE_READ, line)
-                                 .sendToTarget();
+                                .sendToTarget();
                     }
                 } catch (IOException e){
-//                    Log.e(TAG, "Conexion perdida", e);
                     mmHandler.obtainMessage(CONNECTION_LOST)
-                             .sendToTarget();
+                            .sendToTarget();
                     break;
                 }
             }
@@ -175,6 +125,78 @@ public class MessageReceiverActivity extends AppCompatActivity {
         }
 
     }
+
+    private final Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        @SuppressLint("SetTextI18n")
+        public void handleMessage(Message msg){
+            switch (msg.what){
+                case MESSAGE_READ:
+                    String readMessage = (String) msg.obj;
+
+                    int index = readMessage.indexOf("::");
+                    String aux = readMessage.substring(index + 2);
+                    index = aux.indexOf("::");
+                    aux = aux.substring(0, index);
+
+                    TablaDatos row = new TablaDatos();
+
+                    //Tiempo
+                    index = aux.indexOf('-');
+                    int t = Integer.parseInt(aux.substring(0, index));
+                    row.setTiempo(t);
+                    aux = aux.substring(index + 1);
+
+                    //Voltage
+                    index = aux.indexOf('-');
+                    double v = Double.parseDouble(aux.substring(0, index));
+                    row.setVoltaje(v);
+                    aux = aux.substring(index + 1);
+
+                    //Corriente
+                    index = aux.indexOf('-');
+                    double c = Double.parseDouble(aux.substring(0, index));
+                    row.setCorriente(c);
+                    aux = aux.substring(index + 1);
+
+                    //Potencia
+                    index = aux.indexOf('-');
+                    double p = Double.parseDouble(aux.substring(0, index));
+                    row.setPotencia(p);
+
+                    //Energia
+                    double e = Double.parseDouble(aux.substring(index + 1));
+                    row.setEnergia(e);
+
+                    row.setGrupoID(grupo);
+                    actions.addnewRow(row);
+
+                    row.printRow(TAG);
+
+                    gaugeVoltaje.setValue(v);
+                    gaugeCorriente.setValue(c);
+                    gaugePotencia.setValue(p);
+                    gaugeEnergia.setValue(e);
+
+                    DecimalFormat formato = new DecimalFormat("00.00");
+                    tvVoltage.setText(formato.format(v) + " V");
+
+                    formato = new DecimalFormat("0.00");
+                    tvCorriente.setText(formato.format(c) + " A");
+                    tvEnergia.setText(formato.format(e) + " J");
+
+                    formato = new DecimalFormat("000.00");
+                    tvPotencia.setText(formato.format(p) + " W");
+
+                    break;
+
+                case CONNECTION_LOST:
+                    Log.i(TAG, "Conexion perdida");
+                    finish();
+            }
+
+        }
+    };
 
     @Override
     public void finish() {
