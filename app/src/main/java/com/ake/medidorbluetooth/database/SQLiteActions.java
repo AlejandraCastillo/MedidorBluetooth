@@ -30,7 +30,7 @@ public class SQLiteActions {
         conn = new ConnectionSQLiteHelper(context, Querys.DB_DATOS, null, 1);
     }
 
-    private static String getDate(){
+    public static String getDate(){
         long ahora = System.currentTimeMillis();
         Date fecha = new Date(ahora);
         DateFormat df = new SimpleDateFormat("yy-MM-dd");

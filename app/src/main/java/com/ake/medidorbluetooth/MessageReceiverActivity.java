@@ -68,7 +68,8 @@ public class MessageReceiverActivity extends AppCompatActivity {
 
         actions = new SQLiteActions(this);
         grupo = actions.addNewGroup();
-        tvGrupo.setText("Grupo: " + grupo);
+//        tvGrupo.setText("Registro: " + grupo);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + grupo + "   Fecha: " + actions.getDate());
 
 
         msgReceiver = new ConnectedThread(socket, handler);
@@ -183,7 +184,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
 
                     formato = new DecimalFormat("0.00");
                     tvCorriente.setText(formato.format(c) + " A");
-                    tvEnergia.setText(formato.format(e) + " J");
+                    tvEnergia.setText(formato.format(e) + " Wh");
 
                     formato = new DecimalFormat("000.00");
                     tvPotencia.setText(formato.format(p) + " W");

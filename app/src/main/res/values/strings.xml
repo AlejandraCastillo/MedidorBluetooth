@@ -9,4 +9,13 @@
     <string name="dispositivos_encontrados">Dispositivos encontrados</string>
     <string name="inciar_busqueda">Inciar Busqueda</string>
     <string name="cancelar_busqueda">Cancelar busqueda</string>
+    <string name="laboratorio">
+        <br>
+            Laboratorio de Electrónica
+        </br>
+        <br>
+            ICAT, UNAM
+        </br>
+
+    </string>
 </resources>

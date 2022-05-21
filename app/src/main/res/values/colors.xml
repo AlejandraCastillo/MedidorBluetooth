@@ -17,6 +17,10 @@
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
 
+
+    <color name="gaugeTextColor">#81c784</color>
+
+
     <!--reds-->
     <color name="md_red_50">#fde0dc</color>
     <color name="md_red_100">#f9bdbb</color>
