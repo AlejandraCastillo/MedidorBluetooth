@@ -3,20 +3,24 @@ package com.ake.medidorbluetooth.buetooth_utils;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import com.ake.medidorbluetooth.recycleview_bluetooth.OnClickListenerBluetooth;
+import com.ake.medidorbluetooth.recycleview_bluetooth.RecycleViewBluetoothAdapter;
 
 import java.util.ArrayList;
 import java.util.Set;
 
-public class BluetoothService {
+public class BluetoothService implements OnClickListenerBluetooth {
     private static final String TAG = "BluetoothService";
 
     private BluetoothAdapter bluetoothAdapter;
     private ConnectServise clientConnection;
     private Context context;
 
-    public ArrayAdapter<String> adapterBondedDevices;
-    public ArrayAdapter<String> adapterDiscoveryDevices;
+    public RecycleViewBluetoothAdapter adapterBondedDevices;
+    public RecycleViewBluetoothAdapter adapterDiscoveryDevices;
 
     //Listas de dispositivos
     private final ArrayList<BluetoothDevice> bondedDevices = new ArrayList<>();
@@ -28,8 +32,9 @@ public class BluetoothService {
     public BluetoothService(Context context) {
         this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        adapterBondedDevices = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1);
-        adapterDiscoveryDevices = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1);
+
+        adapterBondedDevices = new RecycleViewBluetoothAdapter(bondedDevices, discoveryDevices, this);
+        adapterDiscoveryDevices = new RecycleViewBluetoothAdapter(discoveryDevices, bondedDevices, this);
     }
 
     public boolean bluetoothAdapterExist(){
@@ -54,7 +59,7 @@ public class BluetoothService {
         bondedDevices.clear();
         for(BluetoothDevice device : sBondedDevices){
             bondedDevices.add(device);
-            adapterBondedDevices.add(device.getName());
+            adapterBondedDevices.add(device);
             adapterBondedDevices.notifyDataSetChanged();
         }
         //True si existen dispositivos
@@ -86,7 +91,7 @@ public class BluetoothService {
 
     public void addNewDevice(BluetoothDevice device){
         discoveryDevices.add(device);
-        adapterDiscoveryDevices.add(device.getName());
+        adapterDiscoveryDevices.add(device);
         adapterDiscoveryDevices.notifyDataSetChanged();
     }
 
@@ -109,6 +114,12 @@ public class BluetoothService {
                 throw new IllegalStateException("Unexpected value: " + list);
         }
         return device;
+    }
+
+    @Override
+    public void onClick(BluetoothDevice device) {
+        Log.i(TAG, "onClick: Entramos!!");
+        createConnection(device);
     }
 
 }

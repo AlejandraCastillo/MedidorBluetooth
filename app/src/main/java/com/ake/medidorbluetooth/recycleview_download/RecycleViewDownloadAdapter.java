@@ -20,11 +20,11 @@ import java.util.Date;
 public class RecycleViewDownloadAdapter extends RecyclerView.Adapter<RecycleViewDownloadAdapter.ViewHolder>{
 
     private ArrayList<TablaGrupo> list;
-    private OnClickListenerDownload listener;
+    private OnClickListenerDownload mListener;
 
     public RecycleViewDownloadAdapter(ArrayList<TablaGrupo> list, OnClickListenerDownload listener) {
         this.list = list;
-        this.listener = listener;
+        this.mListener = listener;
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class RecycleViewDownloadAdapter extends RecyclerView.Adapter<RecycleView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TablaGrupo grupo = list.get(position);
-        holder.setOnClickListener(listener, grupo);
+        holder.setOnClickListener(mListener, grupo);
         holder.getTvRegistro().setText("Grupo" + grupo.getGrupoID());
 
         DateFormat formato = new SimpleDateFormat("yy-MM-dd");

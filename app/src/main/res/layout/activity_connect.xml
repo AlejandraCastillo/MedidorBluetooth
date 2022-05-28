@@ -57,11 +57,14 @@
             android:layout_marginBottom="10dp"
             android:text="@string/dispositivos_sincronizados" />
 
-        <ListView
-            android:id="@+id/lv_bondedDevices"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bondedDevices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginTop="@dimen/recycle_view_padding"
+            android:layout_marginBottom="@dimen/recycle_view_padding"
+            tools:listitem="@layout/item_bluetooth"
+            />
 
         <TextView
             android:id="@+id/tv_discoveryDevices"
@@ -70,11 +73,14 @@
             android:layout_marginBottom="10dp"
             android:text="@string/dispositivos_encontrados" />
 
-        <ListView
-            android:id="@+id/lv_discoveryDevices"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_discoveryDevices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginTop="@dimen/recycle_view_padding"
+            android:layout_marginBottom="@dimen/recycle_view_padding"
+            tools:listitem="@layout/item_bluetooth"
+            />
 
     </LinearLayout>
 

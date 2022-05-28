@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -18,7 +20,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothService;
@@ -31,13 +32,12 @@ public class ConnectActivity extends AppCompatActivity {
     private BluetoothService bluetoothService;
 
     private SwitchCompat swBluettoth;
-    private ListView lvBondedDevices;
+    private RecyclerView rvBondedDevices;
     private ProgressBar progressBar;
     private ProgressBar pbBluetooth;
     private Button buttonBucar;
 
     private static final int REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static final int REQUEST_BLUETOOTH_CONNECT = 2;
 
     private boolean discoveryFlag = false;
 
@@ -50,14 +50,19 @@ public class ConnectActivity extends AppCompatActivity {
         swBluettoth = findViewById(R.id.sw_enable_bt);
         progressBar = findViewById(R.id.progress_bar);
         pbBluetooth = findViewById(R.id.pb_buetooth);
-        lvBondedDevices = findViewById(R.id.lv_bondedDevices);
-        ListView lvDiscoveryDevices = findViewById(R.id.lv_discoveryDevices);
+        rvBondedDevices = findViewById(R.id.rv_bondedDevices);
+        RecyclerView rvDiscoveryDevices = findViewById(R.id.rv_discoveryDevices);
         buttonBucar = findViewById(R.id.b_Busqueda);
 
         bluetoothService = new BluetoothService(this);
 
-        lvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
-        lvDiscoveryDevices.setAdapter(bluetoothService.adapterDiscoveryDevices);
+        LinearLayoutManager bondedDevicesmanager = new LinearLayoutManager(this);
+        rvBondedDevices.setLayoutManager(bondedDevicesmanager);
+        rvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
+
+        LinearLayoutManager discoveryDevicesmanager = new LinearLayoutManager(this);
+        rvDiscoveryDevices.setLayoutManager(discoveryDevicesmanager);
+        rvDiscoveryDevices.setAdapter(bluetoothService.adapterDiscoveryDevices);
 
         //Verificar el estado del bluetooth
         if(bluetoothService.bluetoothAdapterIsEnable()){
@@ -89,18 +94,6 @@ public class ConnectActivity extends AppCompatActivity {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(receiver, filter);
-
-        //Seleccionar un dispositivo de la lista de dispositivos sincronizados
-        lvBondedDevices.setOnItemClickListener((parent, view, positon, id) ->
-                bluetoothService.createConnection(bluetoothService.getDevice(
-                        BluetoothService.BONDED_DEVICES, positon))
-        );
-
-        //Seleccionar un dispositivo de la lista de dispositivos encontrados
-        lvDiscoveryDevices.setOnItemClickListener((parent, view, positon, id) ->
-                bluetoothService.createConnection(bluetoothService.getDevice(
-                        BluetoothService.DISCOVERY_DEVICES, positon))
-        );
     }
 
     public final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -144,7 +137,7 @@ public class ConnectActivity extends AppCompatActivity {
             case BluetoothAdapter.STATE_ON:
                 swBluettoth.setChecked(true);
                 if(bluetoothService.getBondedDevices())
-                    lvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
+                    rvBondedDevices.setAdapter(bluetoothService.adapterBondedDevices);
                 pbBluetooth.setVisibility(View.INVISIBLE);
                 swBluettoth.setVisibility(View.VISIBLE);
                 break;
