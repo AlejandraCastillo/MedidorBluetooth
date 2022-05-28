@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DownloadActivity">
-    
-    <ListView
-        android:id="@+id/lv_descargas"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_descargas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/recycle_view_padding"
+        android:layout_marginBottom="@dimen/recycle_view_padding"
+        tools:listitem="@layout/item_download"
         />
 
 </LinearLayout>

@@ -8,4 +8,9 @@
     <dimen name="gauge_size">150dp</dimen>
     <dimen name="main_button_width">200dp</dimen>
     <dimen name="message_receiver_cardview_width">310dp</dimen>
+    <dimen name="item_download_height">72dp</dimen>
+    <dimen name="item_icon_size">40dp</dimen>
+    <dimen name="item_small_icon_size">24dp</dimen>
+    <dimen name="item_download_padding">16dp</dimen>
+    <dimen name="recycle_view_padding">8dp</dimen>
 </resources>
