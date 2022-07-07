@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.ake.medidorbluetooth.recycleview_bluetooth.OnClickListenerBluetooth;
 import com.ake.medidorbluetooth.recycleview_bluetooth.RecycleViewBluetoothAdapter;
@@ -12,11 +11,11 @@ import com.ake.medidorbluetooth.recycleview_bluetooth.RecycleViewBluetoothAdapte
 import java.util.ArrayList;
 import java.util.Set;
 
-public class BluetoothService implements OnClickListenerBluetooth {
-    private static final String TAG = "BluetoothService";
+public class BluetoothUtils implements OnClickListenerBluetooth {
+    private static final String TAG = "BluetoothUtils";
 
     private BluetoothAdapter bluetoothAdapter;
-    private ConnectServise clientConnection;
+    private ConnectAsyncTask clientConnection;
     private Context context;
 
     public RecycleViewBluetoothAdapter adapterBondedDevices;
@@ -29,7 +28,7 @@ public class BluetoothService implements OnClickListenerBluetooth {
     public static final int BONDED_DEVICES = 1;
     public static final int DISCOVERY_DEVICES=2;
 
-    public BluetoothService(Context context) {
+    public BluetoothUtils(Context context) {
         this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -97,7 +96,7 @@ public class BluetoothService implements OnClickListenerBluetooth {
 
     public void createConnection(BluetoothDevice device){
         bluetoothAdapter.cancelDiscovery();
-        clientConnection = new ConnectServise(device, context);
+        clientConnection = new ConnectAsyncTask(device, context);
         clientConnection.execute();
     }
 

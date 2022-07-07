@@ -13,14 +13,14 @@ import com.ake.medidorbluetooth.MessageReceiverActivity;
 import java.io.IOException;
 import java.util.UUID;
 
-class ConnectServise extends AsyncTask<Void, Void, Boolean> {
+class ConnectAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
-    private  static final String TAG = "ConnectServise";
+    private  static final String TAG = "ConnectAsyncTask";
     private final BluetoothSocket socket;
     private Context context;
     private String name;
 
-    public ConnectServise(BluetoothDevice device, Context context){
+    public ConnectAsyncTask(BluetoothDevice device, Context context){
         BluetoothSocket tempSocket = null;
         this.context = context;
         this.name = device.getName();

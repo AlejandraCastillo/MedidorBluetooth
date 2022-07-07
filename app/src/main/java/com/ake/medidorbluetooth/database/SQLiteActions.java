@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,7 +32,7 @@ public class SQLiteActions {
         conn = new ConnectionSQLiteHelper(context, Querys.DB_DATOS, null, 1);
     }
 
-    public static String getDate(){
+    public static @NotNull String getDate(){
         long ahora = System.currentTimeMillis();
         Date fecha = new Date(ahora);
         DateFormat df = new SimpleDateFormat("yy-MM-dd");
@@ -49,7 +51,7 @@ public class SQLiteActions {
         return grupo;
     }
 
-    public void addnewRow(TablaDatos row){
+    public void addnewRow(@NotNull TablaDatos row){
         db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -89,7 +91,7 @@ public class SQLiteActions {
         return listaTablaGrupo;
     }
 
-    public String getFechaGrupo(Integer grupo_id){
+    public String getFechaGrupo(@NotNull Integer grupo_id){
         db = conn.getReadableDatabase();
         String fecha = "";
         String[] parametros = {grupo_id.toString()};
@@ -109,7 +111,7 @@ public class SQLiteActions {
         return fecha;
     }
 
-    public ArrayList<TablaDatos> readGroupFromTablaDatos(Integer grupo_id){
+    public ArrayList<TablaDatos> readGroupFromTablaDatos(@NotNull Integer grupo_id){
 
         ArrayList<TablaDatos> listaTablaDatos;
 

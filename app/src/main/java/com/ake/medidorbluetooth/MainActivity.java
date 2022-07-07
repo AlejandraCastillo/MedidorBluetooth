@@ -9,9 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.ake.medidorbluetooth.buetooth_utils.BluetoothService;
-
-import org.w3c.dom.Text;
+import com.ake.medidorbluetooth.buetooth_utils.BluetoothUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BluetoothService bluetoothService = new BluetoothService(this);
+        BluetoothUtils bluetoothUtils = new BluetoothUtils(this);
 
-        if (!bluetoothService.bluetoothAdapterExist()){
+        if (!bluetoothUtils.bluetoothAdapterExist()){
             Button connectButton = findViewById(R.id.b_conectar);
             connectButton.setVisibility(View.INVISIBLE);
             Button downloadButton = findViewById(R.id.b_descargas);

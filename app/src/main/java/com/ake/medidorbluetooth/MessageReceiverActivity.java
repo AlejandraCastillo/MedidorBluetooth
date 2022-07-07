@@ -18,6 +18,8 @@ import com.ake.medidorbluetooth.database.SQLiteActions;
 import com.ake.medidorbluetooth.database.TablaDatos;
 import com.ake.medidorbluetooth.database.TablaGrupo;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +30,6 @@ import java.util.Objects;
 public class MessageReceiverActivity extends AppCompatActivity {
     private static final String TAG = "MessageReceiver";
 
-    private TextView tvGrupo;
     private TextView tvVoltage;
     private TextView tvCorriente;
     private TextView tvPotencia;
@@ -55,7 +56,6 @@ public class MessageReceiverActivity extends AppCompatActivity {
 
         BluetoothSocket socket = ShareSocket.getSocket();
 
-        tvGrupo = findViewById(R.id.tv_grupo);
         tvVoltage = findViewById(R.id.tv_voltaje);
         tvCorriente = findViewById(R.id.tv_corriente);
         tvPotencia = findViewById(R.id.tv_potencia);
@@ -70,11 +70,13 @@ public class MessageReceiverActivity extends AppCompatActivity {
         grupo = actions.addNewGroup();
 //        tvGrupo.setText("Registro: " + grupo);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + grupo + "   Fecha: " + actions.getDate());
-
-
         msgReceiver = new ConnectedThread(socket, handler);
         msgReceiver.start();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     public static class ConnectedThread extends Thread{
@@ -130,7 +132,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
     private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         @SuppressLint("SetTextI18n")
-        public void handleMessage(Message msg){
+        public void handleMessage(@NotNull Message msg){
             switch (msg.what){
                 case MESSAGE_READ:
                     String readMessage = (String) msg.obj;
@@ -203,11 +205,16 @@ public class MessageReceiverActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         msgReceiver.cancel();
+        ShareSocket.closeSocket();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ShareSocket.closeSocket();
     }
 }
