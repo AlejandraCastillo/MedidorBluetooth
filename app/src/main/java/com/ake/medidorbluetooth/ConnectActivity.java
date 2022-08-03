@@ -113,9 +113,8 @@ public class ConnectActivity extends AppCompatActivity {
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    Log.i(TAG, "onReceive: Dispositivo " + device.getName() + device.getAddress() + " encontrado");
-                    if(!bluetoothUtils.deviceAlreadyExists(device))
-                        bluetoothUtils.addNewDevice(device);
+                    Log.i(TAG, "onReceive: Dispositivo " + device.getName() + " encontrado");
+                    bluetoothUtils.addNewDevice(device);
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
                     Log.i(TAG, "onReceive: Cancelar busqueda");

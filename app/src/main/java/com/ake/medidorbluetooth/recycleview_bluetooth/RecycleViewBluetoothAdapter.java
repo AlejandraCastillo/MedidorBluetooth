@@ -1,6 +1,7 @@
 package com.ake.medidorbluetooth.recycleview_bluetooth;
 
 import android.bluetooth.BluetoothDevice;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,11 @@ import java.util.ArrayList;
 public class RecycleViewBluetoothAdapter extends RecyclerView.Adapter<RecycleViewBluetoothAdapter.ViewHolder>{
     private static final String TAG = "RecycleViewBluetoothAdapter";
 
-    private ArrayList<BluetoothDevice> list;
+    public ArrayList<BluetoothDevice> list;
     private OnClickListenerBluetooth mListener;
 
-    public RecycleViewBluetoothAdapter(ArrayList<BluetoothDevice> list, OnClickListenerBluetooth listener) {
-        this.list = list;
+    public RecycleViewBluetoothAdapter(OnClickListenerBluetooth listener) {
+        list = new ArrayList<>();
         this.mListener = listener;
     }
 
@@ -50,6 +51,7 @@ public class RecycleViewBluetoothAdapter extends RecyclerView.Adapter<RecycleVie
         if(!list.contains(device)){
             list.add(device);
             notifyItemInserted(list.size()-1);
+            Log.i(TAG, "onReceive: Dispositivo " + device.getName() + device.getAddress() + " agregado");
         }
     }
 

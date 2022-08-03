@@ -30,7 +30,7 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
     private RecyclerView recyclerView;
     private RecycleViewDownloadAdapter downloadAdapter;
 
-        private SQLiteActions actions;
+    private SQLiteActions actions;
 
     private ArrayList<TablaGrupo> listTablaGrupo;
 

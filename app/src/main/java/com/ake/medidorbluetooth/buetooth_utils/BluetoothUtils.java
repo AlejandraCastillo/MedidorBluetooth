@@ -21,10 +21,6 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
     public RecycleViewBluetoothAdapter adapterBondedDevices;
     public RecycleViewBluetoothAdapter adapterDiscoveryDevices;
 
-    //Listas de dispositivos
-    private final ArrayList<BluetoothDevice> bondedDevices = new ArrayList<>();
-    private final ArrayList<BluetoothDevice> discoveryDevices = new ArrayList<>();
-
     public static final int BONDED_DEVICES = 1;
     public static final int DISCOVERY_DEVICES=2;
 
@@ -32,8 +28,8 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
         this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        adapterBondedDevices = new RecycleViewBluetoothAdapter(bondedDevices, this);
-        adapterDiscoveryDevices = new RecycleViewBluetoothAdapter(discoveryDevices, this);
+        adapterBondedDevices = new RecycleViewBluetoothAdapter(this);
+        adapterDiscoveryDevices = new RecycleViewBluetoothAdapter(this);
     }
 
     public boolean bluetoothAdapterExist(){
@@ -55,19 +51,16 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
     public boolean getBondedDevices(){
         Set<BluetoothDevice> sBondedDevices = bluetoothAdapter.getBondedDevices();
         adapterBondedDevices.clear();
-        bondedDevices.clear();
         for(BluetoothDevice device : sBondedDevices){
-            bondedDevices.add(device);
             adapterBondedDevices.add(device);
         }
-        adapterBondedDevices.notifyDataSetChanged();
+//        adapterBondedDevices.notifyDataSetChanged();
         //True si existen dispositivos
-        return bondedDevices.size() > 0;
+        return adapterBondedDevices.getItemCount() > 0;
     }
 
     public void discovery(boolean discoveryFlag){
         if(!discoveryFlag){
-            discoveryDevices.clear();
             adapterDiscoveryDevices.clear();
             bluetoothAdapter.startDiscovery();
         }
@@ -77,22 +70,25 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
     }
 
     public boolean deviceAlreadyExists(BluetoothDevice device){
-        for (BluetoothDevice d:bondedDevices) {
-            if(device.getAddress().equals(d.getAddress()))
+        for (BluetoothDevice bondedD:adapterBondedDevices.list) {
+            if(device.getAddress().equals(bondedD.getAddress())) {
+                Log.i(TAG, "onReceive: El dispositivo " + device.getName() + " ya existe en adapterBondedDevices");
                 return true;
+            }
         }
-        for (BluetoothDevice d:discoveryDevices) {
-            if(device.getAddress().equals(d.getAddress()))
+        for (BluetoothDevice discoveryD: adapterDiscoveryDevices.list) {
+            if(device.getAddress().equals(discoveryD.getAddress())) {
+                Log.i(TAG, "onReceive: El dispositivo " + device.getName() + " ya existe en adapterDiscoveryDevices");
                 return true;
+            }
         }
         return false;
     }
 
     public void addNewDevice(BluetoothDevice device){
-        if(deviceAlreadyExists(device)) {
-            discoveryDevices.add(device);
+        if(!deviceAlreadyExists(device)) {
             adapterDiscoveryDevices.add(device);
-            adapterDiscoveryDevices.notifyDataSetChanged();
+//            adapterDiscoveryDevices.notifyDataSetChanged();
         }
     }
 
