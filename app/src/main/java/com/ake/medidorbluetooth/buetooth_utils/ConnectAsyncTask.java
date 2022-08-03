@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 class ConnectAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
     private  static final String TAG = "ConnectAsyncTask";
+
     private final BluetoothSocket socket;
     private Context context;
     private String name;
@@ -62,7 +62,6 @@ class ConnectAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
         if(result){
             Intent intent = new Intent(context, MessageReceiverActivity.class);
-            intent.putExtra("name", name);
             ShareSocket.setSocket(socket); // se pasa el socket para comunicarse con el dispositivo como argumento
             context.startActivity(intent);
         }

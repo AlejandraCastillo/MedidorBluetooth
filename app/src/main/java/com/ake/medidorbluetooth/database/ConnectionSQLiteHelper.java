@@ -7,16 +7,18 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 public class ConnectionSQLiteHelper extends SQLiteOpenHelper {
     private static final String TAG = "ConnectionSQLiteHelper";
 
-    public ConnectionSQLiteHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public ConnectionSQLiteHelper(Context context, String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         Log.i(TAG, "ConnectionSQLiteHelper: Iniciando...");
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(@NotNull SQLiteDatabase db) {
         db.execSQL(Querys.CREATE_TABLA_GRUPO);
         Log.i(TAG, "Se ha creado la tabla Grupo!!!");
 
@@ -25,7 +27,7 @@ public class ConnectionSQLiteHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(@NotNull SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i(TAG, "onUpgrade: Iniciando...");
 
         db.execSQL(Querys.DROP_TABLA_DATOS_IF_EXISTS);

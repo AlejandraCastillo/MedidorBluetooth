@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class RecycleViewDownloadAdapter extends RecyclerView.Adapter<RecycleViewDownloadAdapter.ViewHolder>{
+    private static final String TAG = "RecycleViewDownloadAdapter";
 
     private ArrayList<TablaGrupo> list;
     private OnClickListenerDownload mListener;

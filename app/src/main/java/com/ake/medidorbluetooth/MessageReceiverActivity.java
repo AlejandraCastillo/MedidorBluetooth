@@ -1,6 +1,5 @@
 package com.ake.medidorbluetooth;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -16,7 +15,6 @@ import com.ake.medidorbluetooth.buetooth_utils.ShareSocket;
 import com.ake.medidorbluetooth.custom_gauge.CustomGauge;
 import com.ake.medidorbluetooth.database.SQLiteActions;
 import com.ake.medidorbluetooth.database.TablaDatos;
-import com.ake.medidorbluetooth.database.TablaGrupo;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,7 +50,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_receiver);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(TAG);
+//        Objects.requireNonNull(getSupportActionBar()).setTitle(TAG);
 
         BluetoothSocket socket = ShareSocket.getSocket();
 
@@ -69,14 +67,9 @@ public class MessageReceiverActivity extends AppCompatActivity {
         actions = new SQLiteActions(this);
         grupo = actions.addNewGroup();
 //        tvGrupo.setText("Registro: " + grupo);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + grupo + "   Fecha: " + actions.getDate());
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + grupo + "   Fecha: " + actions.getDate("dd-MM-yyyy"));
         msgReceiver = new ConnectedThread(socket, handler);
         msgReceiver.start();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     public static class ConnectedThread extends Thread{
@@ -129,7 +122,8 @@ public class MessageReceiverActivity extends AppCompatActivity {
 
     }
 
-    private final Handler handler = new Handler(Looper.getMainLooper()) {
+    private final Handler handler = new Handler(Looper.myLooper()) {
+//    private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         @SuppressLint("SetTextI18n")
         public void handleMessage(@NotNull Message msg){
@@ -172,7 +166,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
                     row.setEnergia(e);
 
                     row.setGrupoID(grupo);
-                    actions.addnewRow(row);
+                    actions.addnewDataRow(row);
 
                     row.printRow(TAG);
 
@@ -202,19 +196,8 @@ public class MessageReceiverActivity extends AppCompatActivity {
     };
 
     @Override
-    public void finish() {
-        super.finish();
-        msgReceiver.cancel();
-        ShareSocket.closeSocket();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+        msgReceiver.cancel();
     }
 }

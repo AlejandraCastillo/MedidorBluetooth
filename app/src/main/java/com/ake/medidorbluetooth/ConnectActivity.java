@@ -152,17 +152,14 @@ public class ConnectActivity extends AppCompatActivity {
 
     }
 
-    private void askForPermission(){
-        //Permisos
+    public void onClickBuscar(View view) {
+        //Si no se tiene el permiso
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
         }
-    }
-
-    public void onClickBuscar(View view) {
-        askForPermission();
+        //Iniciar busqueda
         bluetoothUtils.discovery(discoveryFlag);
     }
 

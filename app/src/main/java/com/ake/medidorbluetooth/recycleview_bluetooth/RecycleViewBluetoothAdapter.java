@@ -14,14 +14,13 @@ import com.ake.medidorbluetooth.R;
 import java.util.ArrayList;
 
 public class RecycleViewBluetoothAdapter extends RecyclerView.Adapter<RecycleViewBluetoothAdapter.ViewHolder>{
+    private static final String TAG = "RecycleViewBluetoothAdapter";
 
     private ArrayList<BluetoothDevice> list;
-    private ArrayList<BluetoothDevice> list2;
     private OnClickListenerBluetooth mListener;
 
-    public RecycleViewBluetoothAdapter(ArrayList<BluetoothDevice> list, ArrayList<BluetoothDevice> list2, OnClickListenerBluetooth listener) {
+    public RecycleViewBluetoothAdapter(ArrayList<BluetoothDevice> list, OnClickListenerBluetooth listener) {
         this.list = list;
-        this.list2 = list2;
         this.mListener = listener;
     }
 
@@ -48,7 +47,7 @@ public class RecycleViewBluetoothAdapter extends RecyclerView.Adapter<RecycleVie
     }
 
     public void add(BluetoothDevice device){
-        if(!list.contains(device) && !list2.contains(device)){
+        if(!list.contains(device)){
             list.add(device);
             notifyItemInserted(list.size()-1);
         }

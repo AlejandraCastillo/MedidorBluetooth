@@ -15,7 +15,7 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
     private static final String TAG = "BluetoothUtils";
 
     private BluetoothAdapter bluetoothAdapter;
-    private ConnectAsyncTask clientConnection;
+    private ConnectAsyncTask connectAsyncTask;
     private Context context;
 
     public RecycleViewBluetoothAdapter adapterBondedDevices;
@@ -32,8 +32,8 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
         this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        adapterBondedDevices = new RecycleViewBluetoothAdapter(bondedDevices, discoveryDevices, this);
-        adapterDiscoveryDevices = new RecycleViewBluetoothAdapter(discoveryDevices, bondedDevices, this);
+        adapterBondedDevices = new RecycleViewBluetoothAdapter(bondedDevices, this);
+        adapterDiscoveryDevices = new RecycleViewBluetoothAdapter(discoveryDevices, this);
     }
 
     public boolean bluetoothAdapterExist(){
@@ -59,8 +59,8 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
         for(BluetoothDevice device : sBondedDevices){
             bondedDevices.add(device);
             adapterBondedDevices.add(device);
-            adapterBondedDevices.notifyDataSetChanged();
         }
+        adapterBondedDevices.notifyDataSetChanged();
         //True si existen dispositivos
         return bondedDevices.size() > 0;
     }
@@ -78,47 +78,30 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
 
     public boolean deviceAlreadyExists(BluetoothDevice device){
         for (BluetoothDevice d:bondedDevices) {
-            if(device.getAddress() == d.getAddress())
+            if(device.getAddress().equals(d.getAddress()))
                 return true;
         }
         for (BluetoothDevice d:discoveryDevices) {
-            if(device.getAddress() == d.getAddress())
+            if(device.getAddress().equals(d.getAddress()))
                 return true;
         }
         return false;
     }
 
     public void addNewDevice(BluetoothDevice device){
-        discoveryDevices.add(device);
-        adapterDiscoveryDevices.add(device);
-        adapterDiscoveryDevices.notifyDataSetChanged();
-    }
-
-    public void createConnection(BluetoothDevice device){
-        bluetoothAdapter.cancelDiscovery();
-        clientConnection = new ConnectAsyncTask(device, context);
-        clientConnection.execute();
-    }
-
-    public BluetoothDevice getDevice(int list, int position){
-        BluetoothDevice device;
-        switch (list){
-            case BONDED_DEVICES:
-                device = bondedDevices.get(position);
-                break;
-            case DISCOVERY_DEVICES:
-                device = discoveryDevices.get(position);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + list);
+        if(deviceAlreadyExists(device)) {
+            discoveryDevices.add(device);
+            adapterDiscoveryDevices.add(device);
+            adapterDiscoveryDevices.notifyDataSetChanged();
         }
-        return device;
     }
 
     @Override
     public void onClick(BluetoothDevice device) {
-        Log.i(TAG, "onClick: Entramos!!");
-        createConnection(device);
+        //Crear conexión
+        bluetoothAdapter.cancelDiscovery();
+        connectAsyncTask = new ConnectAsyncTask(device, context);
+        connectAsyncTask.execute();
     }
 
 }

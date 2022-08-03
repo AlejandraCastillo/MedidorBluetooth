@@ -32,10 +32,10 @@ public class SQLiteActions {
         conn = new ConnectionSQLiteHelper(context, Querys.DB_DATOS, null, 1);
     }
 
-    public static @NotNull String getDate(){
+    public static @NotNull String getDate(String formato){
         long ahora = System.currentTimeMillis();
         Date fecha = new Date(ahora);
-        DateFormat df = new SimpleDateFormat("yy-MM-dd");
+        DateFormat df = new SimpleDateFormat(formato);
         return df.format(fecha);
     }
 
@@ -43,7 +43,7 @@ public class SQLiteActions {
         db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Querys._FECHA, getDate());
+        values.put(Querys._FECHA, getDate("yy-MM-dd"));
 
         int grupo = (int) db.insert(Querys.TABLA_GRUPO, Querys._GRUPO_ID, values);
 
@@ -51,7 +51,7 @@ public class SQLiteActions {
         return grupo;
     }
 
-    public void addnewRow(@NotNull TablaDatos row){
+    public void addnewDataRow(@NotNull TablaDatos row){
         db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -121,21 +121,26 @@ public class SQLiteActions {
         listaTablaDatos = new ArrayList<TablaDatos>();
         String args[]={grupo_id.toString()};
 
-        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_DATOS_BY_GRUPO_ID,args);
+        try {
+            Cursor cursor = db.rawQuery(Querys.SELECT_FROM_DATOS_BY_GRUPO_ID, args);
 
-        while (cursor.moveToNext()){
-            row = new TablaDatos();
-            row.setTiempo(cursor.getInt(1));
-            row.setVoltaje(cursor.getDouble(2));
-            row.setCorriente(cursor.getDouble(3));
-            row.setPotencia(cursor.getDouble(4));
-            row.setEnergia(cursor.getDouble(5));
+            while (cursor.moveToNext()) {
+                row = new TablaDatos();
+                row.setTiempo(cursor.getInt(1));
+                row.setVoltaje(cursor.getDouble(2));
+                row.setCorriente(cursor.getDouble(3));
+                row.setPotencia(cursor.getDouble(4));
+                row.setEnergia(cursor.getDouble(5));
 
-            int grupo = cursor.getInt(6);
-            row.setGrupoID(grupo);
-            row.setFecha(getFechaGrupo(grupo));
+                int grupo = cursor.getInt(6);
+                row.setGrupoID(grupo);
+                row.setFecha(getFechaGrupo(grupo));
 
-            listaTablaDatos.add(row);
+                listaTablaDatos.add(row);
+            }
+        }
+        catch (Exception e){
+            Log.i(TAG, "getGroupByID: Operacion fallida");
         }
 
         db.close();
@@ -144,7 +149,7 @@ public class SQLiteActions {
 
     public boolean createDocument(Uri uri, Integer grupo_id){
         db = conn.getWritableDatabase();
-        StringBuilder contenido = new StringBuilder("Tiempo,Voltaje,Corriente,Potencia,Energia\n");
+        StringBuilder contenido = new StringBuilder("Tiempo,Voltaje,Corriente,Potencia,Energia\n"); //se usa para crear una cadena a partes
 
         ArrayList<TablaDatos> listaTablaDatos = readGroupFromTablaDatos(grupo_id);
 
