@@ -3,8 +3,10 @@ package com.ake.medidorbluetooth.buetooth_utils;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
+import com.ake.medidorbluetooth.MessageReceiverActivity;
 import com.ake.medidorbluetooth.recycleview_bluetooth.OnClickListenerBluetooth;
 import com.ake.medidorbluetooth.recycleview_bluetooth.RecycleViewBluetoothAdapter;
 
@@ -96,8 +98,8 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
     public void onClick(BluetoothDevice device) {
         //Crear conexión
         bluetoothAdapter.cancelDiscovery();
-        connectAsyncTask = new ConnectAsyncTask(device, context);
-        connectAsyncTask.execute();
+        Intent intent = new Intent(context, MessageReceiverActivity.class);
+        context.startActivity(intent);
     }
 
 }
