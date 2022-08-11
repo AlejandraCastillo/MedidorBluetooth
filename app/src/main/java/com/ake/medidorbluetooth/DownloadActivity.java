@@ -11,13 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.ake.medidorbluetooth.database.SQLiteActions;
-import com.ake.medidorbluetooth.database.TablaGrupo;
+import com.ake.medidorbluetooth.database.TablaRegistro;
 import com.ake.medidorbluetooth.recycleview_download.OnClickListenerDownload;
 import com.ake.medidorbluetooth.recycleview_download.RecycleViewDownloadAdapter;
 
@@ -32,7 +28,7 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
 
     private SQLiteActions actions;
 
-    private ArrayList<TablaGrupo> listTablaGrupo;
+    private ArrayList<TablaRegistro> listTablaRegistro;
 
     ActivityResultLauncher<Intent> descargaLauncher;
 
@@ -47,13 +43,13 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
         recyclerView = findViewById(R.id.rv_descargas);
 
         actions = new SQLiteActions(this);
-        listTablaGrupo = new ArrayList<TablaGrupo>();
+        listTablaRegistro = new ArrayList<TablaRegistro>();
 
-        listTablaGrupo = actions.readTablaGrupo();
+        listTablaRegistro = actions.readTablaRegistro();
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
-        downloadAdapter = new RecycleViewDownloadAdapter(listTablaGrupo, this);
+        downloadAdapter = new RecycleViewDownloadAdapter(listTablaRegistro, this);
         recyclerView.setAdapter(downloadAdapter);
 
         descargaLauncher = registerForActivityResult(
@@ -63,9 +59,9 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
                     public void onActivityResult(ActivityResult result) {
                         if(result.getResultCode() == Activity.RESULT_OK){
                             Intent data = result.getData();
-                            int grupo_id = getIntent().getExtras().getInt("grupo_id");
+                            int registro_id = getIntent().getExtras().getInt("registro_id");
                             if(data != null && data.getData() != null){
-                                actions.createDocument(data.getData(), grupo_id);
+                                actions.createDocument(data.getData(), registro_id);
                             }
                         }
                     }
@@ -74,14 +70,14 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
     }
 
     @Override
-    public void onClick(TablaGrupo grupo) {
+    public void onClick(TablaRegistro registro) {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/cvs");
-        int grupo_id = grupo.getGrupoID();
-        String nombre = actions.getFechaGrupo(grupo_id) + "_g" + grupo_id + ".cvs";
+        int registro_id = registro.getRegistroID();
+        String nombre = actions.getFechaRegistro(registro_id) + "_g" + registro_id + ".cvs";
         intent.putExtra(Intent.EXTRA_TITLE, nombre);
-        intent.putExtra("grupo_id", grupo_id);
+        intent.putExtra("registro_id", registro_id);
 
         descargaLauncher.launch(intent);
     }

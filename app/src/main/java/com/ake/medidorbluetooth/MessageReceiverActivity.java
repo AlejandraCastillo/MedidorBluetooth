@@ -3,25 +3,12 @@ package com.ake.medidorbluetooth;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 import android.widget.TextView;
 
-import com.ake.medidorbluetooth.buetooth_utils.ShareSocket;
 import com.ake.medidorbluetooth.custom_gauge.CustomGauge;
 import com.ake.medidorbluetooth.database.SQLiteActions;
-import com.ake.medidorbluetooth.database.TablaDatos;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
@@ -40,7 +27,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
 
 //    private ConnectedThread msgReceiver;
     private SQLiteActions actions;
-    private int grupo;
+    private int registro;
 
     public static final int MESSAGE_READ = 0;
     public static final int CONNECTION_LOST = 1;
@@ -62,8 +49,8 @@ public class MessageReceiverActivity extends AppCompatActivity {
         gaugeEnergia = findViewById(R.id.gauge_energia);
 
         actions = new SQLiteActions(this);
-        grupo = 0;
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + grupo + "   Fecha: " + actions.getDate("dd-MM-yyyy"));
+        registro = 0;
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + registro + "   Fecha: " + actions.getDate("dd-MM-yyyy"));
 
         double v = 1.1;
         double c = 2.2;
