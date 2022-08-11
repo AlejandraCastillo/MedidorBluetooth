@@ -40,7 +40,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
 
     private ConnectedThread msgReceiver;
     private SQLiteActions actions;
-    private int grupo;
+    private int registro;
 
     public static final int MESSAGE_READ = 0;
     public static final int CONNECTION_LOST = 1;
@@ -65,9 +65,8 @@ public class MessageReceiverActivity extends AppCompatActivity {
         gaugeEnergia = findViewById(R.id.gauge_energia);
 
         actions = new SQLiteActions(this);
-        grupo = actions.addNewGroup();
-//        tvGrupo.setText("Registro: " + grupo);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + grupo + "   Fecha: " + actions.getDate("dd-MM-yyyy"));
+        registro = actions.addNewRegister();
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + registro + "   Fecha: " + actions.getDate("dd-MM-yyyy"));
         msgReceiver = new ConnectedThread(socket, handler);
         msgReceiver.start();
     }
@@ -165,7 +164,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
                     double e = Double.parseDouble(aux.substring(index + 1));
                     row.setEnergia(e);
 
-                    row.setGrupoID(grupo);
+                    row.setRegistroID(registro);
                     actions.addnewDataRow(row);
 
                     row.printRow(TAG);

@@ -2,7 +2,7 @@ package com.ake.medidorbluetooth.database;
 
 import android.util.Log;
 
-public class TablaDatos extends TablaGrupo{
+public class TablaDatos extends TablaRegistro {
 
     private Integer tiempo;
     private Double voltaje;

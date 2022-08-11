@@ -19,8 +19,8 @@ public class ConnectionSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(@NotNull SQLiteDatabase db) {
-        db.execSQL(Querys.CREATE_TABLA_GRUPO);
-        Log.i(TAG, "Se ha creado la tabla Grupo!!!");
+        db.execSQL(Querys.CREATE_TABLA_REGISTRO);
+        Log.i(TAG, "Se ha creado la tabla Registro!!!");
 
         db.execSQL(Querys.CREAR_TABLA_DATOS);
         Log.i(TAG, "Se ha creado la tabla Datos!!!");
@@ -31,7 +31,7 @@ public class ConnectionSQLiteHelper extends SQLiteOpenHelper {
         Log.i(TAG, "onUpgrade: Iniciando...");
 
         db.execSQL(Querys.DROP_TABLA_DATOS_IF_EXISTS);
-        db.execSQL(Querys.DROP_TABLA_GRUPO_IF_EXISTS);
+        db.execSQL(Querys.DROP_TABLA_REGISTRO_IF_EXISTS);
 
         Log.i(TAG, "Se ha borrado las tablas de la BD");
         onCreate(db);

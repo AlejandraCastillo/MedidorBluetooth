@@ -29,7 +29,7 @@ public class SQLiteActions {
 
     public SQLiteActions(Context context) {
         this.context = context;
-        conn = new ConnectionSQLiteHelper(context, Querys.DB_DATOS, null, 1);
+        conn = new ConnectionSQLiteHelper(context, Querys.DB_DATOS, null, 2);
     }
 
     public static @NotNull String getDate(String formato){
@@ -39,16 +39,16 @@ public class SQLiteActions {
         return df.format(fecha);
     }
 
-    public int addNewGroup(){
+    public int addNewRegister(){
         db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Querys._FECHA, getDate("yy-MM-dd"));
 
-        int grupo = (int) db.insert(Querys.TABLA_GRUPO, Querys._GRUPO_ID, values);
+        int registro = (int) db.insert(Querys.TABLA_REGISTRO, Querys._REGISTRO_ID, values);
 
         db.close();
-        return grupo;
+        return registro;
     }
 
     public void addnewDataRow(@NotNull TablaDatos row){
@@ -61,57 +61,57 @@ public class SQLiteActions {
         values.put(Querys._CORRIENTE, row.getCorriente());
         values.put(Querys._POTENCIA, row.getPotencia());
         values.put(Querys._ENERGIA, row.getEnergia());
-        values.put(Querys._GRUPO_ID, row.getGrupoID());
+        values.put(Querys._REGISTRO_ID, row.getRegistroID());
 
         db.insert(Querys.TABLA_DATOS, Querys._DATOS_ID, values);
 
         db.close();
     }
 
-    public ArrayList<TablaGrupo> readTablaGrupo(){
-        ArrayList<TablaGrupo> listaTablaGrupo;
+    public ArrayList<TablaRegistro> readTablaRegistro(){
+        ArrayList<TablaRegistro> listaTablaRegistro;
 
         db = conn.getReadableDatabase();
 
-        TablaGrupo grupo = null;
-        listaTablaGrupo = new ArrayList<TablaGrupo>();
+        TablaRegistro registro = null;
+        listaTablaRegistro = new ArrayList<TablaRegistro>();
 
-        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_GRUPO, null);
+        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_REGISTRO, null);
 
         while(cursor.moveToNext()){
-            grupo = new TablaDatos();
-            grupo.setGrupoID(cursor.getInt(0));
-            grupo.setFecha(cursor.getString(1));
+            registro = new TablaDatos();
+            registro.setRegistroID(cursor.getInt(0));
+            registro.setFecha(cursor.getString(1));
 
-            listaTablaGrupo.add(grupo);
+            listaTablaRegistro.add(registro);
 
         }
 
         db.close();
-        return listaTablaGrupo;
+        return listaTablaRegistro;
     }
 
-    public String getFechaGrupo(@NotNull Integer grupo_id){
+    public String getFechaRegistro(@NotNull Integer registro_id){
         db = conn.getReadableDatabase();
         String fecha = "";
-        String[] parametros = {grupo_id.toString()};
+        String[] parametros = {registro_id.toString()};
 
         try{
-            Cursor cursor = db.rawQuery(Querys.SELECT_FROM_GRUPO_BY_ID, parametros);
+            Cursor cursor = db.rawQuery(Querys.SELECT_FROM_REGISTRO_BY_ID, parametros);
 
             cursor.moveToFirst();
             fecha = cursor.getString(0);
 
         }
         catch (Exception e){
-            Log.i(TAG, "getGroupByID: Operacion fallida");
+            Log.i(TAG, "getRegisterByID: Operacion fallida");
         }
 
         db.close();
         return fecha;
     }
 
-    public ArrayList<TablaDatos> readGroupFromTablaDatos(@NotNull Integer grupo_id){
+    public ArrayList<TablaDatos> readRegisterFromTablaDatos(@NotNull Integer registro_id){
 
         ArrayList<TablaDatos> listaTablaDatos;
 
@@ -119,10 +119,10 @@ public class SQLiteActions {
 
         TablaDatos row = null;
         listaTablaDatos = new ArrayList<TablaDatos>();
-        String args[]={grupo_id.toString()};
+        String args[]={registro_id.toString()};
 
         try {
-            Cursor cursor = db.rawQuery(Querys.SELECT_FROM_DATOS_BY_GRUPO_ID, args);
+            Cursor cursor = db.rawQuery(Querys.SELECT_FROM_DATOS_BY_REGISTRO_ID, args);
 
             while (cursor.moveToNext()) {
                 row = new TablaDatos();
@@ -132,26 +132,26 @@ public class SQLiteActions {
                 row.setPotencia(cursor.getDouble(4));
                 row.setEnergia(cursor.getDouble(5));
 
-                int grupo = cursor.getInt(6);
-                row.setGrupoID(grupo);
-                row.setFecha(getFechaGrupo(grupo));
+                int registro = cursor.getInt(6);
+                row.setRegistroID(registro);
+                row.setFecha(getFechaRegistro(registro));
 
                 listaTablaDatos.add(row);
             }
         }
         catch (Exception e){
-            Log.i(TAG, "getGroupByID: Operacion fallida");
+            Log.i(TAG, "getRegisterByID: Operacion fallida");
         }
 
         db.close();
         return listaTablaDatos;
     }
 
-    public boolean createDocument(Uri uri, Integer grupo_id){
+    public boolean createDocument(Uri uri, Integer registro_id){
         db = conn.getWritableDatabase();
         StringBuilder contenido = new StringBuilder("Tiempo,Voltaje,Corriente,Potencia,Energia\n"); //se usa para crear una cadena a partes
 
-        ArrayList<TablaDatos> listaTablaDatos = readGroupFromTablaDatos(grupo_id);
+        ArrayList<TablaDatos> listaTablaDatos = readRegisterFromTablaDatos(registro_id);
 
         for (int i = 0; i < listaTablaDatos.size(); i++) {
             contenido.append(listaTablaDatos.get(i).getTiempo().toString()).append(","); //TIEMPO
