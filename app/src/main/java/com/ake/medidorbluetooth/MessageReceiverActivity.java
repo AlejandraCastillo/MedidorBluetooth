@@ -49,13 +49,13 @@ public class MessageReceiverActivity extends AppCompatActivity {
         gaugeEnergia = findViewById(R.id.gauge_energia);
 
         actions = new SQLiteActions(this);
-        registro = 9;
+        registro = 3;
         Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + registro + "   Fecha: " + actions.getDate("dd-MM-yyyy"));
 
-        double v = 29.55;
-        double c = 1.87;
-        double p = 55.2;
-        double e = 9.9;
+        double v = 46.30;
+        double c = 7.5;
+        double p = 347.25;
+        double e = 3.23;
 
         gaugeVoltaje.setValue(v);
         gaugeCorriente.setValue(c);
