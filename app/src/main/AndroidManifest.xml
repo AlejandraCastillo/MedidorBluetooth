@@ -16,9 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MedidorBluetooth">
-        <activity android:name=".MessageReceiverActivity"/>
-        <activity android:name=".DownloadActivity" />
-         <activity android:name=".ConnectActivity" />
+        <activity android:name=".MessageReceiverActivity"
+            android:parentActivityName=".ConnectActivity"/>
+        <activity android:name=".DownloadActivity"
+            android:parentActivityName=".MainActivity"/>
+         <activity android:name=".ConnectActivity"
+             android:parentActivityName=".MainActivity"/>
          <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

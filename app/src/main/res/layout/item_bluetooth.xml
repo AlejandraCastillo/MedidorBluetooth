@@ -21,6 +21,7 @@
     <TextView
         android:id="@+id/tv_nombre"
         android:layout_width="wrap_content"
+        android:textColor="@color/TextColor"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/item_download_padding"
         android:text="Nombre"
@@ -34,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00:00:00:00:00:00"
+        android:textColor="@color/TextColor"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/tv_nombre"
         app:layout_constraintTop_toBottomOf="@id/tv_nombre" />

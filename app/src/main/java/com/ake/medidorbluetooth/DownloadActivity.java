@@ -18,6 +18,7 @@ import com.ake.medidorbluetooth.recycleview_download.OnClickListenerDownload;
 import com.ake.medidorbluetooth.recycleview_download.RecycleViewDownloadAdapter;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DownloadActivity extends AppCompatActivity implements OnClickListenerDownload {
 
@@ -38,7 +39,7 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        getSupportActionBar().setTitle(TAG);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Descargas");
 
         recyclerView = findViewById(R.id.rv_descargas);
 

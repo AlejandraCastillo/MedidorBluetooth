@@ -1,9 +1,16 @@
 package com.ake.medidorbluetooth.buetooth_utils;
 
+import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.ake.medidorbluetooth.recycleview_bluetooth.OnClickListenerBluetooth;
 import com.ake.medidorbluetooth.recycleview_bluetooth.RecycleViewBluetoothAdapter;
@@ -20,9 +27,6 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
 
     public RecycleViewBluetoothAdapter adapterBondedDevices;
     public RecycleViewBluetoothAdapter adapterDiscoveryDevices;
-
-    public static final int BONDED_DEVICES = 1;
-    public static final int DISCOVERY_DEVICES=2;
 
     public BluetoothUtils(Context context) {
         this.context = context;

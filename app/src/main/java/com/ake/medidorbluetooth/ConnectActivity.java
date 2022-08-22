@@ -37,15 +37,15 @@ public class ConnectActivity extends AppCompatActivity {
     private ProgressBar pbBluetooth;
     private Button buttonBucar;
 
-    private static final int REQUEST_ACCESS_FINE_LOCATION = 1;
-
     private boolean discoveryFlag = false;
+
+    private static final int REQUEST_PERMISSION=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(TAG);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Bluetooth");
 
         swBluettoth = findViewById(R.id.sw_enable_bt);
         progressBar = findViewById(R.id.progress_bar);
@@ -54,7 +54,7 @@ public class ConnectActivity extends AppCompatActivity {
         RecyclerView rvDiscoveryDevices = findViewById(R.id.rv_discoveryDevices);
         buttonBucar = findViewById(R.id.b_Busqueda);
 
-        bluetoothUtils = new BluetoothUtils(this);
+        bluetoothUtils = new BluetoothUtils( this);
 
         LinearLayoutManager bondedDevicesmanager = new LinearLayoutManager(this);
         rvBondedDevices.setLayoutManager(bondedDevicesmanager);
@@ -153,11 +153,15 @@ public class ConnectActivity extends AppCompatActivity {
 
     public void onClickBuscar(View view) {
         //Si no se tiene el permiso
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        String permiso = Manifest.permission.ACCESS_FINE_LOCATION;
+        if (ContextCompat.checkSelfPermission(this, permiso)
                 != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "onClickBuscar: Solicitando el permiso " + permiso);
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
+                    new String[]{permiso}, REQUEST_PERMISSION);
         }
+        else
+            Log.i(TAG, "getPermission: Permiso " + permiso + " obtenido");
         //Iniciar busqueda
         bluetoothUtils.discovery(discoveryFlag);
     }

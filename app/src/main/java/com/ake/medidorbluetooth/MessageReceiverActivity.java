@@ -66,7 +66,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
 
         actions = new SQLiteActions(this);
         registro = actions.addNewRegister();
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + registro + "   Fecha: " + actions.getDate("dd-MM-yyyy"));
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + registro + "   Fecha: " + actions.getDate("dd/MM/yy"));
         msgReceiver = new ConnectedThread(socket, handler);
         msgReceiver.start();
     }

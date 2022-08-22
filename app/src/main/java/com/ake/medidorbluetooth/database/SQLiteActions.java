@@ -78,14 +78,15 @@ public class SQLiteActions {
 
         Cursor cursor = db.rawQuery(Querys.SELECT_FROM_REGISTRO, null);
 
-        while(cursor.moveToNext()){
+        cursor.moveToLast();
+        do{
             registro = new TablaDatos();
             registro.setRegistroID(cursor.getInt(0));
             registro.setFecha(cursor.getString(1));
 
             listaTablaRegistro.add(registro);
 
-        }
+        }while(cursor.moveToPrevious());
 
         db.close();
         return listaTablaRegistro;
@@ -111,7 +112,7 @@ public class SQLiteActions {
         return fecha;
     }
 
-    public ArrayList<TablaDatos> readRegisterFromTablaDatos(@NotNull Integer registro_id){
+    private @NotNull ArrayList<TablaDatos> readRegisterFromTablaDatos(@NotNull Integer registro_id){
 
         ArrayList<TablaDatos> listaTablaDatos;
 
