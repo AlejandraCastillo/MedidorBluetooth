@@ -27,7 +27,6 @@
         android:text="Registro 1"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="@color/TextColor"
         app:layout_constraintStart_toEndOf="@id/ic_download"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +34,6 @@
         android:id="@+id/tv_fecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/TextColor"
         android:text="19-03-22"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/tv_registro"

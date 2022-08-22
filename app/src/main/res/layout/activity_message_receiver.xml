@@ -86,7 +86,6 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding_message_receiver"
                     android:text="VOLTAGE"
-                    android:textColor="@color/TextColor"
                     android:textSize="@dimen/text_size_label_message_receiver"
                     android:textStyle="bold" />
 
@@ -175,7 +174,6 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding_message_receiver"
                     android:text="CORRIENTE"
-                    android:textColor="@color/TextColor"
                     android:textSize="@dimen/text_size_label_message_receiver"
                     android:textStyle="bold" />
 
@@ -348,7 +346,6 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding_message_receiver"
                     android:text="Energia"
-                    android:textColor="@color/TextColor"
                     android:textSize="@dimen/text_size_label_message_receiver"
                     android:textStyle="bold" />
 
@@ -376,7 +373,6 @@
         android:layout_height="wrap_content"
         android:text="@string/laboratorio"
         android:textAlignment="center"
-        android:textColor="@color/TextColor"
         android:textSize="@dimen/text_size_label_message_receiver"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

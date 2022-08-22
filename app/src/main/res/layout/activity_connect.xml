@@ -15,7 +15,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/bluetooth"
-        android:textColor="@color/TextColor"
         app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -55,8 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="@string/dispositivos_sincronizados"
-            android:textColor="@color/TextColor" />
+            android:text="@string/dispositivos_sincronizados"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_bondedDevices"
@@ -71,8 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="@string/dispositivos_encontrados"
-            android:textColor="@color/TextColor" />
+            android:text="@string/dispositivos_encontrados"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_discoveryDevices"
