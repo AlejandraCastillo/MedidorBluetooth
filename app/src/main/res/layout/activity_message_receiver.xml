@@ -345,7 +345,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding_message_receiver"
-                    android:text="Energia"
+                    android:text="ENERGIA"
                     android:textSize="@dimen/text_size_label_message_receiver"
                     android:textStyle="bold" />
 

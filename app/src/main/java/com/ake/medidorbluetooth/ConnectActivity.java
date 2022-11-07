@@ -134,7 +134,7 @@ public class ConnectActivity extends AppCompatActivity {
 
         switch (state) {
             case BluetoothAdapter.STATE_ON:
-                swBluettoth.setChecked(true);
+                swBluettoth.setChecked(true); //Si el estado del BT es cambiado fuera de la app
                 if(bluetoothUtils.getBondedDevices())
                     rvBondedDevices.setAdapter(bluetoothUtils.adapterBondedDevices);
                 pbBluetooth.setVisibility(View.INVISIBLE);

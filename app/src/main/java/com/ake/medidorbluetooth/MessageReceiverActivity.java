@@ -11,6 +11,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.ake.medidorbluetooth.Servicio.ConnectedThread;
 import com.ake.medidorbluetooth.buetooth_utils.ShareSocket;
 import com.ake.medidorbluetooth.custom_gauge.CustomGauge;
 import com.ake.medidorbluetooth.database.SQLiteActions;
@@ -42,9 +43,6 @@ public class MessageReceiverActivity extends AppCompatActivity {
     private SQLiteActions actions;
     private int registro;
 
-    public static final int MESSAGE_READ = 0;
-    public static final int CONNECTION_LOST = 1;
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,63 +69,13 @@ public class MessageReceiverActivity extends AppCompatActivity {
         msgReceiver.start();
     }
 
-    public static class ConnectedThread extends Thread{
-        private final BluetoothSocket mmSocket;
-        private final Handler mmHandler;
-        private final BufferedReader mmBuffer;
-
-        public ConnectedThread(BluetoothSocket socket, Handler handler){
-            mmSocket = socket;
-            mmHandler = handler;
-            InputStream tmpInStream = null;
-
-            try{
-                tmpInStream = socket.getInputStream();
-            } catch (IOException e){
-                Log.e(TAG, "Error al crear el input stream", e);
-            }
-
-            InputStream mmInStream = tmpInStream;
-            mmBuffer = new BufferedReader(new InputStreamReader(mmInStream));
-        }
-
-        public void run(){
-            String line;
-            String regex = "1?2?3::\\d*(-\\d*\\.\\d*){4}::456";
-
-            while (mmSocket.isConnected()){
-                try {
-                    line = mmBuffer.readLine().replaceAll("\\s", "");
-                    if(line.matches(regex)){
-                        mmHandler.obtainMessage(MESSAGE_READ, line)
-                                .sendToTarget();
-                    }
-                } catch (IOException e){
-                    mmHandler.obtainMessage(CONNECTION_LOST)
-                            .sendToTarget();
-                    break;
-                }
-            }
-        }
-
-        public void cancel(){
-            try {
-                mmSocket.close();
-                Log.i(TAG, "Se ha cerrado el socket");
-            } catch (IOException e){
-                Log.e(TAG, "No se pudo cerrar el socket", e);
-            }
-        }
-
-    }
-
     private final Handler handler = new Handler(Looper.myLooper()) {
 //    private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         @SuppressLint("SetTextI18n")
         public void handleMessage(@NotNull Message msg){
             switch (msg.what){
-                case MESSAGE_READ:
+                case ConnectedThread.MESSAGE_READ:
                     String readMessage = (String) msg.obj;
 
                     int index = readMessage.indexOf("::");
@@ -186,7 +134,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
 
                     break;
 
-                case CONNECTION_LOST:
+                case ConnectedThread.CONNECTION_LOST:
                     Log.i(TAG, "Conexion perdida");
                     finish();
             }
