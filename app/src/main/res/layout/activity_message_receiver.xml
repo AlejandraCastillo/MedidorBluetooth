@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MessageReceiverActivity">
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/tv_grupo"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:padding="@dimen/padding_message_receiver"-->
-    <!--        android:text="Registro: 1"-->
-    <!--        android:textSize="@dimen/text_size_label_message_receiver"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/voltaje_layout"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/voltaje_layout"
         android:layout_width="@dimen/message_receiver_cardview_width"
@@ -85,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding_message_receiver"
-                    android:text="VOLTAGE"
+                    android:text="VOLTAJE"
                     android:textSize="@dimen/text_size_label_message_receiver"
                     android:textStyle="bold" />
 
@@ -345,7 +333,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding_message_receiver"
-                    android:text="Energia"
+                    android:text="ENERGIA"
                     android:textSize="@dimen/text_size_label_message_receiver"
                     android:textStyle="bold" />
 
