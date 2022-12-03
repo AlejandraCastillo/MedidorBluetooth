@@ -53,8 +53,9 @@ public class TablaDatos extends TablaRegistro {
         this.energia = energia;
     }
 
-    public void printRow(String tag){
+    public String printRow(String tag){
         String row = "T=" + tiempo + " V=" + voltaje + " I=" + corriente + " P=" + potencia + " E=" + energia;
         Log.i(tag, row);
+        return row;
     }
 }

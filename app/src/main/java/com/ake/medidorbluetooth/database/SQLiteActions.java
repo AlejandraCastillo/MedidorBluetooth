@@ -51,6 +51,18 @@ public class SQLiteActions {
         return registro;
     }
 
+    public int getLastRegister(){
+        db = conn.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(Querys.SELECT_FROM_REGISTRO, null);
+
+        cursor.moveToLast();
+        int registro = cursor.getInt(0);
+
+        db.close();
+        return registro;
+    }
+
     public void addnewDataRow(@NotNull TablaDatos row){
         db = conn.getWritableDatabase();
 
