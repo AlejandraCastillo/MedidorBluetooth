@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
@@ -29,7 +30,7 @@ public class SQLiteActions {
 
     public SQLiteActions(Context context) {
         this.context = context;
-        conn = new ConnectionSQLiteHelper(context, Querys.DB_DATOS, null, 2);
+        conn = new ConnectionSQLiteHelper(context, Querys.DB_DATOS, null, 4);
     }
 
     public static @NotNull String getDate(String formato){
@@ -57,7 +58,12 @@ public class SQLiteActions {
         Cursor cursor = db.rawQuery(Querys.SELECT_FROM_REGISTRO, null);
 
         cursor.moveToLast();
-        int registro = cursor.getInt(0);
+        int registro;
+        try{
+            registro = cursor.getInt(0);
+        }catch (CursorIndexOutOfBoundsException e){
+            registro = 0;
+        }
 
         db.close();
         return registro;
@@ -91,14 +97,19 @@ public class SQLiteActions {
         Cursor cursor = db.rawQuery(Querys.SELECT_FROM_REGISTRO, null);
 
         cursor.moveToLast();
-        do{
-            registro = new TablaDatos();
-            registro.setRegistroID(cursor.getInt(0));
-            registro.setFecha(cursor.getString(1));
 
-            listaTablaRegistro.add(registro);
+        try{
+            do {
+                registro = new TablaDatos();
+                registro.setRegistroID(cursor.getInt(0));
+                registro.setFecha(cursor.getString(1));
 
-        }while(cursor.moveToPrevious());
+                listaTablaRegistro.add(registro);
+
+            } while (cursor.moveToPrevious());
+        }catch(CursorIndexOutOfBoundsException e){
+            Log.e(TAG, "La base de datos está vacia");
+        }
 
         db.close();
         return listaTablaRegistro;
@@ -190,6 +201,12 @@ public class SQLiteActions {
 
         db.close();
         return true;
+    }
+
+    public void borrarBD(){
+        db = conn.getWritableDatabase();
+        db.execSQL(Querys.DELETE_FROM_TABLA_REGISTRO);
+        db.execSQL(Querys.DELETE_FROM_TABLA_DATOS);
     }
 
 }

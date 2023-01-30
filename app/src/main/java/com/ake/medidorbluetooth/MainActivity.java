@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothUtils;
+import com.ake.medidorbluetooth.database.SQLiteActions;
 
 import java.util.Objects;
 
@@ -34,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
             TextView textView = findViewById(R.id.tv_bienvenido);
             textView.setText(R.string.no_bluetooth);
         }
+
+//        SQLiteActions actions = new SQLiteActions(this);
+//        actions.borrarBD();
+
 
     }
 
