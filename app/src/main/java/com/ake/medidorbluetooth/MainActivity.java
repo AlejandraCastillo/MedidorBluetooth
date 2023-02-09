@@ -4,13 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothUtils;
-import com.ake.medidorbluetooth.database.SQLiteActions;
 
 import java.util.Objects;
 
@@ -25,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(" ");
 
-        BluetoothUtils bluetoothUtils = new BluetoothUtils(this);
+        BluetoothUtils bluetoothUtils = new BluetoothUtils(this, this);
 
         if (!bluetoothUtils.bluetoothAdapterExist()){
             Button connectButton = findViewById(R.id.b_conectar);

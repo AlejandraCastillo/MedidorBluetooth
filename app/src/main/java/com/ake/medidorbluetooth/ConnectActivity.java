@@ -2,8 +2,6 @@ package com.ake.medidorbluetooth;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,12 +12,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothUtils;
@@ -31,15 +28,13 @@ public class ConnectActivity extends AppCompatActivity {
 
     private BluetoothUtils bluetoothUtils;
 
-    private SwitchCompat swBluettoth;
+    private SwitchCompat swBluetooth;
     private RecyclerView rvBondedDevices;
     private ProgressBar progressBar;
     private ProgressBar pbBluetooth;
-    private Button buttonBucar;
+    private Button buttonBuscar;
 
     private boolean discoveryFlag = false;
-
-    private static final int REQUEST_PERMISSION=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,43 +42,40 @@ public class ConnectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connect);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Bluetooth");
 
-        swBluettoth = findViewById(R.id.sw_enable_bt);
+        swBluetooth = findViewById(R.id.sw_enable_bt);
         progressBar = findViewById(R.id.progress_bar);
         pbBluetooth = findViewById(R.id.pb_buetooth);
         rvBondedDevices = findViewById(R.id.rv_bondedDevices);
         RecyclerView rvDiscoveryDevices = findViewById(R.id.rv_discoveryDevices);
-        buttonBucar = findViewById(R.id.b_Busqueda);
+        buttonBuscar = findViewById(R.id.b_Busqueda);
 
-        bluetoothUtils = new BluetoothUtils( this);
+        bluetoothUtils = new BluetoothUtils( this, this);
 
-        LinearLayoutManager bondedDevicesmanager = new LinearLayoutManager(this);
-        rvBondedDevices.setLayoutManager(bondedDevicesmanager);
+        LinearLayoutManager bondedDevicesManager = new LinearLayoutManager(this);
+        rvBondedDevices.setLayoutManager(bondedDevicesManager);
         rvBondedDevices.setAdapter(bluetoothUtils.adapterBondedDevices);
 
-        LinearLayoutManager discoveryDevicesmanager = new LinearLayoutManager(this);
-        rvDiscoveryDevices.setLayoutManager(discoveryDevicesmanager);
+        LinearLayoutManager discoveryDevicesManager = new LinearLayoutManager(this);
+        rvDiscoveryDevices.setLayoutManager(discoveryDevicesManager);
         rvDiscoveryDevices.setAdapter(bluetoothUtils.adapterDiscoveryDevices);
 
         //Verificar el estado del bluetooth
         if(bluetoothUtils.bluetoothAdapterIsEnable()){
-            swBluettoth.setChecked(true);
+            swBluetooth.setChecked(true);
             bluetoothUtils.getBondedDevices();
         }
 
         //Switch
-        swBluettoth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked) {
-                    pbBluetooth.setVisibility(View.VISIBLE);
-                    swBluettoth.setVisibility(View.INVISIBLE);
-                    bluetoothUtils.enableBluetoothAdapter();
-                }
-                else {
-                    pbBluetooth.setVisibility(View.VISIBLE);
-                    swBluettoth.setVisibility(View.INVISIBLE);
-                    bluetoothUtils.disableBluetoothAdapter();
-                }
+        swBluetooth.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if(isChecked) {
+                pbBluetooth.setVisibility(View.VISIBLE);
+                swBluetooth.setVisibility(View.INVISIBLE);
+                bluetoothUtils.enableBluetoothAdapter();
+            }
+            else {
+                pbBluetooth.setVisibility(View.VISIBLE);
+                swBluetooth.setVisibility(View.INVISIBLE);
+                bluetoothUtils.disableBluetoothAdapter();
             }
         });
 
@@ -108,11 +100,14 @@ public class ConnectActivity extends AppCompatActivity {
                 case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
                     Log.i(TAG, "onReceive: Iniciar busqueda");
                     discoveryFlag = true;
-                    buttonBucar.setText(R.string.cancelar_busqueda);
+                    buttonBuscar.setText(R.string.cancelar_busqueda);
                     progressBar.setVisibility(View.VISIBLE);
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        bluetoothUtils.checkPermission(Manifest.permission.BLUETOOTH_CONNECT);
+                    }
                     Log.i(TAG, "onReceive: Dispositivo " + device.getName() + " encontrado");
                     bluetoothUtils.addNewDevice(device);
                     break;
@@ -120,7 +115,7 @@ public class ConnectActivity extends AppCompatActivity {
                     Log.i(TAG, "onReceive: Cancelar busqueda");
                     discoveryFlag = false;
                     progressBar.setVisibility(View.INVISIBLE);
-                    buttonBucar.setText(R.string.inciar_busqueda);
+                    buttonBuscar.setText(R.string.inciar_busqueda);
                     break;
             }
 
@@ -134,18 +129,18 @@ public class ConnectActivity extends AppCompatActivity {
 
         switch (state) {
             case BluetoothAdapter.STATE_ON:
-                swBluettoth.setChecked(true); //Si el estado del BT es cambiado fuera de la app
+                swBluetooth.setChecked(true); //Si el estado del BT es cambiado fuera de la app
                 if(bluetoothUtils.getBondedDevices())
                     rvBondedDevices.setAdapter(bluetoothUtils.adapterBondedDevices);
                 pbBluetooth.setVisibility(View.INVISIBLE);
-                swBluettoth.setVisibility(View.VISIBLE);
+                swBluetooth.setVisibility(View.VISIBLE);
                 break;
             case BluetoothAdapter.STATE_OFF:
-                swBluettoth.setChecked(false);
+                swBluetooth.setChecked(false);
                 bluetoothUtils.adapterBondedDevices.clear();
                 bluetoothUtils.adapterDiscoveryDevices.clear();
                 pbBluetooth.setVisibility(View.INVISIBLE);
-                swBluettoth.setVisibility(View.VISIBLE);
+                swBluetooth.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -153,15 +148,7 @@ public class ConnectActivity extends AppCompatActivity {
 
     public void onClickBuscar(View view) {
         //Si no se tiene el permiso
-        String permiso = Manifest.permission.ACCESS_FINE_LOCATION;
-        if (ContextCompat.checkSelfPermission(this, permiso)
-                != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "onClickBuscar: Solicitando el permiso " + permiso);
-            ActivityCompat.requestPermissions(this,
-                    new String[]{permiso}, REQUEST_PERMISSION);
-        }
-        else
-            Log.i(TAG, "getPermission: Permiso " + permiso + " obtenido");
+        bluetoothUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         //Iniciar busqueda
         bluetoothUtils.discovery(discoveryFlag);
     }

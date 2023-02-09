@@ -1,10 +1,14 @@
 package com.ake.medidorbluetooth.buetooth_utils;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,14 +18,20 @@ import java.io.IOException;
 import java.util.UUID;
 
 class ConnectAsyncTask extends AsyncTask<Void, Void, Boolean> {
-    private  static final String TAG = "ConnectAsyncTask";
+    private static final String TAG = "ConnectAsyncTask";
 
     private final BluetoothSocket socket;
-    private Context context;
+    @SuppressLint("StaticFieldLeak")
+    private final Context context;
     private String name;
+    private final BluetoothUtils bluetoothUtils;
 
-    public ConnectAsyncTask(BluetoothDevice device, Context context){
+    public ConnectAsyncTask(BluetoothDevice device, Context context, Activity activity) {
         BluetoothSocket tempSocket = null;
+        bluetoothUtils = new BluetoothUtils(context, activity);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            bluetoothUtils.checkPermission(Manifest.permission.BLUETOOTH_CONNECT);
+        }
         this.context = context;
         this.name = device.getName();
 
@@ -29,8 +39,7 @@ class ConnectAsyncTask extends AsyncTask<Void, Void, Boolean> {
         try {
             UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
             tempSocket = device.createRfcommSocketToServiceRecord(uuid);
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             Log.e(TAG, "No se pudo crear el socket", e);
         }
         socket = tempSocket;
@@ -39,7 +48,10 @@ class ConnectAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... voids) {
-        try{
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                bluetoothUtils.checkPermission(Manifest.permission.BLUETOOTH_CONNECT);
+            }
             socket.connect();
         }
         catch (IOException connectException){

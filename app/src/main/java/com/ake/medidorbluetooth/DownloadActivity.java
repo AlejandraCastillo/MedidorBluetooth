@@ -55,15 +55,12 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
 
         descargaLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if(result.getResultCode() == Activity.RESULT_OK){
-                            Intent data = result.getData();
-                            int registro_id = getIntent().getExtras().getInt("registro_id");
-                            if(data != null && data.getData() != null){
-                                actions.createDocument(data.getData(), registro_id);
-                            }
+                result -> {
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Intent data = result.getData();
+                        int registro_id = getIntent().getExtras().getInt("registro_id");
+                        if(data != null && data.getData() != null){
+                            actions.createDocument(data.getData(), registro_id);
                         }
                     }
                 }
