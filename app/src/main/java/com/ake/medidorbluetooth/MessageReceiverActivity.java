@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 
+import com.ake.medidorbluetooth.Servicio.MyObserver;
 import com.ake.medidorbluetooth.Servicio.MyService;
 import com.ake.medidorbluetooth.custom_gauge.CustomGauge;
 import com.ake.medidorbluetooth.database.SQLiteActions;
@@ -66,6 +67,9 @@ public class MessageReceiverActivity extends AppCompatActivity {
         serviceIntent = new Intent(this, MyService.class);
         startService(serviceIntent);
         bindService(serviceIntent, connection, BIND_AUTO_CREATE);
+
+        MyObserver observer = new MyObserver(this);
+        getLifecycle().addObserver(observer);
     }
 
     @Override
