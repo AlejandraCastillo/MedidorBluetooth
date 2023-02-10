@@ -100,10 +100,8 @@
 
             <TextView
                 android:id="@+id/tv_voltaje"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_textView_mr"
-                android:layout_marginEnd="@dimen/margin_textView_mr"
                 android:background="@color/gaugeTextColor"
                 android:padding="@dimen/padding_message_receiver"
                 android:text="00.00 V"
@@ -212,10 +210,8 @@
 
             <TextView
                 android:id="@+id/tv_corriente"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_textView_mr"
-                android:layout_marginEnd="@dimen/margin_textView_mr"
                 android:background="@color/gaugeTextColor"
                 android:padding="@dimen/padding_message_receiver"
                 android:text="0.00 A"
@@ -324,10 +320,8 @@
 
             <TextView
                 android:id="@+id/tv_potencia"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_textView_mr"
-                android:layout_marginEnd="@dimen/margin_textView_mr"
                 android:background="@color/gaugeTextColor"
                 android:padding="@dimen/padding_message_receiver"
                 android:text="000.00 W"
@@ -434,10 +428,8 @@
 
             <TextView
                 android:id="@+id/tv_energia"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_textView_mr"
-                android:layout_marginEnd="@dimen/margin_textView_mr"
                 android:background="#f2a289"
                 android:padding="@dimen/padding_message_receiver"
                 android:text="0.00 Wh"
