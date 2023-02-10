@@ -23,7 +23,6 @@ class ConnectAsyncTask extends AsyncTask<Void, Void, Boolean> {
     private final BluetoothSocket socket;
     @SuppressLint("StaticFieldLeak")
     private final Context context;
-    private String name;
     private final BluetoothUtils bluetoothUtils;
 
     public ConnectAsyncTask(BluetoothDevice device, Context context, Activity activity) {
@@ -33,7 +32,6 @@ class ConnectAsyncTask extends AsyncTask<Void, Void, Boolean> {
             bluetoothUtils.checkPermission(Manifest.permission.BLUETOOTH_CONNECT);
         }
         this.context = context;
-        this.name = device.getName();
 
         //Creamos el socket
         try {

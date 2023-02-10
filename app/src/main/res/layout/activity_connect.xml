@@ -15,7 +15,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/bluetooth"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,76 +37,74 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_bluetooth" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_pairedDevices"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="vertical"
+        android:layout_marginBottom="10dp"
+        android:text="@string/dispositivos_sincronizados"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_bluetooth">
+        app:layout_constraintTop_toBottomOf="@id/tv_bluetooth" />
 
-        <TextView
-            android:id="@+id/tv_pairedDevices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/dispositivos_sincronizados"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bondedDevices"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/recycle_view_padding"
+        android:layout_marginBottom="@dimen/recycle_view_padding"
+        app:layout_constraintBottom_toTopOf="@id/tv_discoveryDevices"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_pairedDevices"
+        tools:listitem="@layout/item_bluetooth" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_bondedDevices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/recycle_view_padding"
-            android:layout_marginBottom="@dimen/recycle_view_padding"
-            tools:listitem="@layout/item_bluetooth" />
-
-        <TextView
-            android:id="@+id/tv_discoveryDevices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/dispositivos_encontrados"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_discoveryDevices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/recycle_view_padding"
-            android:layout_marginBottom="@dimen/recycle_view_padding"
-            tools:listitem="@layout/item_bluetooth" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_discoveryDevices"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginBottom="10dp"
+        android:text="@string/dispositivos_encontrados"
+        app:layout_constraintBottom_toTopOf="@id/b_Busqueda"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_pairedDevices" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_discoveryDevices"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/recycle_view_padding"
+        android:layout_marginBottom="@dimen/recycle_view_padding"
+        app:layout_constraintBottom_toTopOf="@id/b_Busqueda"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_discoveryDevices"
+        tools:listitem="@layout/item_bluetooth" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/b_Busqueda"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/b_Busqueda"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:onClick="onClickBuscar"
+        android:text="@string/inciar_busqueda"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/b_Busqueda"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:onClick="onClickBuscar"
-            android:text="@string/inciar_busqueda" />
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.ake.medidorbluetooth.recycleview_download;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,8 @@ import java.util.Date;
 public class RecycleViewDownloadAdapter extends RecyclerView.Adapter<RecycleViewDownloadAdapter.ViewHolder>{
     private static final String TAG = "RecycleViewDownloadAdapter";
 
-    private ArrayList<TablaRegistro> list;
-    private OnClickListenerDownload mListener;
+    private final ArrayList<TablaRegistro> list;
+    private final OnClickListenerDownload mListener;
 
     public RecycleViewDownloadAdapter(ArrayList<TablaRegistro> list, OnClickListenerDownload listener) {
         this.list = list;
@@ -36,20 +37,22 @@ public class RecycleViewDownloadAdapter extends RecyclerView.Adapter<RecycleView
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TablaRegistro registro = list.get(position);
         holder.setOnClickListener(mListener, registro);
         holder.getTvRegistro().setText("Registro" + registro.getRegistroID());
 
-        DateFormat formato = new SimpleDateFormat("yy-MM-dd");
+        @SuppressLint("SimpleDateFormat") DateFormat formato = new SimpleDateFormat("yy-MM-dd");
         Date fecha = null;
         try {
             fecha = formato.parse(registro.getFecha());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DateFormat formato1 = new SimpleDateFormat("dd/MM/yy");
+        @SuppressLint("SimpleDateFormat") DateFormat formato1 = new SimpleDateFormat("dd/MM/yy");
+        assert fecha != null;
         holder.getTvFecha().setText(formato1.format(fecha));
 
     }
@@ -60,10 +63,10 @@ public class RecycleViewDownloadAdapter extends RecyclerView.Adapter<RecycleView
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView tvRegistro;
-        private TextView tvFecha;
+        private final TextView tvRegistro;
+        private final TextView tvFecha;
 
-        private View view;
+        private final View view;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

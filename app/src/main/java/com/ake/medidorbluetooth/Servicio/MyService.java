@@ -9,7 +9,6 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -33,7 +32,6 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MyService extends Service {
@@ -44,9 +42,8 @@ public class MyService extends Service {
     public static final int CONNECTION_LOST = 3;
     private static final String CHANNEL_ID = "100";
 
-    private IBinder myBinder = new MyBinder();
+    private final IBinder myBinder = new MyBinder();
     private boolean isBind = false;
-    private boolean isDestroyed = false;
 
     BluetoothSocket socket;
     private SQLiteActions actions;
@@ -80,13 +77,7 @@ public class MyService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-        try {
-            socket.close();
-            Log.i(TAG, "Se ha cerrado el socket");
-        } catch (IOException e){
-            Log.e(TAG, "No se pudo cerrar el socket", e);
-        }
-        isDestroyed = true;
+        ShareSocket.closeSocket();
         executorService.shutdown();
     }
 
@@ -111,17 +102,15 @@ public class MyService extends Service {
     }
 
     private Notification showNotification(String content){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            //Solo Android Oreo o versiones superiores
-            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-                    .createNotificationChannel(
-                            new NotificationChannel(
-                                    CHANNEL_ID,
-                                    "ForegroundService",
-                                    NotificationManager.IMPORTANCE_HIGH
-                            )
-                    );
-        }
+        //Solo Android Oreo o versiones superiores
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                .createNotificationChannel(
+                        new NotificationChannel(
+                                CHANNEL_ID,
+                                "ForegroundService",
+                                NotificationManager.IMPORTANCE_HIGH
+                        )
+                );
 
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Registro " + registro)
@@ -135,15 +124,14 @@ public class MyService extends Service {
     private void updateNotification(String data){
         Notification notification = showNotification(data);
         NotificationManager notificationManager =
-                (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
     private void doTask(){
-        AtomicInteger data = new AtomicInteger();
         executorService = Executors.newSingleThreadExecutor();
 
-        AtomicReference<String> line = new AtomicReference<String>();
+        AtomicReference<String> line = new AtomicReference<>();
         String regex = "1?2?3::\\d*(-\\d*\\.\\d*){4}::456";
 
         InputStream tmpInStream = null;
@@ -222,7 +210,7 @@ public class MyService extends Service {
 
                     updateNotification(row.printRow(TAG));
 
-                if(isBind==true){
+                if(isBind){
                     MessageReceiverActivity.gaugeVoltaje.setValue(v);
                     MessageReceiverActivity.gaugeCorriente.setValue(c);
                     MessageReceiverActivity.gaugePotencia.setValue(p);
@@ -242,7 +230,7 @@ public class MyService extends Service {
                     break;
 
                 case CONNECTION_LOST:
-                    Log.i(TAG, "Conexion perdida");
+                    Log.i(TAG, "Conexión perdida");
 //                    finish();
             }
 

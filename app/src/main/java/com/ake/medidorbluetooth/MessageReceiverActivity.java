@@ -32,9 +32,6 @@ public class MessageReceiverActivity extends AppCompatActivity {
     public static CustomGauge gaugePotencia;
     public static CustomGauge gaugeEnergia;
 
-    private SQLiteActions actions;
-    private int registro;
-
     Intent serviceIntent;
     boolean isBounded;
     MyService myService;
@@ -58,8 +55,8 @@ public class MessageReceiverActivity extends AppCompatActivity {
         gaugePotencia = findViewById(R.id.gauge_potencia);
         gaugeEnergia = findViewById(R.id.gauge_energia);
 
-        actions = new SQLiteActions(this);
-        registro = actions.getLastRegister() + 1;
+        SQLiteActions actions = new SQLiteActions(this);
+        int registro = actions.getLastRegister() + 1;
         Objects.requireNonNull(getSupportActionBar()).setTitle("Registro: " + registro + "   Fecha: " + actions.getDate("dd/MM/yy"));
 
         myService = new MyService();
@@ -76,7 +73,7 @@ public class MessageReceiverActivity extends AppCompatActivity {
         stopService(serviceIntent);
     }
 
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             MyService.MyBinder binder = (MyService.MyBinder) iBinder;

@@ -34,8 +34,8 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
         this.activity = activity;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        adapterBondedDevices = new RecycleViewBluetoothAdapter(this);
-        adapterDiscoveryDevices = new RecycleViewBluetoothAdapter(this);
+        adapterBondedDevices = new RecycleViewBluetoothAdapter(this, context, activity);
+        adapterDiscoveryDevices = new RecycleViewBluetoothAdapter(this, context, activity);
     }
 
     public boolean bluetoothAdapterExist() {

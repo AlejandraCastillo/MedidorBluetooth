@@ -1,6 +1,11 @@
 package com.ake.medidorbluetooth.recycleview_bluetooth;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +16,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ake.medidorbluetooth.R;
+import com.ake.medidorbluetooth.buetooth_utils.BluetoothUtils;
 
 import java.util.ArrayList;
 
-public class RecycleViewBluetoothAdapter extends RecyclerView.Adapter<RecycleViewBluetoothAdapter.ViewHolder>{
+public class RecycleViewBluetoothAdapter extends RecyclerView.Adapter<RecycleViewBluetoothAdapter.ViewHolder> {
     private static final String TAG = "RecycleViewBluetoothAdapter";
 
     public ArrayList<BluetoothDevice> list;
-    private OnClickListenerBluetooth mListener;
+    private final OnClickListenerBluetooth mListener;
+    private final Context context;
+    private final Activity activity;
 
-    public RecycleViewBluetoothAdapter(OnClickListenerBluetooth listener) {
+    public RecycleViewBluetoothAdapter(OnClickListenerBluetooth listener, Context context, Activity activity) {
         list = new ArrayList<>();
+        this.context = context;
+        this.activity = activity;
         this.mListener = listener;
     }
 
@@ -37,6 +47,9 @@ public class RecycleViewBluetoothAdapter extends RecyclerView.Adapter<RecycleVie
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BluetoothDevice device = list.get(position);
         holder.setClickListener(mListener, device);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            new BluetoothUtils(context, activity).checkPermission(Manifest.permission.BLUETOOTH_CONNECT);
+        }
         holder.getTvNombre().setText(device.getName());
         holder.getTvAddress().setText(device.getAddress());
 
@@ -47,24 +60,29 @@ public class RecycleViewBluetoothAdapter extends RecyclerView.Adapter<RecycleVie
         return list.size();
     }
 
-    public void add(BluetoothDevice device){
-        if(!list.contains(device)){
+    public void add(BluetoothDevice device) {
+
+        if (!list.contains(device)) {
             list.add(device);
-            notifyItemInserted(list.size()-1);
+            notifyItemInserted(list.size() - 1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                new BluetoothUtils(context, activity).checkPermission(Manifest.permission.BLUETOOTH_CONNECT);
+            }
             Log.i(TAG, "onReceive: Dispositivo " + device.getName() + device.getAddress() + " agregado");
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void clear(){
         list.clear();
         notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView tvNombre;
-        private TextView tvAddress;
+        private final TextView tvNombre;
+        private final TextView tvAddress;
 
-        private View view;
+        private final View view;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
