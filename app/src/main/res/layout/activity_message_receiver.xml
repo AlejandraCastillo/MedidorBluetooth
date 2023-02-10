@@ -8,21 +8,29 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/voltaje_layout"
-        android:layout_width="@dimen/message_receiver_cardview_width"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/padding_message_receiver"
+        android:layout_marginTop="@dimen/margin_top_message_receiver"
+        android:layout_marginStart="@dimen/margin_side_message_receiver"
+        android:layout_marginEnd="@dimen/margin_side_message_receiver"
         app:cardElevation="20dp"
         app:layout_constraintBottom_toTopOf="@+id/corriente_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <FrameLayout
+                android:id="@+id/fl_voltaje"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.ake.medidorbluetooth.custom_gauge.CustomGauge
                     android:id="@+id/gauge_voltaje"
@@ -63,54 +71,62 @@
 
             </FrameLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/label_voltaje"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:padding="@dimen/padding_message_receiver"
+                android:text="VOLTAGE"
+                android:textSize="@dimen/text_size_label_message_receiver"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tv_voltaje"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fl_voltaje"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/label_voltaje"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_message_receiver"
-                    android:text="VOLTAGE"
-                    android:textSize="@dimen/text_size_label_message_receiver"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_voltaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/gaugeTextColor"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="00.00 V"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_message_receiver"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fl_voltaje"
+                app:layout_constraintTop_toBottomOf="@id/label_voltaje" />
 
-                <TextView
-                    android:id="@+id/tv_voltaje"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gaugeTextColor"
-                    android:padding="@dimen/padding_message_receiver"
-                    android:text="00.00 V"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_message_receiver" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/corriente_layout"
-        android:layout_width="@dimen/message_receiver_cardview_width"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:cardElevation="20dp"
+        android:padding="@dimen/padding_message_receiver"
+        android:layout_marginTop="@dimen/margin_top_message_receiver"
+        android:layout_marginStart="@dimen/margin_side_message_receiver"
+        android:layout_marginEnd="@dimen/margin_side_message_receiver"
         app:layout_constraintBottom_toTopOf="@+id/potencia_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/voltaje_layout">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <FrameLayout
+                android:id="@+id/fl_corriente"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.ake.medidorbluetooth.custom_gauge.CustomGauge
                     android:id="@+id/gauge_corriente"
@@ -151,53 +167,62 @@
 
             </FrameLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/label_corriente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:padding="@dimen/padding_message_receiver"
+                android:text="CORRIENTE"
+                android:textSize="@dimen/text_size_label_message_receiver"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tv_corriente"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fl_corriente"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/label_corriente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_message_receiver"
-                    android:text="CORRIENTE"
-                    android:textSize="@dimen/text_size_label_message_receiver"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_corriente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/gaugeTextColor"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="0.00 A"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_message_receiver"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fl_corriente"
+                app:layout_constraintTop_toBottomOf="@id/label_corriente" />
 
-                <TextView
-                    android:id="@+id/tv_corriente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gaugeTextColor"
-                    android:padding="@dimen/padding_message_receiver"
-                    android:text="0.00 A"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_message_receiver" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/potencia_layout"
-        android:layout_width="@dimen/message_receiver_cardview_width"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/padding_message_receiver"
+        android:layout_marginTop="@dimen/margin_top_message_receiver"
+        android:layout_marginStart="@dimen/margin_side_message_receiver"
+        android:layout_marginEnd="@dimen/margin_side_message_receiver"
         app:cardElevation="20dp"
         app:layout_constraintBottom_toTopOf="@+id/energia_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/corriente_layout">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <FrameLayout
+                android:id="@+id/fl_potencia"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.ake.medidorbluetooth.custom_gauge.CustomGauge
                     android:id="@+id/gauge_potencia"
@@ -238,53 +263,62 @@
 
             </FrameLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/label_potencia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:padding="@dimen/padding_message_receiver"
+                android:text="POTENCIA"
+                app:layout_constraintBottom_toTopOf="@id/tv_potencia"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fl_potencia"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/text_size_label_message_receiver"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/label_potencia"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_message_receiver"
-                    android:text="POTENCIA"
-                    android:textSize="@dimen/text_size_label_message_receiver"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_potencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fl_potencia"
+                app:layout_constraintTop_toBottomOf="@id/label_potencia"
+                android:background="@color/gaugeTextColor"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="000.00 W"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_message_receiver" />
 
-                <TextView
-                    android:id="@+id/tv_potencia"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gaugeTextColor"
-                    android:padding="@dimen/padding_message_receiver"
-                    android:text="000.00 W"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_message_receiver" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/energia_layout"
-        android:layout_width="@dimen/message_receiver_cardview_width"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:padding="@dimen/padding_message_receiver"
+        android:layout_marginTop="@dimen/margin_top_message_receiver"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_side_message_receiver"
+        android:layout_marginEnd="@dimen/margin_side_message_receiver"
         app:cardElevation="20dp"
         app:layout_constraintBottom_toTopOf="@id/label_desarrollado_en"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/potencia_layout">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <FrameLayout
+                android:id="@+id/fl_energia"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.ake.medidorbluetooth.custom_gauge.CustomGauge
                     android:id="@+id/gauge_energia"
@@ -323,41 +357,41 @@
                     android:textStyle="bold" />
             </FrameLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/label_energia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:padding="@dimen/padding_message_receiver"
+                android:text="ENERGIA"
+                app:layout_constraintBottom_toTopOf="@id/tv_energia"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fl_energia"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/text_size_label_message_receiver"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/label_energia"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_message_receiver"
-                    android:text="ENERGIA"
-                    android:textSize="@dimen/text_size_label_message_receiver"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_energia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#f2a289"
+                android:padding="@dimen/padding_message_receiver"
+                android:text="0.00 Wh"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fl_energia"
+                app:layout_constraintTop_toBottomOf="@id/label_energia"
+                android:textSize="@dimen/text_size_message_receiver" />
 
-                <TextView
-                    android:id="@+id/tv_energia"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#f2a289"
-                    android:padding="@dimen/padding_message_receiver"
-                    android:text="0.00 Wh"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_message_receiver" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
 
     <TextView
         android:id="@+id/label_desarrollado_en"
         android:layout_width="0dp"
+        android:paddingTop="@dimen/padding_message_receiver"
         android:layout_height="wrap_content"
         android:text="@string/laboratorio"
         android:textAlignment="center"
@@ -366,8 +400,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/energia_layout" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
