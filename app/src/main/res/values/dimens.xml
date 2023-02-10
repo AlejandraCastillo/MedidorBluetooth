@@ -13,4 +13,5 @@
     <dimen name="recycle_view_padding">8dp</dimen>
     <dimen name="margin_side_message_receiver">20dp</dimen>
     <dimen name="margin_top_message_receiver">5dp</dimen>
+    <dimen name="margin_textView_mr">10dp</dimen>
 </resources>
