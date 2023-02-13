@@ -107,7 +107,10 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
     }
 
     public void addNewDevice(BluetoothDevice device) {
-        if (!deviceAlreadyExists(device)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            checkPermission(Manifest.permission.BLUETOOTH_CONNECT);
+        }
+        if (!deviceAlreadyExists(device) && device.getName()!=null) {
             adapterDiscoveryDevices.add(device);
 //            adapterDiscoveryDevices.notifyDataSetChanged();
         }
