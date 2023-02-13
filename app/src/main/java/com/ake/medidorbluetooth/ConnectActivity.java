@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothUtils;
 
@@ -35,6 +36,7 @@ public class ConnectActivity extends AppCompatActivity {
     private Button buttonBuscar;
 
     private boolean discoveryFlag = false;
+    private boolean enableBTFlag = false; 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class ConnectActivity extends AppCompatActivity {
         //Verificar el estado del bluetooth
         if(bluetoothUtils.bluetoothAdapterIsEnable()){
             swBluetooth.setChecked(true);
+            enableBTFlag=true; 
             bluetoothUtils.getBondedDevices();
         }
 
@@ -134,6 +137,7 @@ public class ConnectActivity extends AppCompatActivity {
                     rvBondedDevices.setAdapter(bluetoothUtils.adapterBondedDevices);
                 pbBluetooth.setVisibility(View.INVISIBLE);
                 swBluetooth.setVisibility(View.VISIBLE);
+                enableBTFlag=true; 
                 break;
             case BluetoothAdapter.STATE_OFF:
                 swBluetooth.setChecked(false);
@@ -141,16 +145,20 @@ public class ConnectActivity extends AppCompatActivity {
                 bluetoothUtils.adapterDiscoveryDevices.clear();
                 pbBluetooth.setVisibility(View.INVISIBLE);
                 swBluetooth.setVisibility(View.VISIBLE);
+                enableBTFlag=false; 
                 break;
         }
 
     }
 
     public void onClickBuscar(View view) {
-        //Si no se tiene el permiso
-        bluetoothUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        //Iniciar busqueda
-        bluetoothUtils.discovery(discoveryFlag);
+        if(enableBTFlag){
+            bluetoothUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            bluetoothUtils.discovery(discoveryFlag);
+        }
+        else{
+            Toast.makeText(this, "El bluetooth está apagado", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
