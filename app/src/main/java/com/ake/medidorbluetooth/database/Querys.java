@@ -19,7 +19,7 @@ public class Querys {
     public static final String CREAR_TABLA_DATOS =
             "CREATE TABLE " + TABLA_DATOS + " (" +
                     _DATOS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    _TIEMPO + " REAL NOT NULL, " +
+                    _TIEMPO + " INTEGER NOT NULL, " +
                     _VOLTAJE + " REAL NOT NULL, " +
                     _CORRIENTE + " REAL NOT NULL, " +
                     _POTENCIA + " REAL NOT NULL, " +

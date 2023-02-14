@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -147,6 +148,7 @@ public class MyService extends Service {
                 while (socket.isConnected()){
                     try {
                         line.set(buffer.readLine().replaceAll("\\s", ""));
+                        Log.i(TAG, "doTask: " + line);
                         if(line.get().matches(regex)){
                             handler.obtainMessage(MESSAGE_READ, line)
                                     .sendToTarget();
@@ -180,7 +182,7 @@ public class MyService extends Service {
 
                     //Tiempo
                     index = aux.indexOf('-');
-                    int t = Integer.parseInt(aux.substring(0, index));
+                    long t = Long.parseLong(aux.substring(0, index));
                     row.setTiempo(t);
                     aux = aux.substring(index + 1);
 
@@ -231,7 +233,18 @@ public class MyService extends Service {
 
                 case CONNECTION_LOST:
                     Log.i(TAG, "Conexión perdida");
-//                    finish();
+                    Toast.makeText(getBaseContext(), "Conexión perdida", Toast.LENGTH_SHORT).show();
+                    if(isBind){
+                        MessageReceiverActivity.gaugeVoltaje.setValue(0);
+                        MessageReceiverActivity.gaugeCorriente.setValue(0);
+                        MessageReceiverActivity.gaugePotencia.setValue(0);
+                        MessageReceiverActivity.gaugeEnergia.setValue(0);
+
+                        MessageReceiverActivity.tvVoltage.setText("--.--");
+                        MessageReceiverActivity.tvCorriente.setText("--.--");
+                        MessageReceiverActivity.tvEnergia.setText("--.--");
+                        MessageReceiverActivity.tvPotencia.setText("--.--");
+                    }
             }
 
         }

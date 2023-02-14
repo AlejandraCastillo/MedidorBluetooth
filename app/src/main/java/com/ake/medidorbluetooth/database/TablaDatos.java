@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class TablaDatos extends TablaRegistro {
 
-    private Integer tiempo;
+    private Long tiempo;
     private Double voltaje;
     private Double corriente;
     private Double potencia;
@@ -13,11 +13,11 @@ public class TablaDatos extends TablaRegistro {
     public TablaDatos() {
     }
     
-    public Integer getTiempo() {
+    public Long getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(Integer tiempo) {
+    public void setTiempo(Long tiempo) {
         this.tiempo = tiempo;
     }
 

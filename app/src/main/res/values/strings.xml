@@ -3,7 +3,7 @@
     <string name="Bienvenida">¡Bienvenido!</string>
     <string name="boton_conectar">Conectarse</string>
     <string name="boton_descargas">Descargas</string>
-    <string name="no_bluetooth">¡Ups! Parece que no tienes bluetooth :c</string>
+    <string name="no_bluetooth">¡Ups! Parece que no tienes bluetooth. \n\n Lo siento, no es posible usar la aplicación en este dispositivo.</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="dispositivos_sincronizados">Dispositivos sincronizados</string>
     <string name="dispositivos_encontrados">Dispositivos encontrados</string>

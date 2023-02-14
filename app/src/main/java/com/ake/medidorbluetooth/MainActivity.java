@@ -30,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
             connectButton.setVisibility(View.INVISIBLE);
             Button downloadButton = findViewById(R.id.b_descargas);
             downloadButton.setVisibility(View.INVISIBLE);
-            TextView textView = findViewById(R.id.tv_bienvenido);
-            textView.setText(R.string.no_bluetooth);
+            TextView tvBienvenida = findViewById(R.id.tv_bienvenido);
+            tvBienvenida.setVisibility(View.INVISIBLE);
+            TextView tvNoBluetooth = findViewById(R.id.tv_no_bluetooth);
+            tvNoBluetooth.setVisibility(View.VISIBLE);
         }
 
 //        SQLiteActions actions = new SQLiteActions(this);

@@ -30,7 +30,7 @@ public class SQLiteActions {
 
     public SQLiteActions(Context context) {
         this.context = context;
-        conn = new ConnectionSQLiteHelper(context, Querys.DB_DATOS, null, 4);
+        conn = new ConnectionSQLiteHelper(context, Querys.DB_DATOS, null, 5);
     }
 
     public static @NotNull String getDate(String formato){
@@ -150,7 +150,7 @@ public class SQLiteActions {
 
             while (cursor.moveToNext()) {
                 row = new TablaDatos();
-                row.setTiempo(cursor.getInt(1));
+                row.setTiempo(cursor.getLong(1));
                 row.setVoltaje(cursor.getDouble(2));
                 row.setCorriente(cursor.getDouble(3));
                 row.setPotencia(cursor.getDouble(4));
