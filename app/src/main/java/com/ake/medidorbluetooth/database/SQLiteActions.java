@@ -12,7 +12,6 @@ import android.util.Log;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -82,6 +81,8 @@ public class SQLiteActions {
         values.put(Querys._REGISTRO_ID, row.getRegistroID());
 
         db.insert(Querys.TABLA_DATOS, Querys._DATOS_ID, values);
+
+        row.printRow("addnewDataRow");
 
         db.close();
     }
@@ -171,7 +172,7 @@ public class SQLiteActions {
         return listaTablaDatos;
     }
 
-    public boolean createDocument(Uri uri, Integer registro_id){
+    public void createDocument(Uri uri, Integer registro_id){
         db = conn.getWritableDatabase();
         StringBuilder contenido = new StringBuilder("Tiempo,Voltaje,Corriente,Potencia,Energia\n"); //se usa para crear una cadena a partes
 
@@ -185,22 +186,20 @@ public class SQLiteActions {
             contenido.append(listaTablaDatos.get(i).getEnergia().toString()).append("\n"); //ENERGIA
         }
 
+        Log.i(TAG, "Nuevo doc: \n" + contenido);
+
         try{
             OutputStream ops = ((Activity) context).getContentResolver().openOutputStream(uri);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ops));
             bw.write(contenido.toString());
             bw.flush();
             bw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return;
         }
 
         db.close();
-        return true;
     }
 
     public void borrarBD(){

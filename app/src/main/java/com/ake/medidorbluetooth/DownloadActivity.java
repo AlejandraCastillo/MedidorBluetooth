@@ -1,7 +1,5 @@
 package com.ake.medidorbluetooth;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.ake.medidorbluetooth.database.SQLiteActions;
 import com.ake.medidorbluetooth.database.TablaRegistro;
@@ -24,16 +23,12 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
 
     private static final String TAG = "DownloadActivity";
 
-    private RecyclerView recyclerView;
-    private RecycleViewDownloadAdapter downloadAdapter;
-
     private SQLiteActions actions;
-
-    private ArrayList<TablaRegistro> listTablaRegistro;
 
     ActivityResultLauncher<Intent> descargaLauncher;
 
-    private static final int REQUEST_DOWNLOAD = 1;
+//    private static final String REGISTRO_ID = "registro_id";
+    private int mRegistroID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +36,16 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
         setContentView(R.layout.activity_download);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Descargas");
 
-        recyclerView = findViewById(R.id.rv_descargas);
+        RecyclerView recyclerView = findViewById(R.id.rv_descargas);
 
         actions = new SQLiteActions(this);
-        listTablaRegistro = new ArrayList<TablaRegistro>();
+        ArrayList<TablaRegistro> listTablaRegistro;
 
         listTablaRegistro = actions.readTablaRegistro();
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
-        downloadAdapter = new RecycleViewDownloadAdapter(listTablaRegistro, this);
+        RecycleViewDownloadAdapter downloadAdapter = new RecycleViewDownloadAdapter(listTablaRegistro, this);
         recyclerView.setAdapter(downloadAdapter);
 
         descargaLauncher = registerForActivityResult(
@@ -58,9 +53,9 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
                 result -> {
                     if(result.getResultCode() == Activity.RESULT_OK){
                         Intent data = result.getData();
-                        int registro_id = getIntent().getExtras().getInt("registro_id");
                         if(data != null && data.getData() != null){
-                            actions.createDocument(data.getData(), registro_id);
+                            Log.i(TAG, "onCreate: registro " + mRegistroID);
+                            actions.createDocument(data.getData(), mRegistroID);
                         }
                     }
                 }
@@ -73,9 +68,9 @@ public class DownloadActivity extends AppCompatActivity implements OnClickListen
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/cvs");
         int registro_id = registro.getRegistroID();
-        String nombre = actions.getFechaRegistro(registro_id) + "_g" + registro_id + ".cvs";
+        String nombre = actions.getFechaRegistro(registro_id) + "_reg" + registro_id + ".cvs";
         intent.putExtra(Intent.EXTRA_TITLE, nombre);
-        intent.putExtra("registro_id", registro_id);
+        mRegistroID = registro_id;
 
         descargaLauncher.launch(intent);
     }

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothUtils;
+import com.ake.medidorbluetooth.database.SQLiteActions;
 
 import java.util.Objects;
 
