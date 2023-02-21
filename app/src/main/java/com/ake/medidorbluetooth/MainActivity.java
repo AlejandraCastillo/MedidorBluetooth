@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        SQLiteActions actions = new SQLiteActions(this);
 //        actions.borrarBD();
-
-
     }
 
     public void onClickConectar(View view) {

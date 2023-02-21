@@ -41,12 +41,6 @@ public class Querys {
     public static final String DROP_TABLA_REGISTRO_IF_EXISTS =
             "DROP TABLE IF EXISTS " + TABLA_REGISTRO;
 
-    public static final String DELETE_FROM_TABLA_DATOS=
-            "DELETE FROM " + TABLA_DATOS;
-
-    public static final String DELETE_FROM_TABLA_REGISTRO =
-            "DELETE FROM " + TABLA_REGISTRO;
-
     public static final String SELECT_FROM_REGISTRO =
             "SELECT * FROM " + TABLA_REGISTRO;
 
@@ -55,5 +49,14 @@ public class Querys {
 
     public static final String SELECT_FROM_DATOS_BY_REGISTRO_ID =
             "SELECT * FROM " + TABLA_DATOS + " WHERE " + _REGISTRO_ID + "=?";
+
+    public static final String DELETE_FROM_TABLA_DATOS=
+            "DELETE FROM " + TABLA_DATOS;
+
+    public static final String DELETE_FROM_SQLITE_SEQUENCE =
+            "DELETE FROM sqlite_sequence";
+
+    public static final String DELETE_FROM_TABLA_REGISTRO =
+            "DELETE FROM " + TABLA_REGISTRO;
 
 }

@@ -205,6 +205,7 @@ public class SQLiteActions {
     public void borrarBD(){
         db = conn.getWritableDatabase();
         db.execSQL(Querys.DELETE_FROM_TABLA_REGISTRO);
+        db.execSQL(Querys.DELETE_FROM_SQLITE_SEQUENCE);
         db.execSQL(Querys.DELETE_FROM_TABLA_DATOS);
     }
 
