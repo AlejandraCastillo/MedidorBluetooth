@@ -1,7 +1,12 @@
 package com.ake.medidorbluetooth;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +17,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -150,16 +156,35 @@ public class ConnectActivity extends AppCompatActivity {
         }
 
     }
-
+    
     public void onClickBuscar(View view) {
         if(enableBTFlag){
-            bluetoothUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            bluetoothUtils.discovery(discoveryFlag);
+            String permiso = Manifest.permission.ACCESS_FINE_LOCATION;
+            if (ContextCompat.checkSelfPermission(this, permiso)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissionLauncher.launch(permiso);
+            }
+            else
+                bluetoothUtils.discovery(discoveryFlag);
         }
         else{
             Toast.makeText(this, "El bluetooth está apagado", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            new ActivityResultCallback<Boolean>() {
+                @Override
+                public void onActivityResult(Boolean result) {
+                    if (result) {
+                        bluetoothUtils.discovery(discoveryFlag);
+                    } else {
+                        Log.i(TAG, "onActivityResult: Permiso denegado");
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onDestroy() {
