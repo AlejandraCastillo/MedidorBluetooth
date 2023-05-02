@@ -12,9 +12,7 @@ import android.graphics.Shader;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.core.content.ContextCompat;
-
 import com.ake.medidorbluetooth.R;
 
 public class CustomGauge extends View {

@@ -15,17 +15,13 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.core.app.NotificationCompat;
-
 import com.ake.medidorbluetooth.MessageReceiverActivity;
 import com.ake.medidorbluetooth.R;
 import com.ake.medidorbluetooth.buetooth_utils.ShareSocket;
 import com.ake.medidorbluetooth.database.SQLiteActions;
 import com.ake.medidorbluetooth.database.TablaDatos;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -165,7 +161,6 @@ public class MyService extends Service {
     }
 
     private final Handler handler = new Handler(Looper.myLooper()) {
-        //    private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         @SuppressLint("SetTextI18n")
         public void handleMessage(@NotNull Message msg){
@@ -251,27 +246,3 @@ public class MyService extends Service {
     };
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

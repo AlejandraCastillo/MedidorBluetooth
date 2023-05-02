@@ -1,7 +1,6 @@
 package com.ake.medidorbluetooth;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -10,14 +9,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.TextView;
-
-
 import com.ake.medidorbluetooth.Servicio.MyService;
 import com.ake.medidorbluetooth.custom_gauge.CustomGauge;
 import com.ake.medidorbluetooth.database.SQLiteActions;
-
 import java.util.Objects;
-
 
 public class MessageReceiverActivity extends AppCompatActivity {
     private static final String TAG = "MessageReceiver";
@@ -41,7 +36,6 @@ public class MessageReceiverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_receiver);
-//        Objects.requireNonNull(getSupportActionBar()).setTitle(TAG);
 
         Log.d(TAG, "onCreate");
 

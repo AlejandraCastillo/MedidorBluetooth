@@ -5,17 +5,14 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.ake.medidorbluetooth.database.SQLiteActions;
 import com.ake.medidorbluetooth.database.TablaRegistro;
 import com.ake.medidorbluetooth.recycleview_download.OnClickListenerDownload;
 import com.ake.medidorbluetooth.recycleview_download.RecycleViewDownloadAdapter;
-
 import java.util.ArrayList;
 import java.util.Objects;
 

@@ -11,9 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.ake.medidorbluetooth.MessageReceiverActivity;
-
 import java.io.IOException;
 import java.util.UUID;
 

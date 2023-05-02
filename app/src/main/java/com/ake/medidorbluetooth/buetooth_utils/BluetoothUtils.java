@@ -8,13 +8,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import com.ake.medidorbluetooth.recycleview_bluetooth.OnClickListenerBluetooth;
 import com.ake.medidorbluetooth.recycleview_bluetooth.RecycleViewBluetoothAdapter;
-
 import java.util.Set;
 
 public class BluetoothUtils implements OnClickListenerBluetooth {
@@ -69,7 +66,6 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
         for (BluetoothDevice device : sBondedDevices) {
             adapterBondedDevices.add(device);
         }
-//        adapterBondedDevices.notifyDataSetChanged();
         //True si existen dispositivos
         return adapterBondedDevices.getItemCount() > 0;
     }
@@ -112,7 +108,6 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
         }
         if (!deviceAlreadyExists(device) && device.getName()!=null) {
             adapterDiscoveryDevices.add(device);
-//            adapterDiscoveryDevices.notifyDataSetChanged();
         }
     }
 
@@ -139,31 +134,3 @@ public class BluetoothUtils implements OnClickListenerBluetooth {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

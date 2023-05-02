@@ -1,14 +1,25 @@
 <resources>
     <string name="app_name">MedidorBluetooth</string>
+    <!--MainActivity-->
     <string name="Bienvenida">¡Bienvenido!</string>
     <string name="boton_conectar">Conectarse</string>
     <string name="boton_descargas">Descargas</string>
     <string name="no_bluetooth">¡Ups! Parece que no tienes bluetooth. \n\n Lo siento, no es posible usar la aplicación en este dispositivo.</string>
+    <!--ConnectActivity-->
     <string name="bluetooth">Bluetooth</string>
     <string name="dispositivos_sincronizados">Dispositivos sincronizados</string>
     <string name="dispositivos_encontrados">Dispositivos encontrados</string>
     <string name="inciar_busqueda">Inciar Busqueda</string>
     <string name="cancelar_busqueda">Cancelar busqueda</string>
+    <!--MessageReceiverActivity-->
+    <string name="voltage">VOLTAGE</string>
+    <string name="_00_00_v">00.00 V</string>
+    <string name="corriente">CORRIENTE</string>
+    <string name="_0_00_a">0.00 A</string>
+    <string name="potencia">POTENCIA</string>
+    <string name="_000_00_w">000.00 W</string>
+    <string name="energia">ENERGIA</string>
+    <string name="_0_00_wh">0.00 Wh</string>
     <string name="laboratorio">
         <br>
             Laboratorio de Electrónica

@@ -1,17 +1,14 @@
 package com.ake.medidorbluetooth;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.ake.medidorbluetooth.buetooth_utils.BluetoothUtils;
-import com.ake.medidorbluetooth.database.SQLiteActions;
-
 import java.util.Objects;
+import com.ake.medidorbluetooth.database.SQLiteActions;
 
 public class MainActivity extends AppCompatActivity {
 
